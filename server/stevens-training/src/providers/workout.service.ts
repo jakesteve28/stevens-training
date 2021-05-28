@@ -1,1 +1,4 @@
-export default class WorkoutService {}
+import { Injectable } from "@nestjs/common";
+
+@Injectable()
+export class WorkoutService {}
