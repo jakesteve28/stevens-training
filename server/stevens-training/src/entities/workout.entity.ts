@@ -2,8 +2,24 @@
  * 2021 Jacob Stevens
  */
 
- import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
+import { User } from './user.entity';
  
+enum WorkoutFocus {
+  strength = "Strength", 
+  power = "Power", 
+  stability = "Stability",
+  endurance = "Endurance", 
+  control = "Control", 
+  intervals = "Intervals", 
+  failure = "Failure",
+  dropsets = "Drop Sets",
+  cardio = "Cardio", 
+  mix = "Mix", 
+  flexibility = "Flexibility",
+  other = "Other"
+}
+
  @Entity()  
  export class Workout {
    @PrimaryGeneratedColumn("uuid")
@@ -15,19 +31,13 @@
    @Column()
    desc: string;
 
-   @Column()
-   classificationId: string;
+   @ManyToOne(type => User, user => user.workouts)
+   user: User; 
 
-   @Column()
-   userId: string; 
- 
-   @Column()
-   targetDate: number;
+   @Column({ type: "enum" })
+   workoutFocus: WorkoutFocus; 
  
    @CreateDateColumn()
    createdAt: string;
-
-   @Column()
-   exercisesJSON: string;
 
  }

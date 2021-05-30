@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { getConnectionOptions } from 'typeorm';
+
 import { AdminController } from '../controllers/admin.controller';
 import { AdminService } from '../providers/admin.service';
 import { ExerciseModule } from './exercise.module';
@@ -25,6 +28,20 @@ const config = {
 @Module({
   imports: [
             ConfigModule.forRoot(config),
+            TypeOrmModule.forRootAsync({
+              imports: [ConfigModule],
+              useFactory: (configService: ConfigService) => ({
+                type: 'mysql',
+                host: configService.get('HOST'),
+                port: +configService.get<number>('PORT'),
+                username: configService.get('USERNAME'),
+                password: configService.get('PASSWORD'),
+                database: configService.get('DATABASE'),
+                entities: ['../entities/*.entity{.ts,.js}'],
+                synchronize: true,
+              }),
+              inject: [ConfigService]
+            }),
             ExerciseModule,
             GoalModule,
             PlaceModule, 

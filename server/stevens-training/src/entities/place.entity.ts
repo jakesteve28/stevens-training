@@ -1,9 +1,16 @@
 /**
  * 2021 Jacob Stevens
  */
-
- import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne } from 'typeorm';
  
+enum PlaceType {
+  gym = "Gym",
+  studio = "Studio",
+  outdoors = "Outdoors",
+  home = "Home",
+  other = "Other"
+}
+
  @Entity()  
  export class Place {
    @PrimaryGeneratedColumn("uuid")
@@ -14,16 +21,19 @@
  
    @Column()
    desc: string;
- 
-   @Column()
-   galleryId: string;
 
    @Column()
    longitude: string; 
 
    @Column()
    latitude: string;
+
+   @Column( { default: "" } )
+   galleryId: string;
  
    @CreateDateColumn()
    createdAt: string;
+
+   @Column({ type: "enum" })
+   placeType: PlaceType;
  }
