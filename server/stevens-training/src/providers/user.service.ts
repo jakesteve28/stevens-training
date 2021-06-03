@@ -12,7 +12,7 @@ export class UserService {
     ) {}
 
     async create(userDto: UserDto): Promise<User> {
-
+        
         return null;
     }
 
@@ -24,6 +24,14 @@ export class UserService {
     async findAll(): Promise<User> {
 
         return null;
+    }
+
+    async markLoggedIn(userId: string): Promise<Boolean> {
+        return false;
+    }
+
+    async markLoggedOut(userId: string): Promise<Boolean> {
+        return false;
     }
 
     async remove(id: string): Promise<void> {

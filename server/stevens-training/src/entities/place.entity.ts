@@ -3,7 +3,7 @@
  */
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne } from 'typeorm';
  
-enum PlaceType {
+export enum PlaceType {
   gym = "Gym",
   studio = "Studio",
   outdoors = "Outdoors",
@@ -36,4 +36,5 @@ enum PlaceType {
 
    @Column({ type: "enum" })
    placeType: PlaceType;
+
  }

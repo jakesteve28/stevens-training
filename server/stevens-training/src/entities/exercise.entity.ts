@@ -5,7 +5,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
  
-enum ExerciseType {
+export enum ExerciseType {
   lifting = "Lifting",
   cardio = "Cardio",
   stretching = "Stretching", 
@@ -23,9 +23,6 @@ enum ExerciseType {
  
    @Column()
    desc: string;
- 
-   @Column()
-   img: string;
 
    @Column( { default: "" } )
    galleryId: string;

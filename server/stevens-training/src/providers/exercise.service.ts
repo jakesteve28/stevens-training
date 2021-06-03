@@ -1,4 +1,49 @@
 import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { ExerciseDto } from "src/entities/dto/exercise.dto";
+import { Repository } from "typeorm";
+import { Exercise } from "../entities/exercise.entity";
+import { WorkoutService } from "./workout.service";
 
 @Injectable()
-export class ExerciseService {}
+export class ExerciseService {
+
+    constructor(@InjectRepository(Exercise) 
+                private exerciseRepository: Repository<Exercise>,
+                private workoutService: WorkoutService) {}
+
+    async create(exerciseDto : ExerciseDto): Promise<Exercise> {
+        return null;
+    }
+
+    async update(): Promise<Exercise> {
+        return null;
+    }
+
+    async delete(): Promise<void> {
+        return null;
+    }
+
+    async addMedia(): Promise<Exercise> {
+        return null;
+    }
+    
+    async removeMedia(): Promise<Exercise> {
+        return null;
+    }
+
+    async getById(): Promise<Exercise> {
+        return null;
+    }
+
+    async getByWorkoutOrdered(): Promise<{}> {
+        return {
+
+        };
+    }
+
+    async getByWorkout(): Promise<Exercise[]> {
+        return null;
+    }
+
+}
