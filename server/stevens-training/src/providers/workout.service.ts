@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { WorkoutDto } from "../entities/dto/workout.dto";
 import { Repository } from "typeorm";
 import { Workout } from "../entities/workout.entity";
 
@@ -7,7 +8,7 @@ import { Workout } from "../entities/workout.entity";
 export class WorkoutService {
     constructor(
         @InjectRepository(Workout)
-        private userRepository: Repository<Workout>
+        private workoutRepo: Repository<Workout>
     ) {}
 
     async create(workoutDto: WorkoutDto): Promise<Workout> {
@@ -31,6 +32,16 @@ export class WorkoutService {
     }
 
     async update(newFields: any): Promise<Workout> {
+
+        return null;
+    }
+
+    async addExercise(exerciseId: string, sets: number, reps: number, duration: number): Promise<Workout> {
+        
+        return null;
+    }
+
+    async removeExercise(exerciseId: string): Promise<Workout> {
 
         return null;
     }

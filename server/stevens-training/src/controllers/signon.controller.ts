@@ -15,7 +15,8 @@ import JwtRefreshAuthGuard from 'src/guards/jwt-refresh.auth-guard';
 export class SignonController {
   constructor(private workoutService: WorkoutService, 
               private exerciseService: ExerciseService,
-              private signOnService: SignOnService) {}
+              private signOnService: SignOnService
+              ) {}
 
   @UseGuards(SignOnAuthGuard)
   @Post('login')
@@ -42,10 +43,10 @@ export class SignonController {
   @UseGuards(JwtRefreshAuthGuard)
   @Get('refresh')
   async getRefreshToken(@Req() req, @Res() res: Response) {
-      res.clearCookie('Refresh');
-      const newToken = await this.signOnService.newRefreshToken(req.user);
-      res.cookie('Refresh', newToken, { maxAge: 900000, httpOnly: true }); 
-      return res.send({ user: req.user })
+    res.clearCookie('Refresh');
+    const newToken = await this.signOnService.newRefreshToken(req.user);
+    res.cookie('Refresh', newToken, { maxAge: 900000, httpOnly: true }); 
+    return res.send({ user: req.user });
   }
 
   @UseGuards(JwtRefreshAuthGuard)
@@ -55,5 +56,10 @@ export class SignonController {
       return res.send({ user: req.user })
   }
 
+  @Post('resetPassword')
+  async resetPassword(@Req() req, @Res() res: Response) {
+    //Clear password, send one time link to resetpw form to email
+    //return res.send()
+  }
 }
 

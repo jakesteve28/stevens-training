@@ -34,7 +34,7 @@ export enum PlaceType {
    @CreateDateColumn()
    createdAt: string;
 
-   @Column({ type: "enum" })
+   @Column({ type: "enum", enum: PlaceType })
    placeType: PlaceType;
 
  }

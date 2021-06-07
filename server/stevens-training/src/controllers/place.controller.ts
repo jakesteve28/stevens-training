@@ -5,7 +5,7 @@
 import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { Place } from '../entities/place.entity';
-import PlaceService from '../providers/place.service';
+import { PlaceService } from '../providers/place.service';
 import { UserService } from '../providers/user.service';
 
 @Controller('place')

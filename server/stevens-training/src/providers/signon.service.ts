@@ -24,4 +24,8 @@ export class SignOnService {
     async logoutUser(user: any): Promise<Boolean> {
         return false;
     }
+
+    async forgotPassword(user: any): Promise<Boolean> {
+        return false;
+    }
 }

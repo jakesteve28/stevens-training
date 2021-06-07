@@ -27,7 +27,7 @@ export enum ExerciseType {
    @Column( { default: "" } )
    galleryId: string;
    
-   @Column({ type: "enum" })
+   @Column({ type: "enum", enum: ExerciseType })
    exerciseType: ExerciseType;
  
    @CreateDateColumn()

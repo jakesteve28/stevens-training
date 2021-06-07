@@ -34,7 +34,7 @@ enum WorkoutFocus {
    @ManyToOne(type => User, user => user.workouts)
    user: User; 
 
-   @Column({ type: "enum" })
+   @Column({ type: "enum", enum: WorkoutFocus })
    workoutFocus: WorkoutFocus; 
  
    @CreateDateColumn()

@@ -5,7 +5,7 @@
 import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
-import GoalService from '../providers/goal.service';
+import { GoalService } from '../providers/goal.service';
 import { UserService } from '../providers/user.service';
 
 @Controller('goal')

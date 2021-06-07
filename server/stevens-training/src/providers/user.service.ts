@@ -62,4 +62,10 @@ export class UserService {
 
     }
 
+    async updateLocation(latitude: string, longitude: string): Promise<User> {
+        return null;
+    }
+
+    
+
 }
