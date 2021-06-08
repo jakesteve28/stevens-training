@@ -5,7 +5,8 @@
 # env 
 .prod.env 
 .dev.env
-
+public-certificate.pem 
+private-key.pem
 # Logs
 logs
 *.log
