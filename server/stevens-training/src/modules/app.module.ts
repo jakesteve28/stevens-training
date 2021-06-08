@@ -21,7 +21,7 @@ import { Workout } from '../entities/workout.entity';
 import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'node:path';
+import { join } from 'path';
 
 
 /**
