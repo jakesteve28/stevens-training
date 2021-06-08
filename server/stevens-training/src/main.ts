@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-async function getHttpsOptions() {
+function getHttpsOptions() {
   try {
     console.log("Checking for https key/cert in project_root/secrets/ directory"); 
     if(!fs.existsSync('../secrets/private-key.pem')) {
@@ -19,20 +19,24 @@ async function getHttpsOptions() {
       console.log("Cannot find public certificate. Not starting server.");
       return false;
     }
-    const options = {
+    const httpsOptions = {
       key: fs.readFileSync('../secrets/private-key.pem'),
       cert: fs.readFileSync('../secrets/public-certificate.pem')
     };
-    return options;
+    return httpsOptions;
   } catch(err) {
-
+    return null;
   }
 }
 
 async function bootstrap() {
   console.log("Starting bootstrapping process");
-  const options = await getHttpsOptions();
-  const app = await NestFactory.create(AppModule, { httpsOptions: options });
+  const httpsOptions = getHttpsOptions();
+  if(!httpsOptions) {
+    console.log("Error: Cannot finish bootstrapping server. Shutting down.");
+    return;
+  }
+  const app = await NestFactory.create(AppModule, { httpsOptions });
   const config = app.get(ConfigService);
   const cookieSecret = config.get<string>('SIGNED_COOKIE_SECRET');
   app.use(helmet());
