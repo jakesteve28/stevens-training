@@ -20,6 +20,8 @@ import { Story } from '../entities/story.entity';
 import { Workout } from '../entities/workout.entity';
 import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'node:path';
 
 
 /**
@@ -37,6 +39,9 @@ const config = {
 @Module({
   imports: [
             ConfigModule.forRoot(config),
+            ServeStaticModule.forRoot({
+              rootPath: join(__dirname, "..", "..", "static")
+            }),
             TypeOrmModule.forRootAsync({
               imports: [ConfigModule],
               useFactory: async (configService: ConfigService) => ({              
