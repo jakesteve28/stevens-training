@@ -4,13 +4,19 @@ import { UserDto } from "src/entities/dto/user.dto";
 import { Repository } from "typeorm";
 import { User } from "../entities/user.entity";
 import * as bcrypt from 'bcrypt';
+import { OnModuleDestroy } from "@nestjs/common";
 
 @Injectable()
-export class UserService {
+export class UserService implements OnModuleDestroy {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>
     ) {}
+
+    async onModuleDestroy(): Promise<void> {
+        console.log("Destroying user service, marking all users as offline, clear cache, refresh tokens & location");
+        await this.userRepository.update({ isOnline: true }, { isOnline: false, refreshToken: '', latitude: '', longitude: '' });
+    }
 
     async create(userDto: UserDto): Promise<User> {
         const user = new User();
@@ -21,6 +27,13 @@ export class UserService {
         user.password = await bcrypt.hash(userDto.password, 10);
         return this.userRepository.save(user);
     }
+
+    async checkStoredHashToken(username: string, refreshToken: string): Promise<Boolean> {
+        const user = await this.findUsername(username);
+        if(user) {
+            return bcrypt.compare(refreshToken, user.refreshToken); 
+        } else return false;
+     }
 
     async findOne(id: string): Promise<User> {
         return this.userRepository.findOne(id); 

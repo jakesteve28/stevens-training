@@ -10,7 +10,7 @@
  import { Request } from 'express';
  import { UserService } from '../../providers/user.service';
 import { ConfigService } from '@nestjs/config';
- //import { jwtConstants } from '../config/constants';
+import { SignOnService } from '../../providers/signon.service';
   
  @Injectable()
  export class JwtRefreshStrategy extends PassportStrategy(
@@ -19,7 +19,8 @@ import { ConfigService } from '@nestjs/config';
  ) {
    constructor(
      private readonly userService: UserService,
-     private configService: ConfigService
+     private configService: ConfigService,
+     private signOnService: SignOnService
    ) {
      super({
        jwtFromRequest: ExtractJwt.fromExtractors([(request: Request) => {
@@ -37,8 +38,8 @@ import { ConfigService } from '@nestjs/config';
     * @param payload the JWT payload
     * @returns true if a match, false otherwise.
     */
-   async validate(request: Request, payload: any) {
+   async validate(request: Request, payload: any): Promise<Boolean> {
      const refreshToken = request.cookies?.Refresh;
-     return false;
+     return this.userService.checkStoredHashToken(payload.username, refreshToken); 
    }
  }

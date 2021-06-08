@@ -14,6 +14,7 @@ async function bootstrap() {
   app.use(compression());
   app.use(csurf());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.enableShutdownHooks();
   const config = app.get(ConfigService);
   const cookieSecret = config.get<string>('SIGNED_COOKIE_SECRET');
   app.use(cookieParser(cookieSecret)); 
