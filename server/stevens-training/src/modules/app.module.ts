@@ -33,21 +33,23 @@ const config = {
   expandVariables: true,
   envFilePath: (process.env.NODE_ENV === 'production') ? '.prod.env' : '.dev.env'
 }
-console.info("Connecting to MySql Database with TypeORM");
-console.info(`Details: \r\nHost: ${process.env.DATABASE_HOST || 'localhost'} \r\nPort: ${process.env.DATABASE_PORT || 3306} \r\nUsername: ${process.env.DATABASE_USER || 'test'} \r\nDatabase: ${process.env.DATABASE || 'test'} \r\n`);
 @Module({
   imports: [
-            TypeOrmModule.forRoot({
-              type: 'mysql',
-              host: process.env.DATABASE_HOST || 'localhost',
-              port: +process.env.DATABASE_PORT || 3306,
-              username: process.env.DATABASE_USER || 'stevensdev',
-              password: process.env.DATABASE_PASSWORD || 'stevens.dev.21',
-              database: process.env.DATABASE || 'stevens-training-dev',
-              synchronize: true,
-              entities: [User, Workout, Story, Place, Message, MediaUpload, Goal, Gallery, Exercise]
-            }),        
             ConfigModule.forRoot(config),
+            TypeOrmModule.forRootAsync({
+              imports: [ConfigModule],
+              useFactory: async (configService: ConfigService) => ({              
+                  type: 'mysql',
+                  host: configService.get<string>('DATABASE_HOST') || 'localhost',
+                  port: +configService.get<number>('DATABASE_PORT') || 3306,
+                  username: configService.get<string>('DATABASE_USER') || 'stevensdev',
+                  password: configService.get<string>('DATABASE_PASSWORD') || 'stevens.dev.21',
+                  database: configService.get<string>('DATABASE'),
+                  synchronize: true,
+                  entities: [User, Workout, Story, Place, Message, MediaUpload, Goal, Gallery, Exercise]              
+              }),
+              inject: [ConfigService]
+            }),        
             ThrottlerModule.forRoot({
               ttl: 60,
               limit: 10,
@@ -66,4 +68,9 @@ console.info(`Details: \r\nHost: ${process.env.DATABASE_HOST || 'localhost'} \r\
               }
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private configService: ConfigService){
+    console.info("Connecting to MySql Database with TypeORM");
+    console.info(`Details:\r\nHost: ${this.configService.get<string>('DATABASE_HOST') || 'localhost'}\r\nPort: ${this.configService.get<number>('DATABASE_PORT') || 3306}\r\nUsername: ${this.configService.get<string>('DATABASE_USER') || 'failure to load'}\r\nDatabase: ${this.configService.get<string>('DATABASE') || 'failure to load'}`);
+  }
+}

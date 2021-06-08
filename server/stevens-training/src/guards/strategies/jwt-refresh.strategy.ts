@@ -9,6 +9,7 @@
  import { Injectable } from '@nestjs/common';
  import { Request } from 'express';
  import { UserService } from '../../providers/user.service';
+import { ConfigService } from '@nestjs/config';
  //import { jwtConstants } from '../config/constants';
   
  @Injectable()
@@ -18,12 +19,13 @@
  ) {
    constructor(
      private readonly userService: UserService,
+     private configService: ConfigService
    ) {
      super({
        jwtFromRequest: ExtractJwt.fromExtractors([(request: Request) => {
          return request?.cookies?.Refresh;
        }]),
-       //secretOrKey: jwtConstants.refreshSecret,
+       secretOrKey: configService.get('REFRESH_SECRET'),
        passReqToCallback: true,
        ignoreExpiration: false
      });

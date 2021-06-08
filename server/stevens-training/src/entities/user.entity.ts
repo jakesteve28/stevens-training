@@ -60,6 +60,12 @@ import { Workout } from './workout.entity';
    @Column({ default: "" })
    currentWorkoutId: string;
 
+   @Column({ default: ""})
+   latitude: string; 
+
+   @Column({ default: ""})
+   longitude: string; 
+
    @OneToMany(type => Workout, workout => workout.user)
    workouts: Workout[];
 

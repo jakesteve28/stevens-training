@@ -1,10 +1,21 @@
 import { Injectable } from "@nestjs/common";
+import { JwtService } from '@nestjs/jwt';
 import { User } from "../entities/user.entity";
 import { UserService } from "./user.service";
+import * as bcrypt from 'bcrypt';
+import { ConfigService } from "@nestjs/config";
+
+export interface jwtPayload {
+    username: string,
+    sub: string 
+ }
 
 @Injectable()
 export class SignOnService {
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService,
+                private jwtService: JwtService,
+                private config: ConfigService
+        ) { }
 
     async loginUser(user: any) {
         if(!(await this.userService.markLoggedIn(user.id))) {
@@ -14,15 +25,33 @@ export class SignOnService {
             return user;     
         }
     }
+
     async newRefreshToken(user: any) {
-      throw new Error('Method not implemented.');
+        const payload: jwtPayload = {
+            username: user?.userName, 
+            sub: user?.id
+        }
+        const refreshToken = this.jwtService.sign(payload, {
+            secret: await this.config.get('REFRESH_SECRET'),
+            expiresIn: '900s'
+        });
+        await this.userService.updateToken(user?.id, refreshToken); 
+        return refreshToken;
     }
     
-    async validateUser(userName: string, password: string): Promise<User> {
-        return null;
+    async validateUser(userName: string, password: string): Promise<any> {
+        const user = await this.userService.findUsername(userName); 
+        const isMatch = await bcrypt.compare(password, user.password); 
+        if(isMatch) delete user.password;
+        return (isMatch) ? user : false;
     }
     async logoutUser(user: any): Promise<Boolean> {
-        return false;
+        if(!(await this.userService.markLoggedOut(user.id))) {
+            console.error("Cannot mark user logged in. ID: ", user.id); 
+            return null;
+        } else {
+            return user;     
+        }
     }
 
     async forgotPassword(user: any): Promise<Boolean> {

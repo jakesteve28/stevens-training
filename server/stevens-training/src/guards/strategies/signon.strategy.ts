@@ -12,7 +12,7 @@
    }
    /**
     * This guard is only called when login is called. 
-    * @param tagName The userName of the user trying to login
+    * @param userName The userName of the user trying to login
     * @param password The pw of the user
     */
    async validate(userName: string, password: string): Promise<any> {

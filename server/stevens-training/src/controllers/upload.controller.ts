@@ -24,4 +24,10 @@ export class UploadController {
     async uploadPlaceMedia(@UploadedFile() file: Express.Multer.File) {
         console.info(file);
     }
+    @Post('exercise')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadExerciseMedia(@UploadedFile() file: Express.Multer.File) {
+        console.info(file);
+    }
+
 }
