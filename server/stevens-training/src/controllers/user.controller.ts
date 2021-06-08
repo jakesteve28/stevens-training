@@ -4,11 +4,13 @@
 
 import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete } from '@nestjs/common';
 import { UserDto } from 'src/entities/dto/user.dto';
+import JwtRefreshAuthGuard from 'src/guards/jwt-refresh.auth-guard';
 import { User } from '../entities/user.entity';
 import { UserService } from '../providers/user.service';
 
 
 @Controller('user')
+@UseGuards(new JwtRefreshAuthGuard())
 export class UserController {
   constructor(private userService: UserService) {}
 

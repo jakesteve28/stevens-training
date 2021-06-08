@@ -5,7 +5,7 @@
  import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
  
-enum WorkoutFocus {
+export enum WorkoutFocus {
   strength = "Strength", 
   power = "Power", 
   stability = "Stability",

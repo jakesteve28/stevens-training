@@ -1,12 +1,13 @@
-import { UploadedFile } from "@nestjs/common";
+import { UploadedFile, UseGuards } from "@nestjs/common";
 import { UseInterceptors } from "@nestjs/common";
 import { Post } from "@nestjs/common";
 import { Controller } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
+import JwtRefreshAuthGuard from "../guards/jwt-refresh.auth-guard";
 
 @Controller('upload')
+@UseGuards(new JwtRefreshAuthGuard())
 export class UploadController {
-
     constructor() {}
 
     @Post('story')

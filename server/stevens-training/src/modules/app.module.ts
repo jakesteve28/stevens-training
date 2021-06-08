@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { getConnectionOptions } from 'typeorm';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
@@ -21,6 +20,8 @@ import { Story } from '../entities/story.entity';
 import { Workout } from '../entities/workout.entity';
 import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
+
+
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -52,7 +53,7 @@ const config = {
             }),        
             ThrottlerModule.forRoot({
               ttl: 60,
-              limit: 10,
+              limit: 25,
             }),
             ExerciseModule,
             GoalModule,

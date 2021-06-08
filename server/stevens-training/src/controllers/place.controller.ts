@@ -7,8 +7,10 @@ import { User } from '../entities/user.entity';
 import { Place } from '../entities/place.entity';
 import { PlaceService } from '../providers/place.service';
 import { UserService } from '../providers/user.service';
+import JwtRefreshAuthGuard from 'src/guards/jwt-refresh.auth-guard';
 
 @Controller('place')
+@UseGuards(new JwtRefreshAuthGuard())
 export class PlaceController {
   constructor(private placeService: PlaceService,
                 private userService: UserService
