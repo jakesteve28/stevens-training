@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { WorkoutDto } from "../entities/dto/workout.dto";
 import { Repository } from "typeorm";
@@ -14,6 +14,7 @@ export class WorkoutService {
     constructor(
         @InjectRepository(Workout)
         private workoutRepo: Repository<Workout>,
+        @Inject(forwardRef(() => ExerciseService))
         private exerciseService: ExerciseService
     ) {}
 

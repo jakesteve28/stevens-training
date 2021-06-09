@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
 import * as compression from 'compression';
-import * as csurf from 'csurf';
+//import * as csurf from 'csurf';
 import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
 import * as fs from 'fs';
-import { ValidationPipe } from '@nestjs/common';
+import { NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 function getHttpsOptions() {
@@ -32,12 +32,20 @@ function getHttpsOptions() {
 
 async function bootstrap() {
   console.log("Starting bootstrapping process");
+  const nestOptions: NestApplicationOptions = {};
   const httpsOptions = getHttpsOptions();
   if(!httpsOptions) {
-    console.log("Error: Cannot finish bootstrapping server. Shutting down.");
-    process.exit(1);
+    console.log("Error: No https keys. Starting as http server.");
+    if(process.env.NODE_ENV === 'development') {
+      console.log('Development Mode Only: Starting server as http (NO HTTPS!)');
+    } else {
+      console.log("Production Mode Only: Cannot finish bootstrapping server. Shutting down. (NO HTTPS!)");
+      process.exit(1);
+    }
+  } else {
+    nestOptions.httpsOptions = httpsOptions ;
   }
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule, nestOptions);
   const config = app.get(ConfigService);
   const cookieSecret = config.get<string>('SIGNED_COOKIE_SECRET');
   app.use(helmet());
