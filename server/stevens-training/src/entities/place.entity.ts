@@ -22,11 +22,14 @@ export enum PlaceType {
    @Column()
    desc: string;
 
-   @Column()
+   @Column({ default: "" })
    longitude: string; 
 
-   @Column()
+   @Column({ default: "" })
    latitude: string;
+
+   @Column({ default: false })
+   open: Boolean;
 
    @Column( { default: "" } )
    galleryId: string;
@@ -36,5 +39,8 @@ export enum PlaceType {
 
    @Column({ type: "enum", enum: PlaceType })
    placeType: PlaceType;
+
+   @Column()
+   uploadedBy: string;
 
  }

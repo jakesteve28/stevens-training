@@ -2,7 +2,8 @@
  * 2021 Jacob Stevens
  */
 
- import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
+import { Exercise } from './exercise.entity';
 import { User } from './user.entity';
  
 export enum WorkoutFocus {
@@ -36,7 +37,13 @@ export enum WorkoutFocus {
 
    @Column({ type: "enum", enum: WorkoutFocus })
    workoutFocus: WorkoutFocus; 
+
+   @Column("simple-json")
+   exerciseMapping: { exercises: Array<{ mappingId: string, exercise: Exercise, sets: number, reps: number, duration: number, distance: number, order: number }> }
  
+   @Column("simple-json")
+   supersetMapping: { supersets: Array<any> }
+
    @CreateDateColumn()
    createdAt: string;
 

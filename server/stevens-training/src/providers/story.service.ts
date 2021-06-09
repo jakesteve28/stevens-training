@@ -8,7 +8,9 @@ import { Story } from "../entities/story.entity";
 export default class StoryService {
     constructor(@InjectRepository(Story) private storyRepo: Repository<Story>) {}
     async create(user: User): Promise<Story> {
-        return null;
+        const story = new Story();
+        story.user = user; 
+        return this.storyRepo.save(story); 
     }
     async addUpload() {
         

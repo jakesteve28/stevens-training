@@ -18,6 +18,9 @@ import { User } from './user.entity';
  
    @Column()
    targetDate: number;
+
+   @Column({ default: false })
+   complete: Boolean;
  
    @CreateDateColumn()
    createdAt: string;

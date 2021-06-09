@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { User } from "../entities/user.entity";
 import * as bcrypt from 'bcrypt';
 import { OnModuleDestroy } from "@nestjs/common";
+import { findDistance, isLatitude, isLongitude } from "src/util/distance.util";
 
 @Injectable()
 export class UserService implements OnModuleDestroy {
@@ -45,6 +46,25 @@ export class UserService implements OnModuleDestroy {
 
     async findAll(): Promise<User[]> {
         return this.userRepository.find(); 
+    }
+
+    async findNearLocation(latitude: number, longitude: number, howfar: number): Promise<User[]> {
+        //EXPENSIVE, need to cache the results of this calculation
+        //Or run a python script that has these location libraries
+        const users = await this.userRepository.find({ cache: 5000, select: ['id', 'latitude', 'longitude' ]});
+        if(isLatitude(latitude) && isLongitude(longitude)) {
+            const nearbyUsers = users.filter(user => {
+                const latnum = parseFloat(user.latitude);
+                const longnum = parseFloat(user.longitude); 
+                if(isLatitude(latnum) && isLongitude(longnum)) {
+                    const distance = findDistance(latitude, latnum, longitude, longnum);
+                    user['howfar'] = distance;
+                    return user['howfar'] < howfar;
+                }
+            })
+            return nearbyUsers.sort((a, b) => b['howfar'] - a['howfar']);
+        }
+        return [];
     }
 
     async markLoggedIn(userId: string): Promise<User> {

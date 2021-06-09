@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
-import { User } from "../entities/user.entity";
 import { UserService } from "./user.service";
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from "@nestjs/config";
@@ -45,6 +44,7 @@ export class SignOnService {
         if(isMatch) delete user.password;
         return (isMatch) ? user : false;
     }
+
     async logoutUser(user: any): Promise<Boolean> {
         if(!(await this.userService.markLoggedOut(user.id))) {
             console.error("Cannot mark user logged in. ID: ", user.id); 

@@ -4,7 +4,8 @@ import {
     Length,
     IsLatitude,
     IsLongitude,
-    IsEnum
+    IsEnum,
+    IsUUID
 } from 'class-validator';
 
 export class PlaceDto {
@@ -22,4 +23,7 @@ export class PlaceDto {
 
     @IsEnum(PlaceType)
     placeType: PlaceType;
+
+    @IsUUID()
+    uploadedBy: string;
 }

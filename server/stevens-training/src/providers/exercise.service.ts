@@ -32,7 +32,7 @@ export class ExerciseService {
         return null;
     }
 
-    async getById(): Promise<Exercise> {
+    async findOne(id: string): Promise<Exercise> {
         return null;
     }
 

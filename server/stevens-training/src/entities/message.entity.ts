@@ -13,6 +13,9 @@ import { User } from './user.entity';
    @Column()
    body: string;
 
+   @Column({ default: false })
+   seen: Boolean;
+
    @ManyToOne(type => User, user => user.sentmessages)
    sender: User;
  

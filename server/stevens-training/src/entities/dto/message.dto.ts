@@ -12,4 +12,5 @@ export class MessageDto {
 
     @IsUUID()
     recipientId: string;
+    
 }

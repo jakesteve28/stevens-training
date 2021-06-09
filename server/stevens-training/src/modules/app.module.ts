@@ -21,9 +21,6 @@ import { Workout } from '../entities/workout.entity';
 import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-
-
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -52,6 +49,7 @@ const config = {
                   password: configService.get<string>('DATABASE_PASSWORD') || 'stevens.dev.21',
                   database: configService.get<string>('DATABASE'),
                   synchronize: true,
+                  cache: true,
                   entities: [User, Workout, Story, Place, Message, MediaUpload, Goal, Gallery, Exercise]              
               }),
               inject: [ConfigService]
