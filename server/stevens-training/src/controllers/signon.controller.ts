@@ -5,11 +5,11 @@
 import { Controller, Post, UseGuards, Req, Get } from '@nestjs/common';
 import { ExerciseService } from '../providers/exercise.service';
 import { WorkoutService } from '../providers/workout.service';
-import { SignOnAuthGuard } from 'src/guards/signon.auth-guard';
+import { SignOnAuthGuard } from '../guards/signon.auth-guard';
 import { Res } from '@nestjs/common';
 import { SignOnService } from '../providers/signon.service';
 import { Response } from 'express';
-import JwtRefreshAuthGuard from 'src/guards/jwt-refresh.auth-guard';
+import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
 
 @Controller('signon')
 export class SignonController {

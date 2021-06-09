@@ -19,6 +19,7 @@ function getHttpsOptions() {
       console.log("Cannot find public certificate. Not starting server.");
       return false;
     }
+    console.log("Found key/cert! Using for https");
     const httpsOptions = {
       key: fs.readFileSync('secrets/private-key.pem'),
       cert: fs.readFileSync('secrets/public-certificate.pem')

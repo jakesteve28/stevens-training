@@ -6,7 +6,7 @@ import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete } from '@nestj
 import { Workout } from '../entities/workout.entity';
 import { WorkoutService } from '../providers/workout.service';
 import { ExerciseService } from '../providers/exercise.service';
-import JwtRefreshAuthGuard from 'src/guards/jwt-refresh.auth-guard';
+import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
 
 @Controller('workout')
 @UseGuards(new JwtRefreshAuthGuard())

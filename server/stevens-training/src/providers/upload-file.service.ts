@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { MediaUpload } from "src/entities/media-upload.entity";
+import { MediaUpload } from "../entities/media-upload.entity";
 import { Repository } from "typeorm";
 
 @Injectable()

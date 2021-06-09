@@ -7,7 +7,7 @@ import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
 import { GoalService } from '../providers/goal.service';
 import { UserService } from '../providers/user.service';
-import JwtRefreshAuthGuard from 'src/guards/jwt-refresh.auth-guard';
+import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
 
 @Controller('goal')
 @UseGuards(new JwtRefreshAuthGuard())

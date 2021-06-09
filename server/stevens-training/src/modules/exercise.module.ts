@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Exercise } from '../entities/exercise.entity';
 import { ExerciseController } from '../controllers/exercise.controller';
 import { ExerciseService } from '../providers/exercise.service';
-import { WorkoutService } from 'src/providers/workout.service';
+import { WorkoutService } from '../providers/workout.service';
 import { WorkoutModule } from './workout.module';
 
 @Module({

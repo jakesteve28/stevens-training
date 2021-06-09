@@ -3,8 +3,8 @@
 */
 
 import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete } from '@nestjs/common';
-import { UserDto } from 'src/entities/dto/user.dto';
-import JwtRefreshAuthGuard from 'src/guards/jwt-refresh.auth-guard';
+import { UserDto } from '../entities/dto/user.dto';
+import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
 import { User } from '../entities/user.entity';
 import { UserService } from '../providers/user.service';
 

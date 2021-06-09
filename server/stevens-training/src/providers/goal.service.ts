@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Goal } from '../entities/goal.entity';
 import { Repository } from 'typeorm';
-import { GoalDto } from "src/entities/dto/goal.dto";
+import { GoalDto } from "../entities/dto/goal.dto";
 
 @Injectable()
 export class GoalService {

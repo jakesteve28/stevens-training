@@ -40,7 +40,7 @@ const config = {
   imports: [
             ConfigModule.forRoot(config),
             ServeStaticModule.forRoot({
-              rootPath: join(__dirname, "..", "..", "static")
+              rootPath: "static"
             }),
             TypeOrmModule.forRootAsync({
               imports: [ConfigModule],

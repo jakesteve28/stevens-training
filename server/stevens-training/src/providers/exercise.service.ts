@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ExerciseDto } from "src/entities/dto/exercise.dto";
+import { ExerciseDto } from "../entities/dto/exercise.dto";
 import { Repository } from "typeorm";
 import { Exercise } from "../entities/exercise.entity";
 import { WorkoutService } from "./workout.service";
