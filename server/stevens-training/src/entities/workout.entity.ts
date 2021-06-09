@@ -4,6 +4,7 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
 import { Exercise } from './exercise.entity';
+import { MediaUpload } from './media-upload.entity';
 import { User } from './user.entity';
  
 export enum WorkoutFocus {
@@ -46,5 +47,8 @@ export enum WorkoutFocus {
 
    @CreateDateColumn()
    createdAt: string;
+
+   @Column({ type: "simple-json" })
+   uploads: Array<MediaUpload>;
 
  }

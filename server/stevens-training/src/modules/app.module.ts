@@ -21,6 +21,7 @@ import { Workout } from '../entities/workout.entity';
 import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { UploadController } from 'src/controllers/upload.controller';
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -64,7 +65,9 @@ const config = {
             UserModule, 
             WorkoutModule  
           ],
-  controllers: [AdminController],
+  controllers: [AdminController,
+                UploadController
+  ],
   providers: [AdminService,
               {
                 provide: APP_GUARD,

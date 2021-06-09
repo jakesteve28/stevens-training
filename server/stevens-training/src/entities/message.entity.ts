@@ -10,7 +10,7 @@ import { User } from './user.entity';
    @PrimaryGeneratedColumn("uuid")
    id: string
  
-   @Column()
+   @Column({ default: "" })
    body: string;
 
    @Column({ default: false })

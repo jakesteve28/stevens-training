@@ -30,9 +30,6 @@ export enum PlaceType {
 
    @Column({ default: false })
    open: Boolean;
-
-   @Column( { default: "" } )
-   galleryId: string;
  
    @CreateDateColumn()
    createdAt: string;
@@ -42,5 +39,8 @@ export enum PlaceType {
 
    @Column()
    uploadedBy: string;
+
+   @Column({ type: "simple-json" })
+   uploads: Array<MediaUpload>;
 
  }

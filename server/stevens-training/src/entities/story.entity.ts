@@ -2,7 +2,8 @@
  * 2021 Jacob Stevens
  */
 
- import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne } from 'typeorm';
+import { MediaUpload } from './media-upload.entity';
 import { User } from './user.entity';
  
  @Entity()  
@@ -12,10 +13,11 @@ import { User } from './user.entity';
  
    @OneToOne(type => User, user => user.story)
    user: User;
- 
-   @Column( { default: "" } )
-   galleryId: string;
+
+   @Column({ type: "simple-json" })
+   uploads: Array<MediaUpload>;
  
    @CreateDateColumn()
    createdAt: string;
+
  }

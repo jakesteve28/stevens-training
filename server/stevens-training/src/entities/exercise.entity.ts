@@ -3,6 +3,7 @@
  */
 
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
+import { MediaUpload } from './media-upload.entity';
 import { User } from './user.entity';
  
 export enum ExerciseType {
@@ -18,14 +19,14 @@ export enum ExerciseType {
    @PrimaryGeneratedColumn("uuid")
    id: string
  
-   @Column()
+   @Column({ default: "" })
    name: string;
  
-   @Column()
+   @Column({ default: "" })
    desc: string;
 
-   @Column( { default: "" } )
-   galleryId: string;
+   @Column({ type: "simple-json" })
+   uploads: Array<MediaUpload>;
    
    @Column({ type: "enum", enum: ExerciseType })
    exerciseType: ExerciseType;
