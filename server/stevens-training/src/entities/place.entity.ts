@@ -2,6 +2,7 @@
  * 2021 Jacob Stevens
  */
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToOne } from 'typeorm';
+import { MediaUpload } from './media-upload.entity';
  
 export enum PlaceType {
   gym = "Gym",

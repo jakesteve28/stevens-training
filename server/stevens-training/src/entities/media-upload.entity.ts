@@ -27,7 +27,7 @@ export enum UploadType {
    @Column({ default: "" })
    desc: string;
 
-   @Column({ type: "enum" })
+   @Column({ type: "enum", enum: UploadType })
    uploadType: UploadType;
  
    @CreateDateColumn()
