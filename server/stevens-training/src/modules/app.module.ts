@@ -12,7 +12,6 @@ import { PlaceModule } from './place.module';
 import { UserModule } from './user.module';
 import { WorkoutModule } from './workout.module';
 import { MediaUpload } from '../entities/media-upload.entity';
-import { Gallery } from '../entities/gallery.entity';
 import { Exercise } from '../entities/exercise.entity';
 import { Message } from '../entities/message.entity';
 import { Place } from '../entities/place.entity';
@@ -51,7 +50,7 @@ const config = {
                   database: configService.get<string>('DATABASE'),
                   synchronize: true,
                   cache: true,
-                  entities: [User, Workout, Story, Place, Message, MediaUpload, Goal, Gallery, Exercise]              
+                  entities: [User, Workout, Story, Place, Message, MediaUpload, Goal, Exercise]              
               }),
               inject: [ConfigService]
             }),        

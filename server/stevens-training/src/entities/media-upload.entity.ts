@@ -3,7 +3,6 @@
  */
 
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
-import { Gallery } from './gallery.entity';
 import { User } from './user.entity';
  
 export enum UploadType {
@@ -36,5 +35,4 @@ export enum UploadType {
 
    @ManyToOne(type => User, user => user.uploads)
    user: User;
-
  }
