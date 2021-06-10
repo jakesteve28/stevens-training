@@ -9,7 +9,7 @@ import { UserModule } from './user.module';
     imports: [TypeOrmModule.forFeature([Place]), UserModule],
     providers: [PlaceService],
     controllers: [PlaceController],
-    exports: []
+    exports: [PlaceService]
 })
 export class PlaceModule {}
     

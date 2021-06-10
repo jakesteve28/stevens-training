@@ -1,17 +1,21 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserDto } from "../entities/dto/user.dto";
 import { Repository } from "typeorm";
 import { User } from "../entities/user.entity";
 import * as bcrypt from 'bcrypt';
 import { OnModuleDestroy } from "@nestjs/common";
-import { findDistance, isLatitude, isLongitude } from "src/util/distance.util";
+import { findDistance, isLatitude, isLongitude } from "../util/distance.util";
+import { HasUploads } from "./story.service";
+import { UploadService } from "./upload-file.service";
 
 @Injectable()
-export class UserService implements OnModuleDestroy {
+export class UserService implements OnModuleDestroy, HasUploads {
     constructor(
         @InjectRepository(User)
-        private userRepository: Repository<User>
+        private userRepository: Repository<User>,
+        @Inject(forwardRef(() => UploadService))
+        private uploadService: UploadService
     ) {}
 
     async onModuleDestroy(): Promise<void> {
@@ -89,12 +93,6 @@ export class UserService implements OnModuleDestroy {
         return this.userRepository.save(user); 
     }
 
-    async newProfilePic(id: string, path: string): Promise<User> {
-        const user = await this.userRepository.findOne(id);
-        user.profilePicture = path;
-        return this.userRepository.save(user);
-    }
-
     async disable(id: string): Promise<void> {
         const user = await this.userRepository.findOne(id);
         user.disabled = true;
@@ -119,4 +117,31 @@ export class UserService implements OnModuleDestroy {
         user.refreshToken = await bcrypt.hash(token, 10);
         return this.userRepository.save(user);
     }
+
+    async addUpload(userId: string, uploadId: string): Promise<User> {
+        const user = await this.userRepository.findOne(userId);
+        if(!user) return null;
+        if(user.profilePictures.some(element => element.id === uploadId)) {
+            return null; 
+        }
+        const _upload = await this.uploadService.setEntityId(uploadId, user.id); 
+        user.profilePictures.push(_upload); 
+        return this.userRepository.save(user);
+    }
+
+    async removeUpload(userId: string, uploadId: string): Promise<User> {
+        const user = await this.userRepository.findOne(userId);
+        if(!user) return null;
+        if(user.profilePictures.some(element => element.id === uploadId)) {
+            user.profilePictures = user.profilePictures.filter(async upload => {
+                if(upload.id === uploadId){
+                    await this.uploadService.remove(uploadId);
+                }
+                return upload.id !== uploadId;
+            });
+            return this.userRepository.save(user); 
+        }
+        return user;
+    }
+
 }

@@ -2,7 +2,7 @@
  * 2021 Jacob Stevens
  */
 
- import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, OneToOne } from 'typeorm';
 import { Exercise } from './exercise.entity';
 import { Goal } from './goal.entity';
 import { MediaUpload } from './media-upload.entity';
@@ -51,8 +51,8 @@ import { Workout } from './workout.entity';
    @Column({ default: false })
    disabled: boolean;
  
-   @Column({ default: "" })
-   profilePicture: string;
+   @Column({ type: "simple-json" })
+   profilePictures: Array<MediaUpload>;
  
    @Column({ default: "" })
    refreshToken: string;

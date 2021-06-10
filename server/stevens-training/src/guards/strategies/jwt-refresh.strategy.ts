@@ -26,7 +26,7 @@ import { SignOnService } from '../../providers/signon.service';
        jwtFromRequest: ExtractJwt.fromExtractors([(request: Request) => {
          return request?.cookies?.Refresh;
        }]),
-       secretOrKey: configService.get('REFRESH_SECRET'),
+       secretOrKey: process.env.REFRESH_SECRET,
        passReqToCallback: true,
        ignoreExpiration: false
      });

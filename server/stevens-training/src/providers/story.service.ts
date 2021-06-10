@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../entities/user.entity";
 import { Repository } from "typeorm";
@@ -11,17 +11,24 @@ export interface HasUploads {
 }
 
 @Injectable()
-export default class StoryService implements HasUploads {
+export class StoryService implements HasUploads {
     constructor(
         @InjectRepository(Story) 
         private storyRepo: Repository<Story>,
+        @Inject(forwardRef(() => UploadService))
         private uploadService: UploadService
     ) {}
+
     async create(user: User): Promise<Story> {
         const story = new Story();
         story.user = user; 
         return this.storyRepo.save(story); 
     }
+
+    async findOne(storyId: string): Promise<Story> {
+        return this.storyRepo.findOne(storyId);
+    }
+
     async addUpload(storyId: string, uploadId: string): Promise<Story> {
         const story = await this.storyRepo.findOne(storyId);
         if(!story) return null;
@@ -32,6 +39,7 @@ export default class StoryService implements HasUploads {
         story.uploads.push(_upload); 
         return this.storyRepo.save(story);
     }
+
     async removeUpload(storyId: string, uploadId: string): Promise<Story> {
         const story = await this.storyRepo.findOne(storyId);
         if(!story) return null;
@@ -46,6 +54,7 @@ export default class StoryService implements HasUploads {
         }
         return story;
     }
+
     async clearStory(storyId: string): Promise<Story> {
         const story = await this.storyRepo.findOne(storyId); 
         if(!story) return null;

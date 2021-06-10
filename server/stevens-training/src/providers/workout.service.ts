@@ -7,16 +7,45 @@ import { User } from "../entities/user.entity";
 import { ExerciseService } from "./exercise.service";
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
-import { uuid } from "uuidv4";
+import { HasUploads } from "./story.service";
+import { UploadService } from "./upload-file.service";
 
 @Injectable()
-export class WorkoutService {
+export class WorkoutService implements HasUploads {
     constructor(
         @InjectRepository(Workout)
         private workoutRepo: Repository<Workout>,
         @Inject(forwardRef(() => ExerciseService))
-        private exerciseService: ExerciseService
+        private exerciseService: ExerciseService,
+        @Inject(forwardRef(() => UploadService))
+        private uploadService: UploadService
     ) {}
+
+    async addUpload(workoutId: string, uploadId: string): Promise<Workout> {
+        const workout = await this.workoutRepo.findOne(workoutId);
+        if(!workout) return null;
+        if(workout.uploads.some(element => element.id === uploadId)) {
+            return null; 
+        }
+        const _upload = await this.uploadService.setEntityId(uploadId, workout.id); 
+        workout.uploads.push(_upload); 
+        return this.workoutRepo.save(workout);
+    }
+
+    async removeUpload(workoutId: string, uploadId: string): Promise<Workout> {
+        const workout = await this.workoutRepo.findOne(workoutId);
+        if(!workout) return null;
+        if(workout.uploads.some(element => element.id === uploadId)) {
+            workout.uploads = workout.uploads.filter(async upload => {
+                if(upload.id === uploadId){
+                    await this.uploadService.remove(uploadId);
+                }
+                return upload.id !== uploadId;
+            });
+            return this.workoutRepo.save(workout); 
+        }
+        return workout;
+    }
 
     async create(user: User, workoutDto: WorkoutDto): Promise<Workout> {
         const workout = new Workout();
