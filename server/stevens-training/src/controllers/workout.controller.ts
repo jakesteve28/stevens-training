@@ -2,11 +2,12 @@
     2021 Jacob Stevens   
 */
 
-import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete, Logger, Param, Query } from '@nestjs/common';
 import { Workout } from '../entities/workout.entity';
 import { WorkoutService } from '../providers/workout.service';
 import { ExerciseService } from '../providers/exercise.service';
 import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
+import { WorkoutDto } from '../entities/dto/workout.dto';
 
 @Controller('workout')
 @UseGuards(new JwtRefreshAuthGuard())
@@ -14,39 +15,39 @@ export class WorkoutController {
   constructor(private workoutService: WorkoutService, 
               private exerciseService: ExerciseService) {}
 
+  private readonly logger = new Logger(WorkoutController.name);
+          
   @Get(':id')
-  async getWorkout(): Promise<Workout> {
-      return null;
+  async getWorkout(@Param('id') workoutId: string): Promise<Workout> {
+      return this.workoutService.findOne(workoutId);
   }
 
   @Post('create')
-  async createWorkout(): Promise<Workout> {
-    return null;
+  async createWorkout(@Req() req, @Body() createWorkoutDto: WorkoutDto): Promise<Workout> {
+    return this.workoutService.create(req.user.id, createWorkoutDto);
   }
 
-  @Put('addexercise')
-  async addExercise(): Promise<Workout> {
-    return null;
+  @Put('addexercise/:id/:exerciseId')
+  async addExercise(  @Param('id') workoutId: string, 
+                      @Param('exerciseId') exerciseId: string,
+                      @Query('sets') sets: number,
+                      @Query('reps') reps: number,
+                      @Query('duration') duration: number, 
+                      @Query('distance') distance: number
+                    )
+                    : Promise<Workout> {
+    return this.workoutService.addExercise(workoutId, exerciseId, sets || 1, reps || 0, duration || 0, distance || 0); 
   } 
 
-  @Put('update')
-  async updateWorkout(): Promise<Workout> {
-    return null;
-  }
-
-  @Put('removeexercise')
-  async removeExercise(): Promise<Workout> {
-    return null;
+  @Put('removeexercise/:id/:mappingId')
+  async removeExercise(@Param('id') workoutId: string, @Param('mappingId') mappingId: string): Promise<Workout> {
+    return this.workoutService.removeExercise(workoutId, mappingId);
   }
 
   @Delete(':id')
-  async removeWorkout(): Promise<void> {
-
+  async removeWorkout(@Param('id') workoutId: string): Promise<void> {
+    return this.workoutService.remove(workoutId);
   }
-
-  @Put('updateexercise')
-  async updateExercise(): Promise<Workout> {
-    return null;
-  }
+  
 }
 

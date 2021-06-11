@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import { HasUploads } from "./story.service";
 import { UploadService } from "./upload-file.service";
+import { UserService } from "./user.service";
 
 @Injectable()
 export class WorkoutService implements HasUploads {
@@ -18,7 +19,9 @@ export class WorkoutService implements HasUploads {
         @Inject(forwardRef(() => ExerciseService))
         private exerciseService: ExerciseService,
         @Inject(forwardRef(() => UploadService))
-        private uploadService: UploadService
+        private uploadService: UploadService,
+        @Inject(forwardRef(() => UserService))
+        private userService: UserService,
     ) {}
 
     async addUpload(workoutId: string, uploadId: string): Promise<Workout> {
@@ -47,8 +50,9 @@ export class WorkoutService implements HasUploads {
         return workout;
     }
 
-    async create(user: User, workoutDto: WorkoutDto): Promise<Workout> {
+    async create(userId: string, workoutDto: WorkoutDto): Promise<Workout> {
         const workout = new Workout();
+        const user = await this.userService.findOne(userId); 
         workout.desc = workoutDto.desc; 
         workout.name = workoutDto.name; 
         workout.workoutFocus = workoutDto.workoutFocus; 

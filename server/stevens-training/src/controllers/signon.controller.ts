@@ -2,7 +2,7 @@
     2021 Jacob Stevens   
 */
 
-import { Controller, Post, UseGuards, Req, Get } from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Get, Logger } from '@nestjs/common';
 import { ExerciseService } from '../providers/exercise.service';
 import { WorkoutService } from '../providers/workout.service';
 import { SignOnAuthGuard } from '../guards/signon.auth-guard';
@@ -17,6 +17,8 @@ export class SignonController {
               private exerciseService: ExerciseService,
               private signOnService: SignOnService
               ) {}
+
+  private readonly logger = new Logger(SignonController.name);
 
   @UseGuards(SignOnAuthGuard)
   @Post('login')

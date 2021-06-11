@@ -3,8 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-
-import { AdminController } from '../controllers/admin.controller';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ExerciseModule } from './exercise.module';
 import { GoalModule } from './goal.module';
 import { PlaceModule } from './place.module';
@@ -19,9 +18,8 @@ import { Workout } from '../entities/workout.entity';
 import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { UploadController } from '../controllers/upload.controller';
-import { UploadService } from '../providers/upload-file.service';
 import { UploadModule } from './upload.module';
+import { TasksService } from 'src/providers/tasks.service';
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -37,6 +35,7 @@ const config = {
 @Module({
   imports: [
             ConfigModule.forRoot(config),
+            ScheduleModule.forRoot(),
             ServeStaticModule.forRoot({
               rootPath: "static"
             }),
@@ -66,12 +65,11 @@ const config = {
             WorkoutModule,
             UploadModule  
           ],
-  controllers: [AdminController
-  ],
   providers: [{
                 provide: APP_GUARD,
                 useClass: ThrottlerGuard,
-              }
+              },
+              TasksService      
   ]
 })
 export class AppModule {

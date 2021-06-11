@@ -2,12 +2,13 @@
     2021 Jacob Stevens   
 */
 
-import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete, Logger, Param } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
 import { GoalService } from '../providers/goal.service';
 import { UserService } from '../providers/user.service';
 import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
+import { GoalDto } from 'src/entities/dto/goal.dto';
 
 @Controller('goal')
 @UseGuards(new JwtRefreshAuthGuard())
@@ -16,39 +17,26 @@ export class GoalController {
                 private userService: UserService
                 ) {}
 
+  private readonly logger = new Logger(GoalController.name);
+
   @Get(':id')
-  async getGoal(): Promise<Goal> {
-      return null;
+  async getGoal(@Param('id') goalId: string): Promise<Goal> {
+    return this.goalService.findOne(goalId);
   }
 
   @Get('/user/:id')
-  async getGoalById(): Promise<Goal[]> {
-    return null;
+  async getUserGoals(@Param('id') userId: string): Promise<Goal[]> {
+    return (await this.userService.findOne(userId)).goals;
   }
 
   @Post('add')
-  async addGoal(@Req() req): Promise<Goal> {
-     return null;
+  async addGoal(@Req() req, @Body() newGoal: GoalDto): Promise<Goal> {
+     return this.goalService.create(newGoal, req.user.id);
   }
 
   @Delete(':id')
-  async deleteGoal(): Promise<Goal> {
-    return null;
-  }
-
-  @Put('update/:id')
-  async updateGoal(): Promise<Goal> {
-    return null;
-  }
-
-  @Get('byplace')
-  async getGoalsByPlace(): Promise<Goal[]> {
-    return null;   
-  }
-
-  @Get('bytype')
-  async getGoalsByType(): Promise<Goal[]> {
-      return null;
+  async deleteGoal(@Param('id') goalId: string): Promise<void> {
+    return this.goalService.remove(goalId);
   }
 
 }

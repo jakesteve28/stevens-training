@@ -2,12 +2,13 @@
     2021 Jacob Stevens   
 */
 
-import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete, Logger, Param } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { Place } from '../entities/place.entity';
 import { PlaceService } from '../providers/place.service';
 import { UserService } from '../providers/user.service';
 import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
+import { PlaceDto } from '../entities/dto/place.dto';
 
 @Controller('place')
 @UseGuards(new JwtRefreshAuthGuard())
@@ -16,38 +17,25 @@ export class PlaceController {
                 private userService: UserService
                 ) {}
 
+  private readonly logger = new Logger(PlaceController.name);
+  
   @Get(':id')
-  async getPlace(): Promise<Place> {
-      return null;
+  async getPlace(@Param('id') placeId: string): Promise<Place> {
+    return this.placeService.findOne(placeId); 
   }
 
   @Post('add')
-  async addPlace(@Req() req): Promise<Place> {
-     return null;
+  async addPlace(@Body() placeDto: PlaceDto): Promise<Place> {
+     return this.placeService.create(placeDto);
   }
 
   @Delete(':id')
-  async deletePlace(): Promise<void> {
-    return null;
+  async deletePlace(@Param('id') placeId: string): Promise<void> {
+    return this.placeService.remove(placeId);
   }
 
-  @Put('update/:id')
-  async updatePlace(): Promise<Place> {
-    return null;
-  }
-
-  @Put('addmedia')
-  async addMedia(): Promise<Place> {
-    return null;
-  }
-
-  @Put('removemedia/:id')
-  async removeMedia(): Promise<Place> {
-    return null;
-  }
-
-  @Get('users/:id')
-  async fetchNearbyUsers() : Promise<User[]> {
-      return null;
+  @Get(':id/users/:radiusmiles')
+  async fetchNearbyUsers(@Param('id') placeId: string, @Param('radiusmiles') miles: number) : Promise<User[]> {
+      return this.placeService.getNearbyUsers(placeId, miles); 
   }
 }

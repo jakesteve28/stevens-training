@@ -19,6 +19,9 @@ export class GoalService {
         goal.name = newGoal.name; 
         goal.targetDate = newGoal.targetDate; 
     }
+    async findOne(goalId: string): Promise<Goal> {
+        return this.goalRepo.findOne(goalId);
+    }
     async markComplete(goalId: string): Promise<Goal> {
         const goal = await this.goalRepo.findOne(goalId);
         if(!goal) return null; 

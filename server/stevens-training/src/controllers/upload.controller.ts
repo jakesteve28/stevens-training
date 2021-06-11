@@ -1,4 +1,4 @@
-import { Delete, forwardRef, Inject, Param, Req, UploadedFile, UseGuards } from "@nestjs/common";
+import { Delete, forwardRef, Inject, Logger, Param, Req, UploadedFile, UseGuards } from "@nestjs/common";
 import { UseInterceptors } from "@nestjs/common";
 import { Post } from "@nestjs/common";
 import { Controller } from "@nestjs/common";
@@ -32,6 +32,8 @@ export class UploadController {
                 private exerciseService: ExerciseService, 
                 private uploadService: UploadService
         ) {}
+
+    private readonly logger = new Logger(UploadController.name);
 
     @Post('story')
     @UseInterceptors(FileInterceptor('file'))
