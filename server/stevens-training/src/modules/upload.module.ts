@@ -1,6 +1,6 @@
 import { Module, Global } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MediaUpload } from 'src/entities/media-upload.entity';
+import { MediaUpload } from '../entities/media-upload.entity';
 import { UploadController } from '../controllers/upload.controller';
 import { UploadService } from '../providers/upload-file.service';
 import { UserModule } from './user.module';

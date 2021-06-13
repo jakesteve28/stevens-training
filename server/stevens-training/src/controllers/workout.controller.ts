@@ -39,7 +39,7 @@ export class WorkoutController {
     return this.workoutService.addExercise(workoutId, exerciseId, sets || 1, reps || 0, duration || 0, distance || 0); 
   } 
 
-  @Put('removeexercise/:id/:mappingId')
+  @Put('rmexercise/:id/:mappingId')
   async removeExercise(@Param('id') workoutId: string, @Param('mappingId') mappingId: string): Promise<Workout> {
     return this.workoutService.removeExercise(workoutId, mappingId);
   }

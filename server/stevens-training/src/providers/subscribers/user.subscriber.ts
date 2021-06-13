@@ -17,6 +17,6 @@ import {
     }
   
     afterInsert(event: InsertEvent<User>) {
-      console.log(`User inserted, email for password dispatched to user with details: `, event.entity);
+      console.log(`User inserted, email for password dispatched to user with details: `, event.entity.userName, event.entity.email);
     }
   }

@@ -3,9 +3,26 @@
     <head>
         <title>Stevens Training Index Page</title>
         <meta charset="utf-8" />
+        <script src='./index.js'></script>
     </head>
     <body>
         <h1 style="text-align: center;">Under construction!</h1>
-        <h3 style="text-align: center;">Server Index Page</h1>
+        <h3 style="text-align: center;">Server Index Page</h3>
+        <h6 style="text-align: center;">HTTP E2E Tests</h6>
+        <ul style="text-align: center;">
+            <li>
+                <span>user create test </span><span id="usercreate">Passed? : </span>
+            </li>
+            <li>
+                <span>user get story test </span><span id="userstory">Passed? : </span>
+            </li>
+            <li>
+                <span>user refresh test </span><span id="userrefresh">Passed? : </span>
+            </li>
+            <li>
+                <span>user delete (admin only) test </span><span id="userdelete">Passed? : </span>
+            </li>
+            <li><button id="testButton">Run Tests</button></li>
+        </ul>
     </body>
 </html>

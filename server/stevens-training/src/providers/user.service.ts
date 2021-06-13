@@ -6,8 +6,9 @@ import { User } from "../entities/user.entity";
 import * as bcrypt from 'bcrypt';
 import { OnModuleDestroy } from "@nestjs/common";
 import { findDistance, isLatitude, isLongitude } from "../util/distance.util";
-import { HasUploads } from "./story.service";
+import { HasUploads, StoryService } from "./story.service";
 import { UploadService } from "./upload-file.service";
+import { SignOnService } from "./signon.service";
 
 @Injectable()
 export class UserService implements OnModuleDestroy, HasUploads {
@@ -15,7 +16,10 @@ export class UserService implements OnModuleDestroy, HasUploads {
         @InjectRepository(User)
         private userRepository: Repository<User>,
         @Inject(forwardRef(() => UploadService))
-        private uploadService: UploadService
+        private uploadService: UploadService,
+        @Inject(forwardRef(() => SignOnService))
+        private signOnService: SignOnService,
+        private storyService: StoryService
     ) {}
 
     async onModuleDestroy(): Promise<void> {
@@ -23,14 +27,29 @@ export class UserService implements OnModuleDestroy, HasUploads {
         await this.userRepository.update({ isOnline: true }, { isOnline: false, refreshToken: '', latitude: '', longitude: '' });
     }
 
-    async create(userDto: UserDto): Promise<User> {
+    async create(userDto: UserDto): Promise<{ user: User, token: string }> {
+        if(await this.checkUserExists(userDto.email, userDto.userName)) {
+            return null;
+        }
         const user = new User();
         user.email = userDto.email;
         user.firstName = userDto.firstName; 
         user.lastName = userDto.firstName;
         user.userName = userDto.userName; 
         user.password = await bcrypt.hash(userDto.password, 10);
-        return this.userRepository.save(user);
+        const token = await this.signOnService.newRefreshToken(user);
+        const story = await this.storyService.create();
+        user.refreshToken = await bcrypt.hash(token, 10);
+        user.storyId = story.id; 
+        user.maxes = "B:0,S:0,DL:0"; 
+        user.status = "im noob"; 
+        await this.userRepository.save(user);
+        return { user: user, token: token };
+    }
+
+    async checkUserExists(email: string, username: string): Promise<Boolean> {
+        const count = (await this.userRepository.count({ where: [ { userName: username }, { email: email } ] }));
+        return count >= 1;
     }
 
     async checkStoredHashToken(username: string, refreshToken: string): Promise<Boolean> {

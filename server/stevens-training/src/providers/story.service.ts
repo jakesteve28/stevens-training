@@ -19,9 +19,8 @@ export class StoryService implements HasUploads {
         private uploadService: UploadService
     ) {}
 
-    async create(user: User): Promise<Story> {
+    async create(): Promise<Story> {
         const story = new Story();
-        story.user = user; 
         return this.storyRepo.save(story); 
     }
 

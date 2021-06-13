@@ -9,12 +9,9 @@ import { User } from './user.entity';
  @Entity()  
  export class Story {
    @PrimaryGeneratedColumn("uuid")
-   id: string
- 
-   @OneToOne(type => User, user => user.story)
-   user: User;
+   id: string;
 
-   @Column({ type: "simple-json" })
+   @Column({ type: "simple-array" })
    uploads: Array<MediaUpload>;
  
    @CreateDateColumn()

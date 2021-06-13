@@ -8,7 +8,7 @@ import { Goal } from '../entities/goal.entity';
 import { GoalService } from '../providers/goal.service';
 import { UserService } from '../providers/user.service';
 import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
-import { GoalDto } from 'src/entities/dto/goal.dto';
+import { GoalDto } from '../entities/dto/goal.dto';
 
 @Controller('goal')
 @UseGuards(new JwtRefreshAuthGuard())

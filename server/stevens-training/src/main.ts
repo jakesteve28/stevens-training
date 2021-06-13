@@ -4,36 +4,43 @@ import * as compression from 'compression';
 //import * as csurf from 'csurf';
 import * as helmet from 'helmet';
 import * as cookieParser from 'cookie-parser';
-import * as fs from 'fs';
+import { open, stat, readFile, FileHandle, access } from 'fs/promises';
 import { NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-function getHttpsOptions() {
+async function getHttpsOptions() {
+  let keyfh: FileHandle = null, certfh: FileHandle = null;
+  const keypath = 'secrets/private-key.pem', certpath = 'secrets/public-certificate.pem';
   try {
+    keyfh = await open(keypath, 'r'); 
+    certfh = await open(certpath, 'r'); 
     console.log("Checking for https key/cert in project_root/secrets/ directory"); 
-    if(!fs.existsSync('secrets/private-key.pem')) {
+    if(!keyfh) {
       console.log("Cannot find private key. Not starting server.");
       return false;
     }
-    if(!fs.existsSync('secrets/public-certificate.pem')) {
+    if(!certfh) {
       console.log("Cannot find public certificate. Not starting server.");
       return false;
     }
     console.log("Found key/cert! Using for https");
     const httpsOptions = {
-      key: fs.readFileSync('secrets/private-key.pem'),
-      cert: fs.readFileSync('secrets/public-certificate.pem')
+      key: await keyfh.readFile(),
+      cert: await certfh.readFile()
     };
     return httpsOptions;
   } catch(err) {
     return null;
+  } finally {
+    keyfh.close(); 
+    certfh.close();
   }
 }
 
-async function bootstrap() {
+export async function bootstrap() {
   console.log("Starting bootstrapping process");
   const nestOptions: NestApplicationOptions = {};
-  const httpsOptions = getHttpsOptions();
+  const httpsOptions = await getHttpsOptions();
   if(!httpsOptions) {
     console.log("Error: No https keys. Starting as http server.");
     if(process.env.NODE_ENV === 'development') {
@@ -56,5 +63,6 @@ async function bootstrap() {
   app.enableShutdownHooks();
   app.use(cookieParser(cookieSecret)); 
   await app.listen(3000);
+  return app;
 }
 bootstrap();

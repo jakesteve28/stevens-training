@@ -41,7 +41,7 @@ export class UploadController {
         console.info("Uploading new story media", file);
         const user = await this.userService.findOne(req.user?.id);
         const upload = await this.uploadService.newUpload(user, UploadType.Story, file);
-        const _story = await this.storyService.addUpload(user.story.id, upload.id);      
+        const _story = await this.storyService.addUpload(user.storyId, upload.id);      
         return { upload: upload, story: _story }; 
     }
     @Post('workout/:id')

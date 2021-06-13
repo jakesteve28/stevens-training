@@ -7,10 +7,12 @@ import { UserSubscriber } from '../providers/subscribers/user.subscriber';
 import { MediaUpload } from '../entities/media-upload.entity';
 import { Story } from '../entities/story.entity';
 import { AppModule } from './app.module';
+import { SignOnModule } from './signon.module';
+import { StoryService } from '../providers/story.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User, MediaUpload, Story])],
-    providers: [UserService, UserSubscriber],
+    imports: [TypeOrmModule.forFeature([User, MediaUpload, Story]), forwardRef(() => SignOnModule)],
+    providers: [UserService, UserSubscriber, StoryService],
     controllers: [UserController],
     exports: [UserService]
 })

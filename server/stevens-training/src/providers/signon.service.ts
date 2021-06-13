@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from "./user.service";
 import * as bcrypt from 'bcrypt';
@@ -11,7 +11,9 @@ export interface jwtPayload {
 
 @Injectable()
 export class SignOnService {
-    constructor(private userService: UserService,
+    constructor(
+                @Inject(forwardRef(() => UserService))
+                private userService: UserService,
                 private jwtService: JwtService,
                 private config: ConfigService
         ) { }
@@ -34,7 +36,7 @@ export class SignOnService {
             secret: await this.config.get('REFRESH_SECRET'),
             expiresIn: '900s'
         });
-        await this.userService.updateToken(user?.id, refreshToken); 
+        //await this.userService.updateToken(user?.id, refreshToken); 
         return refreshToken;
     }
     

@@ -12,7 +12,7 @@ import { StoryService } from "./story.service";
 import { WorkoutService } from "./workout.service";
 import { PlaceService } from "./place.service";
 import { ExerciseService } from "./exercise.service";
-import * as fs from "fs";
+import { open, stat, readFile, FileHandle, access, mkdir, writeFile, unlink } from 'fs/promises';
 import path, { extname } from "path";
 import { uuid } from "uuidv4";
 
@@ -78,59 +78,40 @@ export class UploadService {
     }
 
     public async newUpload(user: User, uploadType: UploadType, file: Express.Multer.File, desc?: string): Promise<MediaUpload> {
-        const upload = new MediaUpload();
-        const tempFilePath = path.resolve(`./tmp/${file.filename}`);
-        fs.readFile(tempFilePath, 
-            { encoding: "base64" },
-            async (err, data) => {
-                if(err){
-                    console.log('Cannot load temp file upload', err); 
-                    return;
-                }
-                const ext = extname(`${file.filename}`); 
-                const uploadFileName = `upload-${uuid()}${ext}`;
-                const fullPath = `./uploads/${user.id}/${uploadFileName}`;
-                if(!fs.existsSync(`./uploads/${user.id}/`)) {
-                    fs.mkdir(`./uploads/${user.id}/`, {}, err => {
-                        if(err) {
-                            console.log("Error creating uploads directory for user ID: " + user.id, err); 
-                            return; 
-                        }
-                        fs.writeFile(fullPath, data, { encoding: "base64" }, err => {
-                            if(err) {
-                                console.log("Error copying tmp file to uploads folder for user ID: " + user.id);
-                                return; 
-                            }
-                            fs.unlink(`./tmp/${file.filename}`, err => { console.log("Error "  + err.message + " deleting temp file for upload for user ID: " + user.id); return; });
-                        })
-                        upload.uploadType = uploadType; 
-                        upload.path = uploadFileName; 
-                        upload.desc = desc || "";
-                        upload.user = user;
-                        return this.uploadRepo.save(upload); 
-                    })
-                } else { 
-                    fs.writeFile(fullPath, data, { encoding: "base64" }, err => {
-                        if(err) {
-                            console.log("Error copying tmp file to uploads folder for user ID: " + user.id, err);
-                            return; 
-                        }
-                        fs.unlink(`./tmp/${file.filename}`, err => { console.log("Error deleting " + err + " temp file for upload for user ID: " + user.id); return; });
-                    })
-                    upload.uploadType = uploadType; 
-                    upload.path = uploadFileName; 
-                    upload.desc = desc;
-                    upload.user = user;
-                    return this.uploadRepo.save(upload); 
-                }
-            }
-        )
-        return null;
+        const upload = new MediaUpload(),
+            tempFilePath = path.resolve(`./tmp/${file.filename}`),
+            ext = extname(`${file.filename}`),
+            uploadFileName = `upload-${uuid()}${ext}`,     
+            userDirPath = `./uploads/${user.id}/`,
+            fullPath = userDirPath + uploadFileName,
+            tempFd = await open(tempFilePath, 'r');
+
+        if(!tempFd){ console.log('Cannot find temp file upload, failing new upload.'); return null; } 
+        const tempFile = await tempFd.readFile({ encoding: 'base64' }); 
+        if(!tempFile){ console.log("Critical fs error, failing new upload"); return null; }
+        if(!(await stat(userDirPath))) await mkdir(userDirPath, { recursive: true });
+        try {
+            await writeFile(fullPath, tempFile, { encoding: 'base64' });
+            await unlink(tempFile); 
+            upload.uploadType = uploadType; 
+            upload.path = fullPath; 
+            upload.desc = desc || "";
+            upload.user = user;
+            return this.uploadRepo.save(upload); 
+        } catch(err) {
+            console.log('Error writing new file to user directory. User ID: ', user.id, err);
+            return null; 
+        } finally {
+            tempFd.close();      
+        }
     }
 
     public async rmUpload(userId: string, uploadId: string): Promise<Boolean> {
         const user = await this.userService.findOne(userId); 
         if(!user) return false; 
+        const upload = await this.uploadRepo.findOne(uploadId);
+        if(!upload) return false; 
+        await unlink(upload.path); 
         user.uploads.forEach(async upload => {
             if(upload.id === uploadId) {
                 const entity = await this.getRelatedEntity(uploadId); 
@@ -155,7 +136,7 @@ export class UploadService {
                 }
                 return true;
             }
-        })
+        });        
         return false;
     }
 

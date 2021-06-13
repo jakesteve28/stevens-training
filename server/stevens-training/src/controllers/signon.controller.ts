@@ -13,10 +13,7 @@ import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
 
 @Controller('signon')
 export class SignonController {
-  constructor(private workoutService: WorkoutService, 
-              private exerciseService: ExerciseService,
-              private signOnService: SignOnService
-              ) {}
+  constructor(private signOnService: SignOnService) {}
 
   private readonly logger = new Logger(SignonController.name);
 

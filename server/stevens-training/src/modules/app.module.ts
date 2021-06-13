@@ -19,7 +19,8 @@ import { User } from '../entities/user.entity';
 import { Goal } from '../entities/goal.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UploadModule } from './upload.module';
-import { TasksService } from 'src/providers/tasks.service';
+import { TasksService } from '../providers/tasks.service';
+import { SignOnModule } from './signon.module';
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -63,7 +64,8 @@ const config = {
             PlaceModule, 
             UserModule, 
             WorkoutModule,
-            UploadModule  
+            UploadModule,
+            SignOnModule  
           ],
   providers: [{
                 provide: APP_GUARD,

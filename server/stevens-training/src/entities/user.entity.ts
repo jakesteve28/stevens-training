@@ -33,10 +33,10 @@ import { Workout } from './workout.entity';
    @Column({ default: false })
    isOnline: boolean;
 
-   @Column()
+   @Column({ default: -1 })
    height: number; 
 
-   @Column()
+   @Column({ default: -1 })
    weight: number;
 
    @Column({ default: true})
@@ -51,7 +51,10 @@ import { Workout } from './workout.entity';
    @Column({ default: false })
    disabled: boolean;
  
-   @Column({ type: "simple-json" })
+   @Column({ default: "" })
+   storyId: string;
+
+   @Column({ type: "simple-array" })
    profilePictures: Array<MediaUpload>;
  
    @Column({ default: "" })
@@ -60,32 +63,29 @@ import { Workout } from './workout.entity';
    @Column({ default: "" })
    currentWorkoutId: string;
 
-   @Column({ default: ""})
+   @Column({ default: "" })
    latitude: string; 
 
-   @Column({ default: ""})
+   @Column({ default: "" })
    longitude: string; 
 
-   @OneToMany(type => Workout, workout => workout.user)
+   @OneToMany(type => Workout, workout => workout.user, { eager: true })
    workouts: Workout[];
 
-   @OneToMany(type => Exercise, exercise => exercise.user)
+   @OneToMany(type => Exercise, exercise => exercise.user, { eager: true })
    exercises: Exercise[]; 
 
-   @OneToMany(type => MediaUpload, upload => upload.user)
+   @OneToMany(type => MediaUpload, upload => upload.user, { eager: true })
    uploads: MediaUpload[]; 
 
-   @OneToMany(type => Goal, goal => goal.user)
+   @OneToMany(type => Goal, goal => goal.user, { eager: true })
    goals: Goal[];
 
-   @OneToMany(type => Message, message => message.sender)
+   @OneToMany(type => Message, message => message.sender, { eager: true })
    sentmessages: Message[];
   
-   @OneToMany(type => Message, message => message.recipient)
+   @OneToMany(type => Message, message => message.recipient, { eager: true })
    receivedmessages: Message[];
-
-   @OneToOne(type => Story, story => story.user)
-   story: Story;
 
    @CreateDateColumn()
    createdAt: string;
