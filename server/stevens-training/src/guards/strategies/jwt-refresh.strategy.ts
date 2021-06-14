@@ -11,6 +11,7 @@
  import { UserService } from '../../providers/user.service';
 import { ConfigService } from '@nestjs/config';
 import { SignOnService } from '../../providers/signon.service';
+import { User } from '../../entities/user.entity';
   
  @Injectable()
  export class JwtRefreshStrategy extends PassportStrategy(
@@ -38,8 +39,12 @@ import { SignOnService } from '../../providers/signon.service';
     * @param payload the JWT payload
     * @returns true if a match, false otherwise.
     */
-   async validate(request: Request, payload: any): Promise<Boolean> {
+   async validate(request: Request, payload: any): Promise<any> {
      const refreshToken = request.cookies?.Refresh;
-     return this.userService.checkStoredHashToken(payload.username, refreshToken); 
+     const user = await this.userService.checkStoredHashToken(payload.username, refreshToken);
+     if(!user) return false;
+     request.user = user;
+     return user;
    }
+   
  }

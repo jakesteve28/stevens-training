@@ -29,5 +29,6 @@ export class ExerciseController {
   async removeExercise(@Param('id') exerciseId: string): Promise<void> {
     return this.exerciseService.delete(exerciseId);
   }
+  
 }
 

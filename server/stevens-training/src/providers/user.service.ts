@@ -52,11 +52,13 @@ export class UserService implements OnModuleDestroy, HasUploads {
         return count >= 1;
     }
 
-    async checkStoredHashToken(username: string, refreshToken: string): Promise<Boolean> {
+    async checkStoredHashToken(username: string, refreshToken: string): Promise<User> {
         const user = await this.findUsername(username);
         if(user) {
-            return bcrypt.compare(refreshToken, user.refreshToken); 
-        } else return false;
+            if(await bcrypt.compare(refreshToken, user.refreshToken)) {
+                return user;
+            }
+        } else return null;
      }
 
     async findOne(id: string): Promise<User> {
@@ -130,6 +132,11 @@ export class UserService implements OnModuleDestroy, HasUploads {
         user.longitude = longitude;
         return this.userRepository.save(user);
     }
+
+    async setStoryId(user: User, storyId: string): Promise<User> {
+        user.storyId = storyId;
+        return this.userRepository.save(user);
+    }   
 
     async updateToken(id: string, token: string): Promise<User> {
         const user = await this.userRepository.findOne(id); 
