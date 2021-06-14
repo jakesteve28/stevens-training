@@ -12,6 +12,11 @@ import { NewUserAuthGuard } from '../guards/newuser.auth-guard';
 import { SignOnService } from '../providers/signon.service';
 import { StoryService } from '../providers/story.service';
 
+class Location {
+  latitude: string; 
+  longitude: string; 
+}
+
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService,
@@ -68,6 +73,15 @@ export class UserController {
       user.storyId = (await this.storyService.create()).id;
       return user.storyId 
     }
+  }
+
+  @Put('location')
+  @UseGuards(JwtRefreshAuthGuard)
+  async updateLocation(@Req() req, @Body() body: Location): Promise<User> {
+    const user = await this.userService.findOne(req.user.id); 
+    if(user) {
+      return await this.userService.updateLocation(user.id,  body.latitude, body.longitude); 
+    } return null;
   }
 
   @Delete(':id')

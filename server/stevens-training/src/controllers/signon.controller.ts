@@ -3,8 +3,6 @@
 */
 
 import { Controller, Post, UseGuards, Req, Get, Logger } from '@nestjs/common';
-import { ExerciseService } from '../providers/exercise.service';
-import { WorkoutService } from '../providers/workout.service';
 import { SignOnAuthGuard } from '../guards/signon.auth-guard';
 import { Res } from '@nestjs/common';
 import { SignOnService } from '../providers/signon.service';
@@ -48,12 +46,12 @@ export class SignonController {
     return res.send({ user: req.user });
   }
 
-  @UseGuards(JwtRefreshAuthGuard)
-  @Get('tokenLogin')
-  async tokenLogin(@Req() req, @Res() res: Response) {
-      await this.signOnService.loginUser(req.user); 
-      return res.send({ user: req.user })
-  }
+  // @UseGuards(JwtRefreshAuthGuard)
+  // @Get('tokenLogin')
+  // async tokenLogin(@Req() req, @Res() res: Response) {
+  //     await this.signOnService.loginUser(req.user); 
+  //     return res.send({ user: req.user })
+  // }
 
   @Post('resetPassword')
   async resetPassword(@Req() req, @Res() res: Response) {
