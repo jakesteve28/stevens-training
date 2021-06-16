@@ -48,6 +48,5 @@ export class WorkoutController {
   async removeWorkout(@Param('id') workoutId: string): Promise<void> {
     return this.workoutService.remove(workoutId);
   }
-  
 }
 

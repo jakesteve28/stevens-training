@@ -22,7 +22,7 @@ export class ExerciseController {
 
   @Post('create')
   async createExercise(@Body() newExercise: ExerciseDto): Promise<Exercise> {
-    return this.exerciseService.create(newExercise);;
+    return this.exerciseService.create(newExercise);
   }
 
   @Delete(':id')

@@ -19,17 +19,19 @@ export class GoalController {
 
   private readonly logger = new Logger(GoalController.name);
 
-  @Get(':id')
-  async getGoal(@Param('id') goalId: string): Promise<Goal> {
-    return this.goalService.findOne(goalId);
-  }
 
   @Get('/user/:id')
   async getUserGoals(@Param('id') userId: string): Promise<Goal[]> {
     return (await this.userService.findOne(userId)).goals;
   }
 
-  @Post('add')
+  @Get(':id')
+  async getGoal(@Param('id') goalId: string): Promise<Goal> {
+    return this.goalService.findOne(goalId);
+  }
+
+
+  @Post('create')
   async addGoal(@Req() req, @Body() newGoal: GoalDto): Promise<Goal> {
      return this.goalService.create(newGoal, req.user.id);
   }

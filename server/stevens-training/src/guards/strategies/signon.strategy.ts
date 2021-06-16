@@ -4,7 +4,7 @@
  import { SignOnService } from '../../providers/signon.service';
  
  @Injectable()
- export class SignOnStrategy extends PassportStrategy(Strategy) {
+ export class SignOnStrategy extends PassportStrategy(Strategy, "signon") {
    constructor(private signonService: SignOnService) {
      super({
        usernameField: 'userName'

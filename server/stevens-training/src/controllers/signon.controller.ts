@@ -46,13 +46,6 @@ export class SignonController {
     return res.send({ user: req.user });
   }
 
-  // @UseGuards(JwtRefreshAuthGuard)
-  // @Get('tokenLogin')
-  // async tokenLogin(@Req() req, @Res() res: Response) {
-  //     await this.signOnService.loginUser(req.user); 
-  //     return res.send({ user: req.user })
-  // }
-
   @Post('resetPassword')
   async resetPassword(@Req() req, @Res() res: Response) {
     //Clear password, send one time link to resetpw form to email

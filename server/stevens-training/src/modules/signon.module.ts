@@ -6,6 +6,7 @@ import { SignOnService } from '../providers/signon.service';
 import { SignOnStrategy } from '../guards/strategies/signon.strategy';
 import { JwtRefreshStrategy } from '../guards/strategies/jwt-refresh.strategy';
 import { UserModule } from './user.module';
+import { SignonController } from 'src/controllers/signon.controller';
 
 
 @Module({
@@ -17,6 +18,7 @@ import { UserModule } from './user.module';
       signOptions: { expiresIn: '900s' },
     }),
   ],
+  controllers: [SignonController],
   providers: [SignOnService, SignOnStrategy, JwtRefreshStrategy],
   exports: [SignOnService],
 })
