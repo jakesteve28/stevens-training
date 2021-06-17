@@ -21,6 +21,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { UploadModule } from './upload.module';
 import { TasksService } from '../providers/tasks.service';
 import { SignOnModule } from './signon.module';
+import { TerminusModule } from '@nestjs/terminus';
+import { HealthController } from '../controllers/health.controller';
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -65,8 +67,10 @@ const config = {
             UserModule, 
             WorkoutModule,
             UploadModule,
-            SignOnModule  
+            SignOnModule,
+            TerminusModule  
           ],
+          controllers: [HealthController],
   providers: [{
                 provide: APP_GUARD,
                 useClass: ThrottlerGuard,
