@@ -38,7 +38,7 @@ export class UploadController {
     @Post('story')
     @UseInterceptors(FileInterceptor('file'))
     async uploadStoryMedia(@Req() req, @UploadedFile() file: Express.Multer.File): Promise<{upload: MediaUpload, story: Story}> {
-        console.info("Uploading new story media", file);
+        this.logger.log(`Uploading new story media for user ${req.user.userName}, filename ${file.filename}`);
         const user = await this.userService.findOne(req.user?.id);
         const upload = await this.uploadService.newUpload(user, UploadType.Story, file);
         const _story = await this.storyService.addUpload(user.storyId, upload.id);      
@@ -47,7 +47,7 @@ export class UploadController {
     @Post('workout/:id')
     @UseInterceptors(FileInterceptor('file'))
     async uploadWorkoutMedia(@Req() req, @Param('id') workoutId: string, @UploadedFile() file: Express.Multer.File): Promise<{upload: MediaUpload, workout: Workout}> {
-        console.info("Uploading new workout media", file);
+        this.logger.log(`Uploading new workout media for user ${req.user.userName}, filename ${file.filename}`);
         const user = await this.userService.findOne(req.user?.id);
         const upload = await this.uploadService.newUpload(user, UploadType.Workout, file);
         const workout = await this.workoutService.addUpload(workoutId, upload.id); 
@@ -56,7 +56,7 @@ export class UploadController {
     @Post('place/:id')
     @UseInterceptors(FileInterceptor('file'))
     async uploadPlaceMedia(@Req() req, @Param('id') placeId: string, @UploadedFile() file: Express.Multer.File): Promise<{ upload: MediaUpload, place: Place }> {
-        console.info("Uploading new place media", file);
+        this.logger.log(`Uploading new place media for user ${req.user.userName}, filename ${file.filename}`);
         const user = await this.userService.findOne(req.user?.id);
         const upload = await this.uploadService.newUpload(user, UploadType.Place, file);
         const place = await this.placeService.addUpload(placeId, upload.id);
@@ -65,7 +65,7 @@ export class UploadController {
     @Post('exercise/:id')
     @UseInterceptors(FileInterceptor('file'))
     async uploadExerciseMedia(@Req() req, @Param('id') exerciseId: string, @UploadedFile() file: Express.Multer.File): Promise<{ upload: MediaUpload, exercise: Exercise }> {
-        console.info("Uploading new exercise media", file);
+        this.logger.log(`Uploading new exercise media for user ${req.user.userName}, filename ${file.filename}`);
         const user = await this.userService.findOne(req.user?.id);
         const upload = await this.uploadService.newUpload(user, UploadType.Exercise, file);
         const exercise = await this.exerciseService.addUpload(exerciseId, upload.id); 
@@ -74,16 +74,16 @@ export class UploadController {
     @Post('profile')
     @UseInterceptors(FileInterceptor('file'))
     async uploadProfilePicMedia(@Req() req, @UploadedFile() file: Express.Multer.File) {
-        console.info("Uploading new profile media", file);
+        this.logger.log(`Uploading new profile media for user ${req.user.userName}, filename ${file.filename}`);
         const user = await this.userService.findOne(req.user?.id);
         const upload = await this.uploadService.newUpload(user, UploadType.Story, file);
         const _user = await this.userService.addUpload(user.id, upload.id);      
         return { upload: upload, user: _user }; 
     }
-    @Delete('/:userId/:id')
-    async deleteUpload(@Param('userId') userId: string, @Param('id') uploadId: string) {
-        console.info("Deleting media", userId, uploadId);
-        await this.uploadService.rmUpload(userId, uploadId);
+    @Delete(':id')
+    async deleteUpload(@Req() req, @Param('id') uploadId: string) {
+        this.logger.log(`Deleting media for user ${req.user.userName}, upload ${uploadId}`);
+        await this.uploadService.rmUpload(req.user.id, uploadId);
         return "Success";  
     }
 }

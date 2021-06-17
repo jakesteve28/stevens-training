@@ -19,16 +19,19 @@ export class WorkoutController {
           
   @Get(':id')
   async getWorkout(@Param('id') workoutId: string): Promise<Workout> {
-      return this.workoutService.findOne(workoutId);
+    this.logger.log(`Getting workout ${workoutId}`);
+    return this.workoutService.findOne(workoutId);
   }
 
   @Post('create')
   async createWorkout(@Req() req, @Body() createWorkoutDto: WorkoutDto): Promise<Workout> {
+    this.logger.log(`Creating new workout ${createWorkoutDto.name} by user ${req.user.userName}`);
     return this.workoutService.create(req.user.id, createWorkoutDto);
   }
 
   @Put('addexercise/:id/:exerciseId')
-  async addExercise(  @Param('id') workoutId: string, 
+  async addExercise(  @Req() req,  
+                      @Param('id') workoutId: string, 
                       @Param('exerciseId') exerciseId: string,
                       @Query('sets') sets: number,
                       @Query('reps') reps: number,
@@ -36,16 +39,19 @@ export class WorkoutController {
                       @Query('distance') distance: number
                     )
                     : Promise<Workout> {
+    this.logger.log(`Adding exercise ${exerciseId} to workout ${workoutId} for user ${req.user.userName}`);
     return this.workoutService.addExercise(workoutId, exerciseId, sets || 1, reps || 0, duration || 0, distance || 0); 
   } 
 
   @Put('rmexercise/:id/:mappingId')
-  async removeExercise(@Param('id') workoutId: string, @Param('mappingId') mappingId: string): Promise<Workout> {
+  async removeExercise(@Req() req, @Param('id') workoutId: string, @Param('mappingId') mappingId: string): Promise<Workout> {
+    this.logger.log(`Removing exercise mapping ${mappingId} from workout ${workoutId} for user ${req.user.userName}`);
     return this.workoutService.removeExercise(workoutId, mappingId);
   }
 
   @Delete(':id')
   async removeWorkout(@Param('id') workoutId: string): Promise<void> {
+    this.logger.log(`Removing workout ${workoutId}`);
     return this.workoutService.remove(workoutId);
   }
 }

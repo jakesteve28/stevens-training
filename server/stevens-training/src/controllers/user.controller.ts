@@ -30,6 +30,7 @@ export class UserController {
   @Get('story')
   @UseGuards(JwtRefreshAuthGuard)
   async fetchStory(@Req() req) {
+    this.logger.log(`Fetching story for user ${req.user.userName}`);
     if(!req.user) return null; 
     const user = await this.userService.findOne(req.user.id);   
     if(user.storyId !== "") {
@@ -44,6 +45,7 @@ export class UserController {
   @Get(':id')
   @UseGuards(JwtRefreshAuthGuard)
   async getUser(@Req() req: any, @Param('id') userId: string): Promise<User> {
+      this.logger.log(`Fetching user ${userId}`);
       if(!req.user) return null; 
       if(req.user?.id === userId) return req.user; 
   }
@@ -54,6 +56,7 @@ export class UserController {
   @Post('create')
   @UseGuards(NewUserAuthGuard)
   async createUser(@Res() res: Response, @Body() newUser: UserDto) {
+      this.logger.log(`Creating new user with email ${newUser.email}`);
       res.clearCookie('Refresh');
       const result = await this.userService.create(newUser);
       if(!result || !result.user || !result.token) {
@@ -70,6 +73,7 @@ export class UserController {
   @Put('location')
   @UseGuards(JwtRefreshAuthGuard)
   async updateLocation(@Req() req, @Body() body: Location): Promise<User> {
+    this.logger.log(`Updating location for user ${req.user.userName}`);
     const user = await this.userService.findOne(req.user.id); 
     this.logger.log(`User location updated ${user.userName} Latitude: ${body.latitude} Longitude: ${body.longitude}`);
     if(user) {
@@ -81,6 +85,7 @@ export class UserController {
   @Delete(':id')
   @UseGuards(JwtRefreshAuthGuard)
   async deleteUser(@Req() req, @Param('id') userId: string): Promise<void> {
+    this.logger.log(`Deleting user ${userId}`);
     if(req.user.userName !== "admin") return null;
     this.logger.log(`Admin request for delete issued for user with ID: ${userId}`);
     return this.userService.remove(userId);

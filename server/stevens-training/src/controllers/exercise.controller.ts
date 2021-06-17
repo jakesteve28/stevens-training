@@ -16,19 +16,21 @@ export class ExerciseController {
   private readonly logger = new Logger(ExerciseController.name);
 
   @Get(':id')
-  async getExercise(@Param('id') exerciseId: string): Promise<Exercise> {
+  async getExercise(@Req() req, @Param('id') exerciseId: string): Promise<Exercise> {
+      this.logger.log(`Get exercise ${exerciseId} by user ${req.user.userName}`);
       return this.exerciseService.findOne(exerciseId);
   }
 
   @Post('create')
-  async createExercise(@Body() newExercise: ExerciseDto): Promise<Exercise> {
+  async createExercise(@Req() req, @Body() newExercise: ExerciseDto): Promise<Exercise> {
+    this.logger.log(`Create exercise called by user ${req.user.userName}`);
     return this.exerciseService.create(newExercise);
   }
 
   @Delete(':id')
-  async removeExercise(@Param('id') exerciseId: string): Promise<void> {
+  async removeExercise(@Req() req, @Param('id') exerciseId: string): Promise<void> {
+    this.logger.log(`Remove exercise called by user ${req.user.userName}`);
     return this.exerciseService.delete(exerciseId);
   }
-  
 }
 

@@ -6,4 +6,12 @@ export class NotificationGateway {
     async handleMessage(@MessageBody() data) {
 
     }
+    @SubscribeMessage('updatelocation')
+    async handleLocationUpdate(@MessageBody() data) {
+
+    }
+    @SubscribeMessage('updatestatus')
+    async handleStatusUpdate(@MessageBody() data) {
+
+    }
 }

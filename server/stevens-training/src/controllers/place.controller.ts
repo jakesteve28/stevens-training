@@ -21,21 +21,25 @@ export class PlaceController {
   
   @Get(':id')
   async getPlace(@Param('id') placeId: string): Promise<Place> {
+    this.logger.log(`Get place ${placeId}`);
     return this.placeService.findOne(placeId); 
   }
 
   @Post('add')
-  async addPlace(@Body() placeDto: PlaceDto): Promise<Place> {
-     return this.placeService.create(placeDto);
+  async addPlace(@Req() req, @Body() placeDto: PlaceDto): Promise<Place> {
+    this.logger.log(`Create place by user ${req.user.userName}`);     
+    return this.placeService.create(placeDto);
   }
 
   @Delete(':id')
-  async deletePlace(@Param('id') placeId: string): Promise<void> {
+  async deletePlace(@Req() req, @Param('id') placeId: string): Promise<void> {
+    this.logger.log(`Remove place ${placeId} by user ${req.user.userName}`);
     return this.placeService.remove(placeId);
   }
 
   @Get(':id/users/:radiusmiles')
   async fetchNearbyUsers(@Param('id') placeId: string, @Param('radiusmiles') miles: number) : Promise<User[]> {
-      return this.placeService.getNearbyUsers(placeId, miles); 
+    this.logger.log(`Get users nearby place ${placeId}, ${miles} radius`);
+    return this.placeService.getNearbyUsers(placeId, miles); 
   }
 }

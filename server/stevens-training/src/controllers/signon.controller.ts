@@ -18,6 +18,7 @@ export class SignonController {
   @UseGuards(SignOnAuthGuard)
   @Post('login')
   async login(@Req() req, @Res() res: Response) {
+    this.logger.log(`Logging in user and dishing out new JWT ${req.user.userName}`);
     res.clearCookie('Refresh');
     const refreshToken = await this.signOnService.newRefreshToken(req.user);
     await this.signOnService.loginUser(req.user);
@@ -28,6 +29,7 @@ export class SignonController {
   @UseGuards(JwtRefreshAuthGuard)
   @Post('logout')
   async logout(@Req() req, @Res() res: Response) {
+    this.logger.log(`Logging out user and clearing tokens ${req.user.userName}`);
     res.clearCookie('Refresh');
     if(!(await this.signOnService.logoutUser(req.user))){
       console.error("Cannot mark user as logged out. ID: ", req.user.id); 
@@ -40,6 +42,7 @@ export class SignonController {
   @UseGuards(JwtRefreshAuthGuard)
   @Get('refresh')
   async getRefreshToken(@Req() req, @Res() res: Response) {
+    this.logger.log(`Dishing out new JWT for user ${req.user.userName}`);
     res.clearCookie('Refresh');
     const newToken = await this.signOnService.newRefreshToken(req.user);
     res.cookie('Refresh', newToken, { maxAge: 900000, httpOnly: true }); 
@@ -48,6 +51,7 @@ export class SignonController {
 
   @Post('resetPassword')
   async resetPassword(@Req() req, @Res() res: Response) {
+    this.logger.log(`Resetting password for user ${req.user.userName}`);
     //Clear password, send one time link to resetpw form to email
     //return res.send()
   }
