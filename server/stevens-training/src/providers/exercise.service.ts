@@ -47,6 +47,7 @@ export class ExerciseService implements HasUploads {
         if(exercise.uploads.some(element => element.id === uploadId)) {
             exercise.uploads = exercise.uploads.filter(async upload => {
                 if(upload.id === uploadId){
+                    if(exercise.primaryUpload === upload.id) exercise.primaryUpload = "";
                     await this.uploadService.remove(uploadId);
                 }
                 return upload.id !== uploadId;
@@ -64,6 +65,17 @@ export class ExerciseService implements HasUploads {
         const workout = await this.workoutService.findOne(workoutId); 
         if(!workout) return null;
         return { map: workout.exerciseMapping, supersets: workout.supersetMapping }
+    }
+
+    async setPrimaryUpload(placeId: string, uploadId: string): Promise<Exercise> {
+        const exercise = await this.exerciseRepository.findOne(placeId);
+        if(!exercise) return null;
+        for(let upload of exercise.uploads) {
+            if(upload.id === uploadId) {
+                exercise.primaryUpload = upload.id; 
+                return this.exerciseRepository.save(exercise); 
+            }
+        } return null; 
     }
 
 }

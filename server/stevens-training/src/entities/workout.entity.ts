@@ -51,4 +51,7 @@ export enum WorkoutFocus {
    @Column({ type: "simple-json" })
    uploads: Array<MediaUpload>;
 
+   @Column({ default: "" })
+   primaryUpload: string;
+
  }

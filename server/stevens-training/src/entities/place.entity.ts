@@ -44,4 +44,8 @@ export enum PlaceType {
    @Column({ type: "simple-json" })
    uploads: Array<MediaUpload>;
 
+   @Column({ default: "" })
+   primaryUpload: string;
+
+
  }

@@ -49,10 +49,19 @@ export class WorkoutController {
     return this.workoutService.removeExercise(workoutId, mappingId);
   }
 
+  @Put('setprimary/:workoutId/:id')
+  @UseGuards(JwtRefreshAuthGuard)
+  async updatePrimary(@Req() req, @Param('workoutId') workoutId: string, @Param('id') id): Promise<Workout> {
+    this.logger.log(`Setting primary upload for workout ${workoutId} to ${id}`);
+    return this.workoutService.setPrimaryUpload(workoutId, id); 
+  }
+
   @Delete(':id')
   async removeWorkout(@Param('id') workoutId: string): Promise<void> {
     this.logger.log(`Removing workout ${workoutId}`);
     return this.workoutService.remove(workoutId);
   }
+
+
 }
 

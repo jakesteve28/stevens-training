@@ -41,6 +41,7 @@ export class WorkoutService implements HasUploads {
         if(workout.uploads.some(element => element.id === uploadId)) {
             workout.uploads = workout.uploads.filter(async upload => {
                 if(upload.id === uploadId){
+                    if(workout.primaryUpload === uploadId) workout.primaryUpload = ""; 
                     await this.uploadService.remove(uploadId);
                 }
                 return upload.id !== uploadId;
@@ -48,6 +49,17 @@ export class WorkoutService implements HasUploads {
             return this.workoutRepo.save(workout); 
         }
         return workout;
+    }
+
+    async setPrimaryUpload(workoutId: string, uploadId: string): Promise<Workout> {
+        const workout = await this.workoutRepo.findOne(workoutId);
+        if(!workout) return null;
+        for(let upload of workout.uploads) {
+            if(upload.id === uploadId) {
+                workout.primaryUpload = upload.id; 
+                return this.workoutRepo.save(workout); 
+            }
+        } return null; 
     }
 
     async create(userId: string, workoutDto: WorkoutDto): Promise<Workout> {

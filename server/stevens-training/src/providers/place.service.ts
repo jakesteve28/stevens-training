@@ -96,6 +96,7 @@ export class PlaceService {
         if(place.uploads.some(element => element.id === uploadId)) {
             place.uploads = place.uploads.filter(async upload => {
                 if(upload.id === uploadId){
+                    if(place.primaryUpload === upload.id) place.primaryUpload = ""; 
                     await this.uploadService.remove(uploadId);
                 }
                 return upload.id !== uploadId;
@@ -103,6 +104,17 @@ export class PlaceService {
             return this.placeRepo.save(place); 
         }
         return place;
+    }
+
+    async setPrimaryUpload(placeId: string, uploadId: string): Promise<Place> {
+        const place = await this.placeRepo.findOne(placeId);
+        if(!place) return null;
+        for(let upload of place.uploads) {
+            if(upload.id === uploadId) {
+                place.primaryUpload = upload.id; 
+                return this.placeRepo.save(place); 
+            }
+        } return null; 
     }
 
 }

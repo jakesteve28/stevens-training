@@ -36,4 +36,8 @@ export enum ExerciseType {
 
    @ManyToOne(type => User, user => user.exercises)
    user: User;
+
+   @Column({ default: "" })
+   primaryUpload: string;
+
  }

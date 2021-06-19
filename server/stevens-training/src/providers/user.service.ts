@@ -167,6 +167,7 @@ export class UserService implements OnModuleDestroy, HasUploads {
         if(user.profilePictures.some(element => element.id === uploadId)) {
             user.profilePictures = user.profilePictures.filter(async upload => {
                 if(upload.id === uploadId){
+                    if(user.primaryUpload === uploadId) user.primaryUpload = ""; 
                     await this.uploadService.remove(uploadId);
                 }
                 return upload.id !== uploadId;
