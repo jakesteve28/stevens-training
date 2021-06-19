@@ -8,9 +8,6 @@ export class WorkoutDto {
     @Length(0, 512)
     desc: string; 
 
-    @IsUUID()
-    userId: string
-
     @IsEnum(WorkoutFocus)
     workoutFocus: WorkoutFocus;
 }

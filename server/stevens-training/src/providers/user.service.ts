@@ -9,6 +9,9 @@ import { findDistance, isLatitude, isLongitude } from "../util/distance.util";
 import { HasUploads, StoryService } from "./story.service";
 import { UploadService } from "./upload-file.service";
 import { SignOnService } from "./signon.service";
+import { MessageService } from "./message.service";
+import { MessageDto } from "src/entities/dto/message.dto";
+import { WorkoutService } from "./workout.service";
 
 @Injectable()
 export class UserService implements OnModuleDestroy, HasUploads {
@@ -19,7 +22,10 @@ export class UserService implements OnModuleDestroy, HasUploads {
         private uploadService: UploadService,
         @Inject(forwardRef(() => SignOnService))
         private signOnService: SignOnService,
-        private storyService: StoryService
+        private storyService: StoryService,
+        private messageService: MessageService,
+        @Inject(forwardRef(() => WorkoutService))
+        private workoutService: WorkoutService
     ) {}
 
     async onModuleDestroy(): Promise<void> {
@@ -168,6 +174,36 @@ export class UserService implements OnModuleDestroy, HasUploads {
             return this.userRepository.save(user); 
         }
         return user;
+    }
+
+    async sendMessage(userId: string, body: string, to: string): Promise<User> {
+        const newMsg: MessageDto = {
+            body: body, 
+            recipientId: to,
+            senderId: userId
+        }
+        const message = await this.messageService.create(newMsg); 
+        if(!message) return null; 
+        const user = await this.userRepository.findOne(userId); 
+        user.sentmessages.push(message);
+        return this.userRepository.save(user); 
+    }
+    async setCurrentWorkout(userId: string, workoutId: string): Promise<User> {
+        const workout = await this.workoutService.findOne(workoutId); 
+        if(!workout) return null; 
+        const user = await this.userRepository.findOne(userId);
+        user.currentWorkoutId = workout.id;
+        return this.userRepository.save(user);
+    }
+    async updateStatus(userId: string, status: string): Promise<User> {
+        const user = await this.userRepository.findOne(userId);
+        user.status = status;
+        return this.userRepository.save(user);
+    }
+    async setMaxes(userId: string, maxes: string): Promise<User> {
+        const user = await this.userRepository.findOne(userId);
+        user.maxes = maxes;
+        return this.userRepository.save(user);
     }
 
 }

@@ -9,7 +9,6 @@ import { User } from '../entities/user.entity';
 import { UserService } from '../providers/user.service';
 import { Response } from 'express';
 import { NewUserAuthGuard } from '../guards/newuser.auth-guard';
-import { SignOnService } from '../providers/signon.service';
 import { StoryService } from '../providers/story.service';
 
 class Location {
@@ -20,9 +19,8 @@ class Location {
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService,
-              private signOnService: SignOnService,
               private storyService: StoryService
-    ) {}
+             ) {}
 
   private readonly logger = new Logger(UserController.name);
 
@@ -80,6 +78,34 @@ export class UserController {
       const _user = await this.userService.updateLocation(user.id,  body.latitude, body.longitude); 
       return _user;
     } return null;
+  }
+
+  @Put('status')
+  @UseGuards(JwtRefreshAuthGuard)
+  async updateStatus(@Req() req, @Body() body): Promise<User> {
+    this.logger.log(`Updating user status ${req.user.userName} to ${body?.status}`);
+    return this.userService.updateStatus(req.user.id, body?.status); 
+  }
+
+  @Put('maxes')
+  @UseGuards(JwtRefreshAuthGuard)
+  async updateMaxes(@Req() req, @Body() body): Promise<User> {
+    this.logger.log(`Updating user maxes ${req.user.userName} to ${body?.maxes}`);
+    return this.userService.setMaxes(req.user.id, body?.maxes); 
+  }
+
+  @Put('currentWorkout/:workoutId')
+  @UseGuards(JwtRefreshAuthGuard)
+  async setCurrentWorkout(@Req() req, @Param('workoutId') workoutId: string): Promise<User> {
+    this.logger.log(`Updating current workout for user ${req.user.userName} to ${workoutId}`);
+    return this.userService.setCurrentWorkout(req.user.id, workoutId); 
+  }
+
+  @Post('message/:to')
+  @UseGuards(JwtRefreshAuthGuard)
+  async sendMessage(@Req() req, @Param('to') to, @Body() body): Promise<User> {
+    this.logger.log(`Creating message from user ${req.user.userName} to ${body?.status}`);
+    return this.userService.sendMessage(req.user.id, body?.message, to); 
   }
 
   @Delete(':id')

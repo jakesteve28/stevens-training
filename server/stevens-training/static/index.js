@@ -1,40 +1,98 @@
-const a = {}
+const globals = {}
 const runTests = async () => {
-    alert("Starting tests");
-    const userCreate = await tests.createUser(); 
-    if(userCreate.userName) {
-        document.getElementById("usercreate").innerHTML = " TRUE username: "  + userCreate.userName;
-        console.log("User created passed", userCreate);
-    } else {
-        document.getElementById("usercreate").innerHTML = " FAIL";
+    const root = document.getElementById('root'); 
+    for(let test in tests) {
+        const invoke = tests[`${test}`];
+        if(invoke.length > 0) { 
+            switch(invoke.name){
+                case "getUser":  root.innerHTML += 
+                    `<div class='flex-cont'>
+                        <div class='flex-item'><span class="test_title">Test&nbsp;Name:</span>&nbsp;${test}</div>
+                        <div class='flex-item-input'><input type="text" class="testinput" id="input_${test}" placeholder="Username"></input></div>
+                        <div class='flex-item-small'><button id="start_${test}">Start Test</button></div>
+                        <div class='flex-item'>Passed/Failed: <span class="result" id="result_${test}"></span></div>
+                    </div>`; 
+                    break; 
+                case "getWorkout":  root.innerHTML += 
+                    `<div class='flex-cont'>
+                        <div class='flex-item'><span class="test_title">Test&nbsp;Name:</span>&nbsp;${test}</div>
+                        <div class='flex-item-input'><input type="text" class="testinput" id="input_${test}" placeholder="Workout ID"></input></div>
+                        <div class='flex-item-small'><button id="start_${test}">Start Test</button></div>
+                        <div class='flex-item'>Passed/Failed: <span class="result" id="result_${test}"></span></div>
+                    </div>`; 
+                    break; 
+                case "getExercise":  root.innerHTML += 
+                    `<div class='flex-cont'>
+                        <div class='flex-item'><span class="test_title">Test&nbsp;Name:</span>&nbsp;${test}</div>
+                        <div class='flex-item-input'><input type="text" class="testinput" id="input_${test}" placeholder="Exercise ID"></input></div>
+                        <div class='flex-item-small'><button id="start_${test}">Start Test</button></div>
+                        <div class='flex-item'>Passed/Failed: <span class="result" id="result_${test}"></span></div>
+                    </div>`; 
+                break; 
+                case "getGoal":  root.innerHTML += 
+                    `<div class='flex-cont'>
+                        <div class='flex-item'><span class="test_title">Test&nbsp;Name:</span>&nbsp;${test}</div>
+                        <div class='flex-item-input'><input type="text" class="testinput" id="input_${test}" placeholder="Goal ID"></input></div>
+                        <div class='flex-item-small'><button id="start_${test}">Start Test</button></div>
+                        <div class='flex-item'>Passed/Failed: <span class="result" id="result_${test}"></span></div>
+                    </div>`; 
+                break; 
+                case "getPlace":  root.innerHTML += 
+                    `<div class='flex-cont'>
+                        <div class='flex-item'><span class="test_title">Test&nbsp;Name:</span>&nbsp;${test}</div>
+                        <div class='flex-item-input'><input type="text" class="testinput" id="input_${test}" placeholder="Place ID"></input></div>
+                        <div class='flex-item-small'><button id="start_${test}">Start Test</button></div>
+                        <div class='flex-item'>Passed/Failed: <span class="result" id="result_${test}"></span></div>
+                    </div>`; 
+                break; 
+                case "addExerciseToWorkout":  root.innerHTML += 
+                    `<div class='flex-cont'>
+                        <div class='flex-item'><span class="test_title">Test&nbsp;Name:</span>&nbsp;${test}</div>
+                        <div class='flex-item-input'><input class="testinput" type="text" id="input_exercise_${test}" placeholder="Exercise ID"></input></div>
+                        <div class='flex-item-input'><input class="testinput" type="text" id="input_workout_${test}" placeholder="Workout ID"></input></div>
+                        <div class='flex-item-input number-input'><input class="testinputnumber" placeholder="0" type="number" id="input_sets_${test}"></input></div>
+                        <div class='flex-item-input number-input'><input class="testinputnumber" placeholder="0" type="number" id="input_reps_${test}"></input></div>
+                        <div class='flex-item-input number-input'><input class="testinputnumber" placeholder="0" type="number" id="input_duration_${test}"></input></div>
+                        <div class='flex-item-input number-input'><input class="testinputnumber" placeholder="0" type="number" id="input_distance_${test}"></input></div>
+                        <div class='flex-item-small'><button id="start_${test}">Start Test</button></div>
+                        <div class='flex-item'>Passed/Failed: <span class="result" id="result_${test}"></span></div>
+                    </div>`; 
+                break; 
+                case "removeExerciseFromWorkout":  root.innerHTML += 
+                `<div class='flex-cont'>
+                    <div class='flex-item'><span class="test_title">Test&nbsp;Name:</span>&nbsp;${test}</div>
+                    <div class='flex-item-input'><input class="testinput" type="text" id="input_${test}" placeholder="Workout ID"></input></div>
+                    <div class='flex-item-input'><input class="testinput" type="text" id="input_${test}" placeholder="Mapping ID"></input></div>
+                    <div class='flex-item-small'><button id="start_${test}">Start Test</button></div>
+                    <div class='flex-item'>Passed/Failed: <span class="result" id="result_${test}"></span></div>
+                </div>`; 
+                break; 
+                default: break;
+            }
+        } else root.innerHTML += `
+            <div class='flex-cont'>
+                <div class='flex-item'><span class="test_title">Test&nbsp;Name:</span>&nbsp;${test}</div>
+                <div class='flex-item-small'><button id="start_${test}">Start Test</button></div>
+                <div class='flex-item'>Passed/Failed: <span class="result" id="result_${test}"></span></div>
+            </div>
+        `;
     }
-    const userGet = await tests.getUser(userCreate.id);
-    if(userGet.userName){
-        document.getElementById("userget").innerHTML = " TRUE " + userGet.userName;
-        console.log("User get passed", userGet);
-    } else {
-        document.getElementById("userget").innerHTML = " FAIL";
-    }
-    const userLocation = await tests.updateLocation();
-    if(userLocation.userName){
-        document.getElementById("userlocation").innerHTML = " TRUE " + userLocation.userName;
-        console.log("User location passed", userLocation);
-    } else {
-        document.getElementById("userlocation").innerHTML = " FAIL";
-    }
-    const userStory = await tests.getStory();
-    if(userStory){
-        document.getElementById("userstory").innerHTML = " TRUE " + JSON.stringify(userStory);
-        console.log("User story passed", userStory);
-    } else {
-        document.getElementById("userstory").innerHTML = " FAIL";
-    }
-    const userLogin = await tests.login();
-    if(userLogin){
-        document.getElementById("userlogin").innerHTML = " TRUE " + JSON.stringify(userLogin);
-        console.log("User login passed", userLogin);
-    } else {
-        document.getElementById("userlogin").innerHTML = " FAIL";
+    for(let test in tests) {
+        document.getElementById(`start_${test}`).onclick = () => {
+            const invoke = tests[`${test}`];
+            if(invoke.length > 0) { 
+                switch(invoke.name){
+                    case "getUser": invoke(globals?.user?.id); break; 
+                    case "getWorkout": invoke(globals?.workout?.id); break;
+                    case "getExercise": invoke(globals?.exercise?.id); break;
+                    case "getGoal": invoke(globals?.user?.id); break;
+                    case "getPlace": invoke(globals?.place?.id); break;
+                    case "addExerciseToWorkout": invoke(globals?.exercise?.id, globals?.workout?.id, 10, 10, 10, 10); break; 
+                    case "removeExerciseFromWorkout": invoke(globals?.workout.id, globals?.exercise?.mappingId); break;
+                    default: break;
+                }
+            } else invoke();
+        }
     }
 }
 
@@ -55,18 +113,24 @@ const tests = {
                 body: JSON.stringify(testUser) 
             });
         const user = await res.json();
+        const text = user.userName ? "PASS" : "FAIL";
+        const color = user.userName ? "green": "red";
+        document.getElementById(`result_createUser`).innerHTML = text;
+        document.getElementById(`result_createUser`).style = `color:${color};`
         return user;
     },
     getUser: async (userId) => {
         console.log("Testing getUser, only works for current logged in user w/ refresh token, unless admin"); 
         const res = await fetch(`https://localhost:3000/user/${userId}`, { credentials: "include" });
         const user = await res.json();
+        globals.user = user;
         return user;
     },
     getStory: async () => {
         console.log("Testing getStory, only works for current logged in user w/ refresh token, unless admin"); 
         const res = await fetch(`https://localhost:3000/user/story`, { credentials: "include", method: "GET" });
         const story = await res.json();
+        globals.story = story; 
         return story;
     },
     updateLocation: async () => {
@@ -80,6 +144,7 @@ const tests = {
             credentials: "include"
         });
         const user = await res.json();
+        globals.user = user;
         return user;
     },
     login: async () => {
@@ -116,7 +181,7 @@ const tests = {
     resetPW: async () => {
 
     }, 
-    createWorkout: async (userId) => {
+    createWorkout: async () => {
         console.log("Testing create workout"); 
         const workout = await fetch(`https://localhost:3000/workout/create`, { 
             credentials: 'include',
@@ -129,6 +194,7 @@ const tests = {
             })
         }); 
         const result = await workout.json(); 
+        globals.workout = result;
         if(result) return result; 
         else return null; 
     },
@@ -138,6 +204,7 @@ const tests = {
             credentials: "include"  
         });
         const result = await workout.json(); 
+        globals.workout = result; 
         if(result) return result; 
         else return null; 
     },
@@ -153,6 +220,7 @@ const tests = {
             })
         });
         const result = await exercise.json(); 
+        globals.exercise = result; 
         if(result) return result; 
         else return null; 
     },
@@ -162,6 +230,7 @@ const tests = {
             credentials: "include",
         });
         const result = await exercise.json(); 
+        globals.exercise = exercise; 
         if(result) return result; 
         else return null;
     },
@@ -172,6 +241,7 @@ const tests = {
             method: "PUT"
         });
         const result = await workout.json(); 
+        globals.workout = result; 
         if(result) return result; 
         else return null;
     },
@@ -182,6 +252,7 @@ const tests = {
             method: "PUT"
         });
         const result = await workout.json(); 
+        globals.workout = result; 
         if(result) return result; 
         else return null;
     },
@@ -199,6 +270,7 @@ const tests = {
             })
         });
         const result = await place.json(); 
+        globals.place = result;
         if(result) return result; 
         else return null;
     },
@@ -233,7 +305,7 @@ const tests = {
         if(result) return result; 
         else return null;
     },
-    getUserGoals: (userId) => {
+    getUserGoals: async (userId) => {
         console.log("Testing get user goals");
         const goals = await fetch(`https://localhost:3000/goal/user/${userId}`, {
             credentials: "include"
@@ -346,6 +418,5 @@ const tests = {
 
 window.onload = function() {
     runTests();
-    document.getElementById("testButton").onclick = (e) => runTests();
 }
 

@@ -4,71 +4,72 @@
         <title>Stevens Training Index Page</title>
         <meta charset="utf-8" />
         <script src='./index.js'></script>
+        <style>
+            body {
+                background-color: #000000;
+                color: #AAAAAA;
+                font-family: 'Courier New', Courier, monospace;
+            }
+            input {
+                background-color: #333333;
+                box-shadow: none;
+                border: none;
+                outline: none;
+                padding: 15px;
+                cursor: pointer;
+                color: #AAAAAA;
+                cursor: text;
+                max-width: 75px;
+            }
+            .testinputnumber {
+                max-width: 50px;
+            }
+
+            .flex-cont {
+                display: flex; 
+                flex-wrap: nowrap;
+                background-color: #222222;
+                border-bottom: #444444 solid; 
+            }
+            .flex-item, .flex-item-small, .flex-item-input {
+                width: 30%; 
+                text-align: center;
+                margin: 10px;
+                text-align: left;
+                padding: 5px;
+                vertical-align: middle;
+            }
+            .flex-item-small {
+                width: 100px; 
+                margin-left: 10px;
+            }
+            .flex-item-input {
+                width: 100px;
+                cursor: text;
+            }
+            .number-input {
+                max-width: 50px;
+            }
+            button {
+                background-color: #333333;
+                box-shadow: none;
+                border: none;
+                outline: none;
+                padding: 15px;
+                cursor: pointer;
+                color: green; 
+                font: bolder;
+                font-size: 8pt;
+            }
+            button:hover {
+                background-color: #444444;
+            }
+            .test_title {
+                color: royalblue;
+            }
+        </style>
     </head>
     <body>
-        <h1 style="text-align: left;">Under construction!</h1>
-        <h3 style="text-align: left;">Server Index Page</h3>
-        <h6 style="text-align: left;">HTTP E2E Tests</h6>
-        <ul style="text-align: left;">
-            <li>
-                <span>user create test pass/fail:</span><span id="usercreate"></span>
-            </li>
-            <li>
-                <span>user get test pass/fail:</span><span id="userget"></span>
-            </li>
-            <li>
-                <span>user get story test pass/fail:</span><span id="userstory"></span>
-            </li>
-            <li>
-                <span>user update location test pass/fail:</span><span id="userlocation"></span>
-            </li>
-            <li>
-                <span>signon login test pass/fail:</span><span id="signonlogin"></span>
-            </li>
-            <li>
-                <span>signon refresh test pass/fail:</span><span id="signonrefresh"></span>
-            </li>
-            <li>
-                <span>signon logout test pass/fail:</span><span id="signonlogout"></span>
-            </li>
-            <li>
-                <span>signin login test pass/fail:</span><span id="signinlogin"></span>
-            </li>
-            <li>
-                <span>workout create test pass/fail:</span><span id="workoutcreate"></span>
-            </li>
-            <li>
-                <span>exercise create test pass/fail:</span><span id="exercisecreate"></span>
-            </li>
-            <li>
-                <span>workout add exercise create test pass/fail:</span><span id="workoutadd"></span>
-            </li>
-            <li>
-                <span>workout rm exercise create test pass/fail:</span><span id="workoutrm"></span>
-            </li>
-            <li>
-                <span>exercise rm test pass/fail:</span><span id="exerciserm"></span>
-            </li>
-            <li>
-                <span>exercise rm test pass/fail:</span><span id="workoutcreate"></span>
-            </li>
-
-            <li>
-                <span><input type="file" title="upload story" id="story-file-input" /></span><span id="uploadstory"></span>
-            </li>
-            <li>
-                <span><input type="file" title="upload workout" id="workout-file-input" /></span><span id="uploadworkout"></span>
-            </li>
-            <li>
-                <span><input type="file" title="upload exercise" id="exercise-file-input" /></span><span id="uploadexercise"></span>
-            </li>
-            <li>
-                <span><input type="file" title="upload place" id="place-file-input" /></span><span id="uploadplace"></span>
-            </li>
-            <li>
-                <span><input type="file" title="upload profile" id="profile-file-input" /></span><span id="uploadprofile"></span>
-            </li>
-        </ul>
-        <button id="testButton">Run Tests</button>
+        <div id="root"></div>
     </body>
 </html>

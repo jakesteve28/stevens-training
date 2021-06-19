@@ -8,9 +8,9 @@ export class MessageDto {
     body: string; 
 
     @IsUUID()
-    senderId: string; 
+    recipientId: string;
 
     @IsUUID()
-    recipientId: string;
+    senderId: string;
     
 }
