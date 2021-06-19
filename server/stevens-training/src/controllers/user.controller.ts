@@ -94,6 +94,13 @@ export class UserController {
     return this.userService.setMaxes(req.user.id, body?.maxes); 
   }
 
+  @Put('setprimary/:id')
+  @UseGuards(JwtRefreshAuthGuard)
+  async updatePrimary(@Req() req, @Param('id') id): Promise<User> {
+    this.logger.log(`Setting primary upload for user ${req.user.userName} to ${id}`);
+    return this.userService.setPrimaryUpload(req.user.id, id); 
+  }
+
   @Put('currentWorkout/:workoutId')
   @UseGuards(JwtRefreshAuthGuard)
   async setCurrentWorkout(@Req() req, @Param('workoutId') workoutId: string): Promise<User> {

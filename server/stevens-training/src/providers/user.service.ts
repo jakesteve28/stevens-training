@@ -206,4 +206,16 @@ export class UserService implements OnModuleDestroy, HasUploads {
         return this.userRepository.save(user);
     }
 
+    async setPrimaryUpload(userId: string, uploadId: string): Promise<User> {
+        const user = await this.userRepository.findOne(userId); 
+        if(user) {
+            for(let upload of user.uploads) {
+                if(upload.id === uploadId) {
+                    user.primaryUpload = uploadId; 
+                    return this.userRepository.save(user); 
+                }
+            }
+        } return null;
+    }
+
 }

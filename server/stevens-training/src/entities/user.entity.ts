@@ -69,6 +69,9 @@ import { Workout } from './workout.entity';
    @Column({ default: "" })
    longitude: string; 
 
+   @Column({ default: "" })
+   primaryUpload: string;
+
    @OneToMany(type => Workout, workout => workout.user, { eager: true })
    workouts: Workout[];
 
