@@ -23,6 +23,7 @@ import { TasksService } from '../providers/tasks.service';
 import { SignOnModule } from './signon.module';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from '../controllers/health.controller';
+import { MailModule } from './mail.module';
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -68,7 +69,8 @@ const config = {
             WorkoutModule,
             UploadModule,
             SignOnModule,
-            TerminusModule  
+            TerminusModule,
+            MailModule  
           ],
           controllers: [HealthController],
   providers: [{
