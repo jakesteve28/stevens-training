@@ -10,6 +10,7 @@ import { UserService } from '../providers/user.service';
 import { Response } from 'express';
 import { NewUserAuthGuard } from '../guards/newuser.auth-guard';
 import { StoryService } from '../providers/story.service';
+import { Message } from '../entities/message.entity';
 
 class Location {
   latitude: string; 
@@ -110,7 +111,7 @@ export class UserController {
 
   @Post('message/:to')
   @UseGuards(JwtRefreshAuthGuard)
-  async sendMessage(@Req() req, @Param('to') to, @Body() body): Promise<User> {
+  async sendMessage(@Req() req, @Param('to') to, @Body() body): Promise<Message> {
     this.logger.log(`Creating message from user ${req.user.userName} to ${body?.status}`);
     return this.userService.sendMessage(req.user.id, body?.message, to); 
   }

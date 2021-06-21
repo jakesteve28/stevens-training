@@ -4,7 +4,7 @@ import { NotificationGuard } from "../guards/notification.auth-guard";
 import { UserService } from "../providers/user.service";
 import { Request, Response } from "express";
 import { Logger, UseGuards } from "@nestjs/common";
-import { WsLocationDto, WsMessageDto, WsStatusDto } from "./notification.types";
+import { WsLocationDto, WsMessageDto, WsSocketUpdate, WsStatusDto, WsWorkoutDto } from "./notification.types";
 import { Message } from "../entities/message.entity";
 import { User } from "../entities/user.entity";
 
@@ -30,9 +30,9 @@ export class NotificationGateway {
     @SubscribeMessage('message')
     async handleMessage(@MessageBody() data: any): Promise<Message> {
         try {
-            if(data && data?.message && data.message instanceof WsMessageDto) {
-                this.logger.log(`Creating new message for user ${data.message.senderId} to ${data.message.recipientId}`); 
-                const message = await this.userService.sendMessage(data.message.senderId, data.message.body, data.message.recipientId); 
+            if(data && data?.notification && data.notification instanceof WsMessageDto) {
+                this.logger.log(`Creating new message for user ${data.notification.senderId} to ${data.notification.recipientId}`); 
+                const message = await this.userService.sendMessage(data.notification.senderId, data.notification.body, data.notification.recipientId); 
                 if(!message) { this.logger.log(`Error creating new message`); return null; }
                 else return message;  
             } else {
@@ -47,9 +47,9 @@ export class NotificationGateway {
     @SubscribeMessage('updatelocation')
     async handleLocationUpdate(@MessageBody() data): Promise<User> {
         try {
-            if(data && data?.message && data.message instanceof WsLocationDto) {
-                this.logger.log(`Updating location for user ${data.message.userId} to lat ${data.message.latitude} | long ${data.message.longitude}`); 
-                const user = await this.userService.updateLocation(data.message.userId, data.message.latitude, data.message.longitude); 
+            if(data && data?.message && data.notification instanceof WsLocationDto) {
+                this.logger.log(`Updating location for user ${data.notification.userId} to lat ${data.notification.latitude} | long ${data.notification.longitude}`); 
+                const user = await this.userService.updateLocation(data.notification.userId, data.notification.latitude, data.notification.longitude); 
                 if(!user) { this.logger.log(`Error updating user location`); return null; }
                 else return user;  
             } else {
@@ -64,9 +64,9 @@ export class NotificationGateway {
     @SubscribeMessage('updatestatus')
     async handleStatusUpdate(@MessageBody() data): Promise<User> {
         try {
-            if(data && data?.message && data.message instanceof WsStatusDto) {
-                this.logger.log(`Updating status for user ${data.message.userId} to ${data.message.status}`); 
-                const user = await this.userService.updateStatus(data.message.userId, data.message.status); 
+            if(data && data?.message && data.notification instanceof WsStatusDto) {
+                this.logger.log(`Updating status for user ${data.notification.userId} to ${data.notification.status}`); 
+                const user = await this.userService.updateStatus(data.notification.userId, data.notification.status); 
                 if(!user) { this.logger.log(`Error updating status`); return null; }
                 else return user;  
             } else {
@@ -81,69 +81,35 @@ export class NotificationGateway {
     @SubscribeMessage('updateworkout')
     async handleWorkoutUpdate(@MessageBody() data): Promise<User> {
         try {
-            if(data && data?.message && data.message instanceof WsMessageDto) {
-                this.logger.log(`Creating new message for user ${data.message.senderId} to ${data.message.recipientId}`); 
-                const message = await this.userService.sendMessage(data.message.senderId, data.message.body, data.message.recipientId); 
-                if(!message) { this.logger.log(`Error creating new message`); return null; }
-                else return message;  
+            if(data && data?.message && data.notification instanceof WsWorkoutDto) {
+                this.logger.log(`Updating current workout for user ${data.notification.userId} to ${data.notification.workoutId}`); 
+                const user = await this.userService.setCurrentWorkout(data.notification.userId, data.notification.workoutId); 
+                if(!user) { this.logger.log(`Error updating current workout`); return null; }
+                else return user;  
             } else {
-                this.logger.log(`Malformed data received for send new message ${JSON.stringify(data)}`); 
+                this.logger.log(`Malformed data received for update current workout ${JSON.stringify(data)}`); 
                 return null; 
             }
         } catch(err) {
-            this.logger.log(`Fatal error creating new message ${err}`);
+            this.logger.log(`Fatal error update current workout ${err}`);
             return null; 
         }
     }
-    @SubscribeMessage('connect')
-    async handleConnect(@ConnectedSocket() client: Socket, @MessageBody() data) {
-        try {
-            if(data && data?.message && data.message instanceof WsMessageDto) {
-                this.logger.log(`Creating new message for user ${data.message.senderId} to ${data.message.recipientId}`); 
-                const message = await this.userService.sendMessage(data.message.senderId, data.message.body, data.message.recipientId); 
-                if(!message) { this.logger.log(`Error creating new message`); return null; }
-                else return message;  
-            } else {
-                this.logger.log(`Malformed data received for send new message ${JSON.stringify(data)}`); 
-                return null; 
-            }
-        } catch(err) {
-            this.logger.log(`Fatal error creating new message ${err}`);
+    @SubscribeMessage('socketupdate')
+    async handleConnect(@ConnectedSocket() client: Socket,@MessageBody() data): Promise<User> {
+        if(data && data?.message && data.notification instanceof WsSocketUpdate) {
+            this.logger.log(`User connected with socket ID ${client.id}`);
+            const user = await this.userService.setSocketId(data.userId, data.socketId); 
+            if(!user) { this.logger.log(`Error updating socket ID for user`); return null; }
+            return user; 
+        } else {
+            this.logger.log(`Malformed data received for update docketId ${JSON.stringify(data)}`); 
             return null; 
         }
+
     }
     @SubscribeMessage('disconnect')
     async handleDisconnect(@ConnectedSocket() client: Socket, @MessageBody() data) {
-        try {
-            if(data && data?.message && data.message instanceof WsMessageDto) {
-                this.logger.log(`Creating new message for user ${data.message.senderId} to ${data.message.recipientId}`); 
-                const message = await this.userService.sendMessage(data.message.senderId, data.message.body, data.message.recipientId); 
-                if(!message) { this.logger.log(`Error creating new message`); return null; }
-                else return message;  
-            } else {
-                this.logger.log(`Malformed data received for send new message ${JSON.stringify(data)}`); 
-                return null; 
-            }
-        } catch(err) {
-            this.logger.log(`Fatal error creating new message ${err}`);
-            return null; 
-        }
-    }
-    @SubscribeMessage('refresh')
-    async refreshSocket(@ConnectedSocket() client: Socket, @MessageBody() data): Promise<User> {
-        try {
-            if(data && data?.message && data.message instanceof WsMessageDto) {
-                this.logger.log(`Creating new message for user ${data.message.senderId} to ${data.message.recipientId}`); 
-                const message = await this.userService.sendMessage(data.message.senderId, data.message.body, data.message.recipientId); 
-                if(!message) { this.logger.log(`Error creating new message`); return null; }
-                else return message;  
-            } else {
-                this.logger.log(`Malformed data received for send new message ${JSON.stringify(data)}`); 
-                return null; 
-            }
-        } catch(err) {
-            this.logger.log(`Fatal error creating new message ${err}`);
-            return null; 
-        }
+        
     }
 }
