@@ -10,8 +10,9 @@ import { HasUploads, StoryService } from "./story.service";
 import { UploadService } from "./upload-file.service";
 import { SignOnService } from "./signon.service";
 import { MessageService } from "./message.service";
-import { MessageDto } from "src/entities/dto/message.dto";
+import { MessageDto } from "../entities/dto/message.dto";
 import { WorkoutService } from "./workout.service";
+import { Message } from "../entities/message.entity";
 
 @Injectable()
 export class UserService implements OnModuleDestroy, HasUploads {
@@ -177,7 +178,7 @@ export class UserService implements OnModuleDestroy, HasUploads {
         return user;
     }
 
-    async sendMessage(userId: string, body: string, to: string): Promise<User> {
+    async sendMessage(userId: string, body: string, to: string): Promise<Message> {
         const newMsg: MessageDto = {
             body: body, 
             recipientId: to,
@@ -187,7 +188,8 @@ export class UserService implements OnModuleDestroy, HasUploads {
         if(!message) return null; 
         const user = await this.userRepository.findOne(userId); 
         user.sentmessages.push(message);
-        return this.userRepository.save(user); 
+        this.userRepository.save(user); 
+        return message;
     }
     async setCurrentWorkout(userId: string, workoutId: string): Promise<User> {
         const workout = await this.workoutService.findOne(workoutId); 
@@ -204,6 +206,11 @@ export class UserService implements OnModuleDestroy, HasUploads {
     async setMaxes(userId: string, maxes: string): Promise<User> {
         const user = await this.userRepository.findOne(userId);
         user.maxes = maxes;
+        return this.userRepository.save(user);
+    }
+    async setSocketId(userId: string, socketId: string): Promise<User> {
+        const user = await this.userRepository.findOne(userId);
+        user.socketId = socketId;
         return this.userRepository.save(user);
     }
 

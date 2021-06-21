@@ -11,23 +11,12 @@ import { JwtService } from '@nestjs/jwt'
 import { User } from "../entities/user.entity";
 import extractRefreshTokenFromCookie from "../util/auth-guard.util";
 import { ConfigService } from "@nestjs/config";
-import { Request, Response } from "express";;
 
  @Injectable()
  export class NotificationGuard implements CanActivate {
    constructor(private userService: UserService, private jwtService: JwtService, private configService: ConfigService) { }
 
     private readonly logger: Logger = new Logger(NotificationGuard.name);
-
-    public preflightCheck = (req: Request, res: Response) => {
-      const headers = {
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Origin": this.configService.get<string>("DOMAIN"), 
-          "Access-Control-Allow-Credentials": "true"
-      };
-      res.writeHead(200, headers);
-      res.end();
-    }
 
    /**
     * The overridden method for CanActivate interface, determines if requesting user contains a valid, signed cookie

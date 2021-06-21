@@ -33,6 +33,9 @@ import { Workout } from './workout.entity';
    @Column({ default: false })
    isOnline: boolean;
 
+   @Column({ default: "" })
+   socketId: string;
+
    @Column({ default: -1 })
    height: number; 
 
