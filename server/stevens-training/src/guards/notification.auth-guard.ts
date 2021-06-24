@@ -45,6 +45,7 @@ import { ConfigService } from "@nestjs/config";
    async verifyJwt(context: any): Promise<User> {
        const refreshToken = extractRefreshTokenFromCookie(context.args[0]?.handshake?.headers?.cookie);
        if(!refreshToken) {
+         console.log(context.args[0].handshake.headers)
          this.logger.error("Error: NotificationGuard | No refresh token included in request!");
          return null;
        }

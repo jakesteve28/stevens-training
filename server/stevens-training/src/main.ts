@@ -7,6 +7,7 @@ import * as cookieParser from 'cookie-parser';
 import { open, stat, readFile, FileHandle, access } from 'fs/promises';
 import { NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 async function getHttpsOptions() {
   let keyfh: FileHandle = null, certfh: FileHandle = null;
@@ -55,9 +56,9 @@ export async function bootstrap() {
   const app = await NestFactory.create(AppModule, nestOptions);
   const config = app.get(ConfigService);
   const cookieSecret = config.get<string>('SIGNED_COOKIE_SECRET');
-  app.use(helmet());
+  // app.use(helmet());
   app.enableCors();
-  app.use(compression());
+  //app.use(compression());
   //app.use(csurf());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableShutdownHooks();

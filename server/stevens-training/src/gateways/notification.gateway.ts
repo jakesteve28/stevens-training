@@ -11,8 +11,9 @@ import { User } from "../entities/user.entity";
 
 const preflightCheck = (req: Request, res: Response) => {
     const headers = {
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Origin": process.env.DOMAIN, 
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Credentials, credentials, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Authorization, Refresh, Access-Control-Request-Method, Access-Control-Request-Headers",
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        "Access-Control-Allow-Origin": "https://localhost:19006", 
         "Access-Control-Allow-Credentials": "true"
     };
     res.writeHead(200, headers);
@@ -27,6 +28,10 @@ export class NotificationGateway {
 
     private readonly logger: Logger = new Logger(NotificationGateway.name);
 
+    @SubscribeMessage('test')
+    async handleTest(){
+        this.logger.log("Test working")
+    }
     @SubscribeMessage('message')
     async handleMessage(@MessageBody() data: any): Promise<Message> {
         try {

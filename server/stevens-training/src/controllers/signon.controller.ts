@@ -2,7 +2,7 @@
     2021 Jacob Stevens   
 */
 
-import { Controller, Post, UseGuards, Req, Get, Logger } from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Get, Logger, Header } from '@nestjs/common';
 import { SignOnAuthGuard } from '../guards/signon.auth-guard';
 import { Res } from '@nestjs/common';
 import { SignOnService } from '../providers/signon.service';
@@ -16,14 +16,15 @@ export class SignonController {
   private readonly logger = new Logger(SignonController.name);
 
   @UseGuards(SignOnAuthGuard)
+  @Header("Access-Control-Allow-Credentials", "true")
   @Post('login')
-  async login(@Req() req, @Res() res: Response) {
+  async login(@Req() req, @Res({ passthrough: true }) res: Response) {
     this.logger.log(`Logging in user and dishing out new JWT ${req.user.userName}`);
     res.clearCookie('Refresh');
     const refreshToken = await this.signOnService.newRefreshToken(req.user);
     await this.signOnService.loginUser(req.user);
-    res.cookie('Refresh', refreshToken, { maxAge: 900000, httpOnly: true }); 
-    return res.send({ user: req.user }); 
+    res.cookie('Refresh', refreshToken, { maxAge: 900000 }); 
+    return { user: req.user }; 
   }
 
   @UseGuards(JwtRefreshAuthGuard)

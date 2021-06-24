@@ -12,7 +12,7 @@ module.exports = () => {
             name: "stevens-training",
             version: '1.0.0',
             extra: {
-                domain: "https://localhost:3000/"
+                domain: "http://localhost:3000/"
             }
         }
     }

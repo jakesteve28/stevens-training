@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { Text, View, } from '../components/Themed';
 import Constants from 'expo-constants';
 import { login } from '../store/features/userSlice';
-import { io } from 'socket.io-client'; 
+import io from 'socket.io-client'; 
 export let socket: any; 
 
 export default function LoginScreen() {
@@ -13,14 +13,25 @@ export default function LoginScreen() {
   const [userLoggedIn, setUserLoggedIn] = useState(false); 
   const [username, setUsername] = useState(""); 
   const [pw, setPW] = useState("");  
+  const [userInfo, setUserInfo] = useState("");
   const dispatch = useDispatch(); 
+  const socketOptions = {
+    transportOptions: {
+        polling: {
+            extraHeaders: {
+                credentials: "include"
+            }
+        }
+    },
+    reconnectionAttempts: 5
+}
   useEffect(() => {
     if(!socketConnected) {
 
     }
   }, [userLoggedIn]); 
   const attemptLogin = async (userName: string, pw: string) => {
-    const res = await fetch(`${Constants.manifest.extra?.domain}/signon/login`, {
+    const res = await fetch(`https://localhost:3000/signon/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -33,8 +44,16 @@ export default function LoginScreen() {
     if(res) {
         const user = await res.json(); 
         console.log("Successfully logged in user", user); 
+        setUserInfo(JSON.stringify(user)); 
         dispatch(login(user)); 
-        //socket = io(); 
+        console.log(`attemping socket io login`)
+        socket = io(`https://localhost:3000/notifications`, socketOptions); 
+        if(!socket) {
+          console.log("Socket not going"); 
+          return;
+        }
+        console.log("socket going ", socket);
+        socket.emit("test", { msg: "" });
     }
   }
   const onChangeText = (text: string) => {
@@ -66,7 +85,7 @@ export default function LoginScreen() {
             placeholder="Password"
             passwordRules="required: upper; required: lower; required: digit; max-consecutive: 2; minlength: 8;"
             onChangeText={text => onChangePWText(text)}
-            value={username}
+            value={pw}
             style={{
                 margin: 10,
                 padding: 10,
@@ -79,6 +98,7 @@ export default function LoginScreen() {
         title="Login"
         color="#AAAAAA"
         />
+        <Text>{userInfo}</Text>
     </View>
   );
 }

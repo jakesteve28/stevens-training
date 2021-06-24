@@ -24,6 +24,7 @@ import { SignOnModule } from './signon.module';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from '../controllers/health.controller';
 import { MailModule } from './mail.module';
+import { NotificationModule } from './notification.module';
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -41,8 +42,10 @@ const config = {
             ConfigModule.forRoot(config),
             ScheduleModule.forRoot(),
             ServeStaticModule.forRoot({
-              rootPath: "static"
+              rootPath: "static",
+              exclude: ["socket*"]
             }),
+            NotificationModule,
             TypeOrmModule.forRootAsync({
               imports: [ConfigModule],
               useFactory: async (configService: ConfigService) => ({              
