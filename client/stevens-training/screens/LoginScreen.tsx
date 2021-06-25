@@ -1,20 +1,17 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, StyleSheet, TextInput  } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Text, View, } from '../components/Themed';
-import Constants from 'expo-constants';
-import { login } from '../store/features/userSlice';
+import { login, selectUser } from '../store/features/userSlice';
 import io from 'socket.io-client'; 
 export let socket: any; 
-
 export default function LoginScreen() {
   const [socketConnected, setSocketConnected] = useState(false); 
-  const [userLoggedIn, setUserLoggedIn] = useState(false); 
   const [username, setUsername] = useState(""); 
   const [pw, setPW] = useState("");  
-  const [userInfo, setUserInfo] = useState("");
   const dispatch = useDispatch(); 
+  const user = useSelector(selectUser);
   const socketOptions = {
     transportOptions: {
         polling: {
@@ -25,11 +22,6 @@ export default function LoginScreen() {
     },
     reconnectionAttempts: 5
 }
-  useEffect(() => {
-    if(!socketConnected) {
-
-    }
-  }, [userLoggedIn]); 
   const attemptLogin = async (userName: string, pw: string) => {
     const res = await fetch(`https://localhost:3000/signon/login`, {
         method: "POST",
@@ -44,16 +36,16 @@ export default function LoginScreen() {
     if(res) {
         const user = await res.json(); 
         console.log("Successfully logged in user", user); 
-        setUserInfo(JSON.stringify(user)); 
-        dispatch(login(user)); 
-        console.log(`attemping socket io login`)
+        console.log(`Attemping socket io login`)
         socket = io(`https://localhost:3000/notifications`, socketOptions); 
         if(!socket) {
           console.log("Socket not going"); 
           return;
         }
-        console.log("socket going ", socket);
-        socket.emit("test", { msg: "" });
+        dispatch(login(user)); 
+        socket.emit("test", { msg: "" }, () => {
+          setSocketConnected(true);
+        });
     }
   }
   const onChangeText = (text: string) => {
@@ -78,27 +70,32 @@ export default function LoginScreen() {
                 margin: 10,
                 padding: 10,
                 backgroundColor: "#AAAAAA",
-                color: "black" 
+                color: "black",
+                marginBottom: 25
             }}
        ></TextInput>
           <TextInput 
             placeholder="Password"
             passwordRules="required: upper; required: lower; required: digit; max-consecutive: 2; minlength: 8;"
             onChangeText={text => onChangePWText(text)}
+            textContentType="password"
             value={pw}
             style={{
                 margin: 10,
                 padding: 10,
                 backgroundColor: "#AAAAAA",
-                color: "black" 
+                color: "black" ,
+                marginBottom: 25
             }}
        ></TextInput>
        <Button
-        onPress={onPressLogin}
-        title="Login"
-        color="#AAAAAA"
+          onPress={onPressLogin}
+          title="Login"
+          color="#AAAAAA"
         />
-        <Text>{userInfo}</Text>
+        <Text style={{ fontSize: 18, marginTop: 15, marginBottom: 15, padding: 25, backgroundColor: "#191919", color: "#DDDDDD", width: 300 }}>
+            {(user.firstName !== "") ? "Welcome, " + user.firstName : "" }
+        </Text>
     </View>
   );
 }
@@ -108,6 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: "#191919"
   },
   title: {
     fontSize: 20,
