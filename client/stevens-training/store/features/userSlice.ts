@@ -1,4 +1,42 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+export const host = "https://localhost:3000"; 
+
+const getNearbyUsers = createAsyncThunk(
+  'user/getNearbyUsers', 
+  async (distance: number, { getState, requestId, rejectWithValue, signal}) => {
+    const state =  getState() as { user: { currentNearbyRequestId: string } }; 
+    if(requestId != state.user.currentNearbyRequestId) { 
+      const res = await fetch(`${host}/user/nearby/${distance || 5}`, {
+          credentials: "include", 
+          signal: signal,
+      });
+      const users = await res.json();
+      if(!users || !Array.isArray(users)) {
+        rejectWithValue("Error fetching users"); 
+      }
+      return users;
+    }
+  }
+)
+
+const getNearbyPlaces = createAsyncThunk(
+  'user/getNearbyPlaces',
+  async (distance: number, { getState, requestId, rejectWithValue, signal}) => {
+    const state =  getState() as { user: { currentPlaceRequestId: string } }; 
+    if(requestId != state.user.currentPlaceRequestId) { 
+      const res = await fetch(`${host}/user/nearbyplaces/${distance || 5}`, {
+          credentials: "include", 
+          signal: signal,
+      });
+      const places = await res.json();
+      if(!places || !Array.isArray(places)) {
+        rejectWithValue("Error fetching nearby places"); 
+      }
+      return places;
+    } 
+  }
+)
 
 export const userSlice = createSlice({
   name: 'user',
@@ -26,7 +64,13 @@ export const userSlice = createSlice({
     uploads: [], 
     goals: [], 
     sentmessages: [], 
-    receivedmessages: []
+    receivedmessages: [],
+    nearbyUsers: [], 
+    nearbyPlaces: [],
+    loadingPlaces: false, 
+    loadingNearbyUsers: false,
+    currentPlaceRequestId: "",
+    currentNearbyRequestId: ""
   },
   reducers: {
     login: (state: any, action: any) => {
@@ -45,7 +89,10 @@ export const userSlice = createSlice({
     update: (state: any, action: any) => {
       for(let key in state.user){
         let val = action.user[`${key}`]; 
-        if(val && val !== "") {
+        if(key === 'darkMode') {
+          state.user[`${key}`] = val; 
+        }
+        else if(val && val !== "") {
           state.user[`${key}`] = val;  
         }
       }
@@ -157,12 +204,83 @@ export const userSlice = createSlice({
       });
     },
     clear: (state: any) => {
-
+      state.loggedIn = false;
+      state.user = {
+        id: "",
+        firstName: "", 
+        lastName: "", 
+        email: "", 
+        height: "", 
+        weight: "", 
+        darkMode: true, 
+        maxes: "", 
+        status: "", 
+        latitude: "", 
+        longitude: "", 
+        primaryUpload: "", 
+      };
+      state.story = [];
+      state.profilePictures = []; 
+      state.currentWorkout = {}; 
+      state.workouts = [];
+      state.exercises = []; 
+      state.uploads = []; 
+      state.goals = [];
+      state.sentmessages = [];
+      state.receivedmessages = [];
+      state.nearbyUsers = [];
+      state.loadingNearbyUsers = false; 
+      state.loadingPlaces = false; 
+      state.nearbyPlaces = [];
+      state.loadingPlaces = false;
+      state.loadingNearbyUsers = false;
+      state.currentPlaceRequestId = "";
+      state.currentNearbyRequestId = "";
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(getNearbyUsers.fulfilled, (state, action) => {
+      if(state.loadingNearbyUsers === true && 
+         state.currentNearbyRequestId === action.meta.requestId) {
+           state.loadingNearbyUsers = false; 
+           state.nearbyUsers = action.payload; 
+           state.currentNearbyRequestId = "";
+         }
+    }).addCase(getNearbyUsers.pending, (state, action) => {
+      if(state.loadingNearbyUsers === false) {
+        state.loadingNearbyUsers = true; 
+        state.currentNearbyRequestId = action.meta.requestId;
+      }
+    }).addCase(getNearbyUsers.rejected, (state, action) => {
+      if(state.loadingNearbyUsers === true && 
+         state.currentNearbyRequestId === action.meta.requestId) {
+          state.loadingNearbyUsers = false; 
+          state.currentNearbyRequestId = ""; 
+        }
+    }).addCase(getNearbyPlaces.fulfilled, (state, action) => {
+      if(state.loadingPlaces === true && 
+        state.currentPlaceRequestId === action.meta.requestId) {
+          state.loadingPlaces = false; 
+          state.nearbyPlaces = action.payload; 
+          state.currentPlaceRequestId = "";
+        }
+    }).addCase(getNearbyPlaces.pending, (state, action) => {
+      if(state.loadingPlaces === false) {
+        state.loadingPlaces = true; 
+        state.currentPlaceRequestId = action.meta.requestId;
+      }
+    }).addCase(getNearbyPlaces.rejected, (state, action) => {
+      if(state.loadingPlaces === true && 
+         state.currentPlaceRequestId === action.meta.requestId) {
+         state.loadingPlaces = false; 
+         state.currentPlaceRequestId = ""; 
+       }
+    })
   }
 });
 
-export const { login, 
+export const { 
+  login, 
   logout, 
   refresh, 
   update,
@@ -177,10 +295,10 @@ export const { login,
   rmGoal,
   rmMessage,
   rmSentMessage,
-  removeExercise,
-  removeFromStory,
-  removeWorkout,
-  removeProfilePic,
+  rmExercise,
+  rmFromStory,
+  rmWorkout,
+  rmProfilePic,
   rmUpload
   } = userSlice.actions;
 
@@ -193,5 +311,7 @@ export const selectUploads = (state: any) => state.uploads;
 export const selectExercises = (state: any) => state.exercises; 
 export const selectWorkouts = (state: any) => state.workouts; 
 export const selectProfilePictures = (state: any) => state.profilePictures; 
+export const selectNearbyUsers = (state: any) => state.nearbyUsers; 
+export const selectNearbyPlaces = (state: any) => state.nearbyPlaces; 
 
 export default userSlice.reducer;

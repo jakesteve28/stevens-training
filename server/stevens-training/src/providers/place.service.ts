@@ -6,10 +6,12 @@ import { PlaceDto } from "../entities/dto/place.dto";
 import { User } from "../entities/user.entity";
 import { UserService } from "./user.service";
 import { UploadService } from "./upload-file.service";
+import { findDistance } from "src/util/distance.util";
 
 @Injectable()
 export class PlaceService {
     constructor(@InjectRepository(Place) private placeRepo: Repository<Place>,
+                @Inject(forwardRef(() => UserService))
                 private userService: UserService,
                 @Inject(forwardRef(() => UploadService))
                 private uploadService: UploadService
@@ -26,9 +28,19 @@ export class PlaceService {
         return this.placeRepo.save(newPlace);
     }
 
-    async getNearbyPlace(latitude: string, longitude: string, howfar: string): Promise<Place[]> {
+    async getNearbyPlaces(latitude: string, longitude: string, howfar: string): Promise<Place[]> {
         //howfar is radius around given lat/long expressed in miles
-        return null;
+        const numLat = parseFloat(latitude), numLong = parseFloat(longitude), threshold = parseFloat(howfar);
+        const places = await this.placeRepo.find(); 
+        const retPlaces = []; 
+        for(let place of places) {
+            const placeLat = parseFloat(place.latitude), placeLong = parseFloat(place.longitude); 
+            const distance = findDistance(numLat, numLong, placeLat, placeLong); 
+            if(threshold >= distance) {
+                retPlaces.push(place);
+            }
+        }
+        return retPlaces;
     }
 
     async findOne(placeId: string): Promise<Place> {

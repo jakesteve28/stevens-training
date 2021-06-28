@@ -2,7 +2,7 @@
     2021 Jacob Stevens   
 */
 
-import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete, Logger, Param, Res, Header } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Put, Get, Delete, Logger, Param, Res, Header, Query, Inject, forwardRef } from '@nestjs/common';
 import { UserDto } from '../entities/dto/user.dto';
 import JwtRefreshAuthGuard from '../guards/jwt-refresh.auth-guard';
 import { User } from '../entities/user.entity';
@@ -11,6 +11,8 @@ import { Response } from 'express';
 import { NewUserAuthGuard } from '../guards/newuser.auth-guard';
 import { StoryService } from '../providers/story.service';
 import { Message } from '../entities/message.entity';
+import { Place } from '../entities/place.entity';
+import { PlaceService } from '../providers/place.service';
 
 class Location {
   latitude: string; 
@@ -20,7 +22,9 @@ class Location {
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService,
-              private storyService: StoryService
+              private storyService: StoryService,
+              @Inject(forwardRef(() => PlaceService))
+              private placeService: PlaceService
              ) {}
 
   private readonly logger = new Logger(UserController.name);
@@ -36,7 +40,7 @@ export class UserController {
       return this.storyService.findOne(user.storyId); 
     } else {
       const story = await this.storyService.create();
-      const _user = await this.userService.setStoryId(user, story.id); 
+      await this.userService.setStoryId(user, story.id); 
       return story;
     }
   }
@@ -47,6 +51,22 @@ export class UserController {
       this.logger.log(`Fetching user ${userId}`);
       if(!req.user) return null; 
       if(req.user?.id === userId) return req.user; 
+  }
+
+  @Get('nearby/:distance')
+  @UseGuards(JwtRefreshAuthGuard)
+  async getNearbyUser(@Req() req: any, @Param('distance') distance: string): Promise<User[]> {
+      this.logger.log(`Fetching users nearby ${req.user.id}`);
+      if(!req.user) return null; 
+      return this.userService.findNearLocation(parseFloat(req.user.latitude), parseFloat(req.user.longitude), parseFloat(distance)); 
+  }
+
+  @Get('nearbyplaces/:distance')
+  @UseGuards(JwtRefreshAuthGuard)
+  async getNearbyPlaces(@Req() req: any, @Param('distance') distance: string): Promise<Place[]> {
+      this.logger.log(`Fetching places nearby ${req.user.id}`);
+      if(!req.user) return null; 
+      return this.placeService.getNearbyPlaces(req.user.latitude, req.user.longitude, distance); 
   }
   /**
    * Creates a new user with a username, necessary details and a user-stats entity, returns it... or returns null if failed

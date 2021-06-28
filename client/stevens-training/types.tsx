@@ -4,24 +4,25 @@
  */
 
 export type RootStackParamList = {
-  Root: undefined;
-  NotFound: undefined;
+  Login: undefined;
+  Welcome: undefined;
+  SignUp: undefined; 
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
   Login: undefined;
+  Welcome: undefined;
+  SignUp: undefined; 
 };
 
-export type TabOneParamList = {
-  TabOneScreen: undefined;
-};
-
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
-};
-
-export type LoginScreenParamList = {
+export type NewUserScreenParamList = {
   LoginScreen: undefined;
+}
+
+export type SignUpScreenParamList = {
+  SignUpScreen: undefined;
+}
+
+export type WelcomeScreenParamList = {
+ WelcomeScreen: undefined;
 }
