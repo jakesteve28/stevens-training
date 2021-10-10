@@ -18,7 +18,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       primary: '#191919',
       background: '#191919',
       card: '#191919',
-      text: '#AAAAAA',
+      text: '#DDDDDD',
       border: '#333333',
       notification: '#333333',
     },

@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { StyleSheet  } from 'react-native';
 import { Text, View, } from '../components/Themed';
-export let socket: any; 
 
-export default function HomeScreen() {
+export default function SocialScreen() {
   return (
     <View style={{ height: "100%" }}>
-        <Text>Home</Text>
+        <Text>Social</Text>
     </View>
   );
 }

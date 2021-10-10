@@ -8,52 +8,101 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import LoginScreen from '../screens/LoginScreen';
-import SignUpScreen from '../screens/SignUpScreen';
+import SignInScreen from '../screens/SignInScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
-import { BottomTabParamList, NewUserScreenParamList, SignUpScreenParamList, WelcomeScreenParamList } from '../types';
+import { BottomTabParamList, HomeScreenParamList, NewUserScreenParamList, NotificationsScreenParamList, SettingsScreenParamList, SignInScreenParamList, SocialScreenParamList, WelcomeScreenParamList } from '../types';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../store/features/userSlice';
+import { useEffect, useState } from 'react';
+import HomeScreen from '../screens/Home';
+import SocialScreen from '../screens/Social';
+import NotificationsScreen from '../screens/Notifications';
+import SettingsScreen from '../screens/Settings';
+import RegisterScreen from '../screens/RegisterScreen';
+import { MaterialIcons } from '@expo/vector-icons'; 
+import { SimpleLineIcons } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons'; 
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
-
-export default function BottomTabNavigator() {
+const BottomTabsNotLoggedIn = () => {
   const colorScheme = useColorScheme();
+  return (
+    <BottomTab.Navigator
+      tabBarOptions={{ activeTintColor: '#757ce8',
+                       activeBackgroundColor: "#252525",     
+                       inactiveBackgroundColor: "#191919",
+                       labelPosition: 'below-icon', 
+                       style: { position: 'absolute' },
+                       labelStyle: { paddingBottom: "5px", fontWeight: "bold" }
+      }}
+      >
+        <BottomTab.Screen
+          component={WelcomeNavigator}
+          name="Welcome"
+          options={{ 
+            tabBarIcon: () => <MaterialIcons name="fitness-center" size={24} color="white" />
+          }}
+        />
+        <BottomTab.Screen
+          component={SignInNavigator}
+          name="Sign In"
+          options={{ 
+            tabBarIcon: () =>  <SimpleLineIcons name="login" size={24} color="white" />
+          }}
+        />
+      <BottomTab.Screen
+          component={NewUserNavigator}
+          name="Register"
+          options={{ 
+            tabBarIcon: () =>  <FontAwesome5 name="user-check" size={24} color="white" />
+          }}
+        />
+    </BottomTab.Navigator>
+  )
+}
+
+const BottomTabsLoggedIn = () => {
+  const colorScheme = useColorScheme();
+
   return (
     <BottomTab.Navigator
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
       >
         <BottomTab.Screen
           component={WelcomeNavigator}
-          options={{
-            tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          name="Home"
+          options={{ 
+            tabBarIcon: () => <MaterialIcons name="fitness-center" size={30} color="white" />
           }}
-          name="Welcome"
         />
         <BottomTab.Screen
-          component={SignUpNavigator}
-          options={{
-            tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-          }}
-          name="SignUp"
+          component={SignInNavigator}
+          name="Social"
         />
-       <BottomTab.Screen
+        <BottomTab.Screen
           component={NewUserNavigator}
-          options={{
-            tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-          }}
-          name="Login"
+          name="Notifications"
+        />
+        <BottomTab.Screen
+          component={NewUserNavigator}
+          name="Settings"
         />
     </BottomTab.Navigator>
-  );
+  )
 }
 
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
-function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+export default function BottomTabNavigator() {
+  const dispatch = useDispatch(); 
+  const user = useSelector(selectUser); 
+  const [loggedIn, setLoggedIn] = useState(false); 
+  useEffect(() => {
+    if(user) {
+      setLoggedIn(true);
+      return; 
+    } else setLoggedIn(false); 
+  }, [user]); 
+  return (loggedIn) ? (<BottomTabsNotLoggedIn></BottomTabsNotLoggedIn>) : (<BottomTabsLoggedIn></BottomTabsLoggedIn>) 
 }
-
-// Each tab has its own navigation stack, you can read more about this pattern here:
-// https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 
 const NewUserStack = createStackNavigator<NewUserScreenParamList>();
 
@@ -61,25 +110,25 @@ function NewUserNavigator() {
   return (
     <NewUserStack.Navigator>
       <NewUserStack.Screen
-        component={LoginScreen}
+        component={RegisterScreen}
         options={{ headerTitle: 'Welcome to Stevens Training' }}
-        name="LoginScreen"
+        name="RegisterScreen"
       />
     </NewUserStack.Navigator>
   );
 }
 
-const SignUpStack = createStackNavigator<SignUpScreenParamList>();
+const SignInStack = createStackNavigator<SignInScreenParamList>();
 
-function SignUpNavigator() {
+function SignInNavigator() {
   return (
-    <SignUpStack.Navigator>
-      <SignUpStack.Screen
-        component={SignUpScreen}
+    <SignInStack.Navigator>
+      <SignInStack.Screen
+        component={SignInScreen}
         options={{ headerTitle: 'Welcome to Stevens Training' }}
-        name="SignUpScreen"
+        name="SignInScreen"
       />
-    </SignUpStack.Navigator>
+    </SignInStack.Navigator>
   )
 }
 
@@ -94,5 +143,61 @@ function WelcomeNavigator() {
         name="WelcomeScreen"
       />
     </WelcomeStack.Navigator>
+  )
+}
+
+const HomeStack = createStackNavigator<HomeScreenParamList>(); 
+
+function HomeNavigator() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        component={HomeScreen}
+        options={{ headerTitle: 'Home' }}
+        name="HomeScreen"
+      />
+    </HomeStack.Navigator>
+  )
+}
+
+const SocialStack = createStackNavigator<SocialScreenParamList>(); 
+
+function SocialNavigator() {
+  return (
+    <SocialStack.Navigator>
+      <SocialStack.Screen
+        component={SocialScreen}
+        options={{ headerTitle: 'Places and People' }}
+        name="SocialScreen"
+      />
+    </SocialStack.Navigator>
+  )
+}
+
+const NotificationsStack = createStackNavigator<NotificationsScreenParamList>(); 
+
+function NotificationsNavigator() {
+  return (
+    <NotificationsStack.Navigator>
+      <NotificationsStack.Screen
+        component={NotificationsScreen}
+        options={{ headerTitle: 'Notifications' }}
+        name="NotificationsScreen"
+      />
+    </NotificationsStack.Navigator>
+  )
+}
+
+const SettingsStack = createStackNavigator<SettingsScreenParamList>(); 
+
+function SettingsNavigator() {
+  return (
+    <SettingsStack.Navigator>
+      <SettingsStack.Screen
+        component={SettingsScreen}
+        options={{ headerTitle: 'Settings' }}
+        name="SettingsScreen"
+      />
+    </SettingsStack.Navigator>
   )
 }

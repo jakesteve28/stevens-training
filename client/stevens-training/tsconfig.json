@@ -3,6 +3,7 @@
   "compilerOptions": {
     "jsx": "react",
     "tsx": "react",
-    "strict": true
+    "strict": true,
+    "noImplicitAny": false
   }
 }

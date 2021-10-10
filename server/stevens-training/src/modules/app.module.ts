@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_GUARD } from '@nestjs/core';
@@ -23,8 +23,8 @@ import { TasksService } from '../providers/tasks.service';
 import { SignOnModule } from './signon.module';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from '../controllers/health.controller';
-import { MailModule } from './mail.module';
 import { NotificationModule } from './notification.module';
+import { HttpsRedirectMiddleware } from 'src/util/http-redirect';
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -72,14 +72,10 @@ const config = {
             WorkoutModule,
             UploadModule,
             SignOnModule,
-            TerminusModule,
-            MailModule  
+            TerminusModule
           ],
           controllers: [HealthController],
-  providers: [{
-                provide: APP_GUARD,
-                useClass: ThrottlerGuard,
-              },
+  providers: [
               TasksService      
   ]
 })
@@ -87,5 +83,8 @@ export class AppModule {
   constructor(private configService: ConfigService){
     console.info("Connecting to MySql Database with TypeORM");
     console.info(`Details:\r\nHost: ${this.configService.get<string>('DATABASE_HOST') || 'localhost'}\r\nPort: ${this.configService.get<number>('DATABASE_PORT') || 3306}\r\nUsername: ${this.configService.get<string>('DATABASE_USER') || 'failure to load'}\r\nDatabase: ${this.configService.get<string>('DATABASE') || 'failure to load'}`);
+  }
+  configure(consumer: MiddlewareConsumer) {
+      consumer.apply(HttpsRedirectMiddleware).forRoutes("/api");
   }
 }

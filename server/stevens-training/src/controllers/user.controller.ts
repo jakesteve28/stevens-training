@@ -23,7 +23,6 @@ class Location {
 export class UserController {
   constructor(private userService: UserService,
               private storyService: StoryService,
-              @Inject(forwardRef(() => PlaceService))
               private placeService: PlaceService
              ) {}
 

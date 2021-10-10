@@ -2,28 +2,34 @@ import * as React from 'react';
 import { ImageBackground, StyleSheet  } from 'react-native';
 import { Text, View, } from '../components/Themed';
 export let socket: any; 
-import { Button, Card } from 'react-native-paper';
-import image from '../assets/images/usonofa.jpg'; 
+import { Surface } from 'react-native-paper';
+import styled from 'styled-components/native';
+import image from '../assets/images/banner.jpg';
+const WelcomeContainer = styled.View`
+  flex: 1;
+  background-color: #171717;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+`;
+
+const WelcomeText = styled.Text`
+  font-size: 25px;
+  color: white;
+  font-weight: bolder;
+`;
 
 export default function WelcomeScreen() {
   return (
-    <View style={{ height: "100%" }}>
-      <ImageBackground source={image} style={styles.image}>
-        <View style={styles.welcome}>
-          <Text style={{ fontSize: "40pt", marginTop: "20px" }}>Stevens Training</Text>
-          <Text>
-            
-          </Text>
-          {/* <Card style={styles.card}>
-            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} style={{ height: "100%" }} />
-          </Card> */}
-        </View>
-        <View style={styles.welcomebuttons}>
-          <Button mode="contained" icon="login" style={styles.loginbutton} labelStyle={styles.loginbuttonlabel}>Login</Button>
-          <Button mode="contained" style={styles.loginbutton} labelStyle={styles.loginbuttonlabel}>Sign Up</Button>
-        </View>
-        </ImageBackground>
-    </View>
+    <WelcomeContainer>
+        <Surface style={{ maxWidth: "800px", width: "90%", height: "500px" }}>
+            <ImageBackground source={image} resizeMode="cover" style={{ flex: 1, justifyContent: "center" }}>
+              <Text style={{marginLeft: "50px", color: "#DDDDDD", fontSize: 70, fontWeight: "500" }}>Welcome</Text>
+            </ImageBackground>
+          </Surface>
+    </WelcomeContainer>      
   );
 }
 const styles = StyleSheet.create({

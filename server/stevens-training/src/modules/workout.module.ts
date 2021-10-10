@@ -5,6 +5,7 @@ import { WorkoutController } from '../controllers/workout.controller';
 import { WorkoutService } from '../providers/workout.service';
 import { ExerciseModule } from './exercise.module';
 import { UserModule } from './user.module';
+import { PlaceModule } from './place.module';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Workout]),

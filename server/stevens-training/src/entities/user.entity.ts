@@ -53,6 +53,9 @@ import { Workout } from './workout.entity';
  
    @Column({ default: false })
    disabled: boolean;
+
+   @Column({ default: false })
+   isEmailConfirmed: boolean;
  
    @Column({ default: "" })
    storyId: string;
