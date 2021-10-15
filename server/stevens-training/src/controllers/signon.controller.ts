@@ -19,7 +19,7 @@ export class SignonController {
   @Header("Access-Control-Allow-Credentials", "true")
   @Post('login')
   async login(@Req() req, @Res({ passthrough: true }) res: Response) {
-    this.logger.log(`Logging in user and dishing out new JWT ${req.user.userName}`);
+    this.logger.log(`Logging in user and dishing out new JWT ${req.user.username}`);
     res.clearCookie('Refresh');
     const refreshToken = await this.signOnService.newRefreshToken(req.user);
     await this.signOnService.loginUser(req.user);

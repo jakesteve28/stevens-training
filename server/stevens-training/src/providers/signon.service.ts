@@ -29,7 +29,7 @@ export class SignOnService {
 
     async newRefreshToken(user: any) {
         const payload: jwtPayload = {
-            username: user?.userName, 
+            username: user?.username, 
             sub: user?.id
         }
         const refreshToken = this.jwtService.sign(payload, {
@@ -44,7 +44,7 @@ export class SignOnService {
         const user = await this.userService.findUsername(userName); 
         const isMatch = await bcrypt.compare(password, user.password); 
         if(isMatch) delete user.password;
-        return (isMatch) ? user : false;
+        return (isMatch) ? user : undefined;
     }
 
     async logoutUser(user: any): Promise<Boolean> {
