@@ -5,14 +5,14 @@ import App from './App.jsx';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container } from 'react-bootstrap';
 //
 ReactDOM.render(
-  <React.StrictMode>
     <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+      <Container fluid style={{ height: "95%", padding: "0" }}> 
+        <App />
+      </Container>
+    </Provider>,
   document.getElementById('root')
 );
 

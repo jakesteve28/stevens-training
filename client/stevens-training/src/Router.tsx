@@ -6,6 +6,7 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
+import Home from "./components/containers/home";
 import Login from "./components/route-containers/Login";
 import { selectLoggedIn } from "./features/user/userSlice";
 
@@ -24,7 +25,7 @@ export default function AppRouter() {
             <Login />
           </Route>
           <Route path="/home">
-
+            <Home />
           </Route>
           <Route path="/dashboard">
 

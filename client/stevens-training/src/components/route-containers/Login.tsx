@@ -45,16 +45,16 @@ export default function Login() {
         </>
     )
 }
-const socketOptions = {
-    transportOptions: {
-        polling: {
-            extraHeaders: {
-                credentials: "include"
-            }
-        }
-    },
-    reconnectionAttempts: 5
-}
+// const socketOptions = {
+//     transportOptions: {
+//         polling: {
+//             extraHeaders: {
+//                 credentials: "include"
+//             }
+//         }
+//     },
+//     reconnectionAttempts: 5
+// }
 // const attemptLogin = async (uname: string, pw: string) => {
 //     const res = await fetch(`https://localhost:3000/signon/login`, {
 //         method: "POST",

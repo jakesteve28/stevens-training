@@ -1,9 +1,46 @@
 import React from 'react'; 
-import { Container, Dropdown, Nav, Navbar, Image, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Container, Nav, Navbar, Image, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import * as Icon from 'react-bootstrap-icons';
 import pic from '../imgs/weight-plate.png';
 import { useSelector } from 'react-redux';
 import { selectLoggedIn } from '../features/user/userSlice';
+
+export function StevensBottomNavBar(){
+    return (
+        <>
+        <style type="text/css">
+           {
+               `
+                .bot-nav {
+                    max-height: 50px;
+                    height: 50px;
+                    opacity: 0.5 !important;
+                    background-color: #101010 !important;
+                }
+
+                .footer-text {
+                    color: #999999;
+                    text-align: right;
+                    margin-left: auto;
+                    font-size: 6pt;
+                    font-weight: bold;
+                }
+
+                .footer-text:hover {
+                    color: #ff0000;
+                    cursor: pointer;
+                }
+               `
+           } 
+        </style>
+        <Navbar fixed="bottom" expand="sm" bg="dark" variant="dark" className="bot-nav">
+             <Container fluid>
+                <span className="footer-text">Created by Jacob Stevens, 2021</span>
+            </Container>
+        </Navbar>
+        </>
+    )
+}
 
 export default function StevensNavBar() {
     const loggedIn = useSelector(selectLoggedIn);
@@ -76,26 +113,29 @@ export default function StevensNavBar() {
                         background-color: transparent;
                         width: 70px; 
                         height: 70px;
-                        padding: -10px;
+                        padding: -10px !important;
                         margin: -15px;
                         display: inline;
                         filter: brightness(1.5);
                         filter: opacity(95%);
-                        transition: all 2s ease;
-                        -webkit-transition: all 1.5s ease; 
+                        border: none;
+                        outline: none;
+                        transition: all 1.0s ease;
+                        -webkit-transition: all 1.0s ease; 
                         margin-left: 10px;
                     }
 
                     .image-custom:hover {
                         filter: brightness(2.0);
-                        box-shadow: 5px 5px 10px 10px #34ebde;
-                        transform: scale(1.05);
+                        filter: drop-shadow(0px 0px 10px #34ebde);
+                        transform: scale(1.02);
                     }
 
                     .logo {
                         font-weight: 600;
                         color: #DDDDDD;
                         display: inline;
+                        transition: 0.5s all ease;
                     }
 
                     .span-inline {
@@ -107,7 +147,7 @@ export default function StevensNavBar() {
                     .logo:hover {
                         transform: scale(1.05);
                         color: #34ebde;
-
+                        text-shadow: 2px 2px 2px #ff0000;
                     }
 
                     .custom-toggle::after {
@@ -148,7 +188,6 @@ export default function StevensNavBar() {
                     } 
 
                     .login-link {
-                        margin-bottom: 10px;
                     }
 
                     .login-link:hover {
@@ -157,11 +196,12 @@ export default function StevensNavBar() {
                     }
 
                     .stevens-nav {
-                        background-color: rgb(40, 40, 40, 0.85) !important;
+                        background-color: #101010 !important;
+                        opacity: 0.87;
                     }
                     `}
                 </style>
-                <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark" className="stevens-nav">
+                <Navbar collapseOnSelect fixed="top" expand="sm" bg="dark" variant="dark"  className="stevens-nav">
                     <Container fluid>
                         <Navbar.Brand href="/home"><span className="span-inline"><h3 className="logo">Stevens Strength</h3><Image src={pic} roundedCircle className="image-custom" /></span></Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

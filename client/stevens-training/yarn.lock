@@ -10082,6 +10082,13 @@ react-media@^1.10.0:
     json2mq "^0.2.0"
     prop-types "^15.5.10"
 
+react-particles-js@^3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/react-particles-js/-/react-particles-js-3.5.3.tgz#5fa8912cd3317061e4d31ed7743d331d9d7f2afe"
+  integrity sha512-e9GWBT51WDtPkcaSy0ZLUAT93lBzDvuqrfW81NOf6G69XSurgCtVy4+ZYpUCnLhZgkokzsjrhtVOSj1FxPVyEw==
+  dependencies:
+    lodash "^4.17.11"
+
 react-redux@^7.2.0:
   version "7.2.5"
   resolved "https://registry.npmjs.org/react-redux/-/react-redux-7.2.5.tgz"
@@ -11823,6 +11830,11 @@ tslib@^2.0.3:
   version "2.3.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.1.tgz"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
+
+tsparticles@^1.36.0:
+  version "1.36.0"
+  resolved "https://registry.yarnpkg.com/tsparticles/-/tsparticles-1.36.0.tgz#8ee6703fbc84faa2f4efa2b8516f1b0aa7199266"
+  integrity sha512-T3tvGmiQ2Q5rOxedjw4OjIFUOy+cQ7LAtlRsHTju4zRtqyebd97vwvDQ+ax7ufmR0CpzfifY3LKqqnx38oYtEg==
 
 tsutils@^3.17.1:
   version "3.17.1"

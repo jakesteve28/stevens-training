@@ -1,4 +1,4 @@
 export const global = {
-    loggedInColor: ""
+    loggedInColor: "#34ebde"
 }
 export {}
