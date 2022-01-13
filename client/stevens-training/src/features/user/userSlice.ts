@@ -214,7 +214,7 @@ export const userSlice = createSlice({
         weight: "", 
         darkMode: true, 
         maxes: "", 
-        status: "", 
+        status: "(empty)", 
         latitude: "", 
         longitude: "", 
         primaryUpload: "", 

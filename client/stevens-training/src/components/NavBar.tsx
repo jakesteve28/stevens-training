@@ -2,9 +2,10 @@ import React from 'react';
 import { Container, Nav, Navbar, Image, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import * as Icon from 'react-bootstrap-icons';
 import pic from '../imgs/weight-plate.png';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectLoggedIn } from '../features/user/userSlice';
-
+import { showAbout } from '../features/ui/uiSlice';
+import { useHistory } from 'react-router-dom';
 export function StevensBottomNavBar(){
     return (
         <>
@@ -44,8 +45,11 @@ export function StevensBottomNavBar(){
 
 export default function StevensNavBar() {
     const loggedIn = useSelector(selectLoggedIn);
-
+    const dispatch = useDispatch();
+    const history = useHistory();
     const AccountIcon = (props: any) => {
+        const history = props.history;
+        const loggedIn = props.loggedIn;
         const AccountTooltip = (props: any) => { 
             return (
                     <Tooltip id="button-tooltip" {...props}>
@@ -53,13 +57,18 @@ export default function StevensNavBar() {
                     </Tooltip>
                 )
         }
+        const navLogin = () => {
+            if(history && !loggedIn) {
+                history.push('/login');
+            }
+        }
         return  (
             <OverlayTrigger
                 placement="bottom-start"
                 delay={{ show: 250, hide: 400 }}
                 overlay={AccountTooltip}
             >
-                <Icon.PersonCircle className="prsn-icon" size={28}></Icon.PersonCircle>
+                <Icon.PersonCircle className="prsn-icon" size={28} onClick={navLogin}></Icon.PersonCircle>
             </OverlayTrigger>
         )   
     }
@@ -96,6 +105,8 @@ export default function StevensNavBar() {
                     .prsn-icon {
                         color: ${(loggedIn) ? "#34ebde" : "#404040" };
                         margin-left: 20px;
+                        margin-top: 8px;
+                        margin-right: 15px;
                     }
 
                     .brand-title {
@@ -111,31 +122,50 @@ export default function StevensNavBar() {
 
                     .image-custom {
                         background-color: transparent;
-                        width: 70px; 
-                        height: 70px;
+                        width: 60px; 
+                        height: 60px;
                         padding: -10px !important;
-                        margin: -15px;
                         display: inline;
                         filter: brightness(1.5);
-                        filter: opacity(95%);
+                        filter: opacity(45%);
                         border: none;
                         outline: none;
-                        transition: all 1.0s ease;
-                        -webkit-transition: all 1.0s ease; 
-                        margin-left: 10px;
+                        transition: all 1.25s ease;
+                        margin-left: 40px;
+                    }
+
+                    @media screen and (max-width: 500px) {
+                        .image-custom {
+                            margin-left: 10px;
+                        }
+                        .prsn-icon {
+                            margin-left: auto;
+                            margin-right: auto;
+                            margin-top: 30px;
+                            transform: scale(1.25);
+                        }
                     }
 
                     .image-custom:hover {
+                        transform: rotate(720deg) scale(1.10);
                         filter: brightness(2.0);
-                        filter: drop-shadow(0px 0px 10px #34ebde);
-                        transform: scale(1.02);
+                        cursor: pointer;
+                        filter: drop-shadow(0px 0px 10px #ff0000);
+
+                    }
+
+                    .image-custom:active {
+                        transform: rotate(1080deg) scale(1.50);
                     }
 
                     .logo {
-                        font-weight: 600;
-                        color: #DDDDDD;
+                        font-weight: 500;
+                        color: #dddddd;
                         display: inline;
-                        transition: 0.5s all ease;
+                        transition: 1.0s all ease;
+                        cursor: pointer;
+                        margin-top: auto; 
+                        margin-bottom: auto;
                     }
 
                     .span-inline {
@@ -185,9 +215,6 @@ export default function StevensNavBar() {
                     .nav-link-ctm:hover {
                         filter: brightness(0.8);
                         cursor: pointer;
-                    } 
-
-                    .login-link {
                     }
 
                     .login-link:hover {
@@ -199,20 +226,26 @@ export default function StevensNavBar() {
                         background-color: #101010 !important;
                         opacity: 0.87;
                     }
+                    .login-link {
+                        margin-top: auto;
+                        margin-bottom: auto;
+                        font-size: 18pt;
+                        color: #14dcbe
+                    }
                     `}
                 </style>
                 <Navbar collapseOnSelect fixed="top" expand="sm" bg="dark" variant="dark"  className="stevens-nav">
                     <Container fluid>
-                        <Navbar.Brand href="/home"><span className="span-inline"><h3 className="logo">Stevens Strength</h3><Image src={pic} roundedCircle className="image-custom" /></span></Navbar.Brand>
+                        <Navbar.Brand><span className="nav-link-ctm login-link"><h3 className="logo" onClick={() => { if(history) history.push('/home')}}>Stevens Strength</h3><Image src={pic} onClick={() => { if(history) history.push('/home')}}  roundedCircle className="image-custom" /></span></Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
                             {(loggedIn) ? (<Nav.Link href="/app"><span className="nav-link-ctm">App</span></Nav.Link>) : ""} 
-                            <Nav.Link href="/about"><span className="nav-link-ctm">About</span></Nav.Link>
+                            <Nav.Link onClick={(e) => { e.preventDefault(); dispatch(showAbout()); }}><span className="nav-link-ctm login-link">About</span></Nav.Link>
                         </Nav>
                         <Nav>
-                            {(loggedIn) ? <NotificationsIcon /> : <span className="nav-link-ctm login-link">Login</span>}
-                            <AccountIcon></AccountIcon>
+                            {(loggedIn) ? <NotificationsIcon /> : <span id="link-login" onClick={() =>{ return (!loggedIn && history) ? history.push('/login') : null }} className="nav-link-ctm login-link">Login</span>}
+                            <AccountIcon history={history} loggedIn={loggedIn}></AccountIcon>
                         </Nav>
                         </Navbar.Collapse>
                     </Container>

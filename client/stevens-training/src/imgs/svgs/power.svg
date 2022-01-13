@@ -1,0 +1,21 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with UXWing SVG Editor - https://uxwing.com/svg-icon-editor/ -->
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="514" width="514" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g stroke="null" id="svg_9">
+   <rect stroke="#939393" id="svg_4" height="16.334026" width="380.000009" y="112.897899" x="-0.000011" stroke-width="0.001" fill="#666666"/>
+   <path stroke="#939393" id="svg_1" d="m137.354882,113.182579l100.475046,-112.008608l-28.505215,164.612171l-71.969831,-52.603563z" stroke-width="0.001" fill="#3d3d3d"/>
+   <path stroke="#939393" id="svg_2" d="m254.203682,140.743943l-102.178952,105.695421l32.404945,-160.656695l69.774006,54.961274z" stroke-width="0.001" fill="#3d3d3d"/>
+   <rect stroke="#939393" id="svg_6" height="194.086667" width="36.190478" y="23.541166" x="42.577034" stroke-opacity="null" stroke-width="0.001" fill="#666666"/>
+   <rect stroke="#939393" id="svg_7" height="194.086667" width="36.190478" y="23.541166" x="42.577034" stroke-opacity="null" stroke-width="0.001" fill="#333333"/>
+   <rect stroke="#939393" id="svg_8" height="194.086667" width="36.190478" y="22.580341" x="295.91038" stroke-opacity="null" stroke-width="0.001" fill="#333333"/>
+  </g>
+ </g>
+</svg>

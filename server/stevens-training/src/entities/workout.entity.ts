@@ -10,17 +10,43 @@ import { User } from './user.entity';
 export enum WorkoutFocus {
   strength = "Strength", 
   power = "Power", 
-  stability = "Stability",
-  endurance = "Endurance", 
-  control = "Control", 
   intervals = "Intervals", 
   failure = "Failure",
   dropsets = "Drop Sets",
   cardio = "Cardio", 
   mix = "Mix", 
   flexibility = "Flexibility",
-  other = "Other"
+  other = "Other",
+  bodybuilding= "Bodybuilding",
+  heavy = "Heavy",
+  pump = "Pump",
+  metabolic ="Metabolic",
+  speed = "Speed",
+  stability = "Stability",
+  control = "Control",
+  dynamic = "Dynamic",
+  aerobic = "Aerobic",
+  explosive = "Explosive",
+  max = "Max",
+  endurance = "Endurance",
+  anaerobic = "Anaerobic"
 }
+
+/**
+Bodybuilding
+Heavy
+Reps
+Metabolic
+Speed 
+Stability
+Control
+Dynamic
+Aerobic
+Explosive
+Limit Test
+Endurance
+Anaerobic
+*/
 
  @Entity()  
  export class Workout {

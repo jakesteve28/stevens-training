@@ -6,10 +6,12 @@ import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import { Container } from 'react-bootstrap';
-//
+import ParticleBackground from "./components/ParticleBackground";
+
 ReactDOM.render(
     <Provider store={store}>
       <Container fluid style={{ height: "95%", padding: "0" }}> 
+        <ParticleBackground />
         <App />
       </Container>
     </Provider>,
