@@ -1,0 +1,27 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with UXWing SVG Editor - https://uxwing.com/svg-icon-editor/ -->
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="514" height="514" id="canvas_background" fill="none"/>
+  <g id="canvasGrid" width="100%" height="100%" x="0" y="0" overflow="visible" display="none">
+   <rect id="svg_2" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path fill="#999999" stroke="#FF0000" stroke-width="0.001" d="m249.35029,71.06266c60.19509,-142.93738 296.04142,0 0,183.77665c-296.04142,-183.77665 -60.19509,-326.71403 0,-183.77665z" id="svg_1"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="169.87015" y="82.38783" width="39.15181" height="7.3333" id="svg_6" transform="rotate(-75.0125 189.446 86.0545)" stroke="#FF0000"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="150.82434" y="115.32147" width="101.99951" height="7.3333" id="svg_7" stroke="#FF0000" transform="rotate(82.3229 201.824 118.988)"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="174.35847" y="122.30495" width="84.58155" height="7.3333" id="svg_8" transform="rotate(100.891 216.649 125.972)" stroke="#FF0000"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="218.36284" y="91.87005" width="19.55646" height="7.3333" id="svg_9" transform="rotate(67.5234 228.141 95.5367)" stroke="#FF0000"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="93.96163" y="99.24305" width="94.54854" height="7.3333" id="svg_10" stroke="#FF0000"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="228.47135" y="99.24305" width="29.05838" height="7.3333" id="svg_11" stroke="#FF0000"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="252.22304" y="82.38783" width="39.15181" height="7.3333" id="svg_24" transform="rotate(-75.0125 271.799 86.0545)" stroke="#FF0000"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="233.17723" y="115.32147" width="101.99951" height="7.3333" id="svg_25" stroke="#FF0000" transform="rotate(82.3229 284.177 118.988)"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="256.71136" y="122.30495" width="84.58155" height="7.3333" id="svg_26" transform="rotate(100.891 299.002 125.972)" stroke="#FF0000"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="300.71573" y="91.87005" width="19.55646" height="7.3333" id="svg_27" transform="rotate(67.5234 310.494 95.5367)" stroke="#FF0000"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="232.78508" y="99.24305" width="37.68583" height="7.3333" id="svg_28" stroke="#FF0000"/>
+  <rect fill="#000000" stroke-width="0.001" stroke-opacity="null" x="310.82424" y="99.24305" width="94.15638" height="7.3333" id="svg_29" stroke="#FF0000"/>
+ </g>
+</svg>

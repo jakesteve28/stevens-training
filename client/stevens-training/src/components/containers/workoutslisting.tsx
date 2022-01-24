@@ -11,7 +11,19 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
         <>
             <style type="text/css">
                 {
-                `
+                `   
+                    .mix-icon {
+                        filter: brightness(1.50);
+                    }
+
+                    .dropset-icon {
+
+                    }
+
+                    .strength-icon {
+
+                    }
+                
                     .workout-list-item {
                         background-color: rgba(20, 20, 20, 0.85);
                         color: #34dcbe;
@@ -144,8 +156,8 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                 <Container fluid>
                     <Row className="h-100">
                         <Col xs="2" className="workout-type-icon">
-                            <div className="focus-badge"><WorkoutTypeIcon /></div>
-                            <div className="badge-label">Power</div>
+                            <div className="focus-badge"><WorkoutTypeIcon workoutType={workoutType} /></div>
+                            <div className="badge-label">{workoutType}</div>
                         </Col>
                         <Col xs="10" sm="6" className="workout-name">
                             <div className="name-text h-100">{name}</div>
@@ -166,17 +178,25 @@ export function WorkoutsList(...props: any) {
     return (
             <ListGroup>
                 <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-
-            
-            
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.aerobic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.bodybuilding} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.anaerobic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.control} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.cardio} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.dropsets} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.dynamic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.endurance} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.explosive} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.flexibility} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.heavy} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.intervals} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.max} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.mix} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.other} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.power} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.pump} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.speed} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.stability} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
             </ListGroup>
     )
 }

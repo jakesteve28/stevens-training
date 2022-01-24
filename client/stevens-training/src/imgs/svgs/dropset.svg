@@ -1,0 +1,15 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with UXWing SVG Editor - https://uxwing.com/svg-icon-editor/ -->
+
+ <g>
+  <title>background</title>
+  <rect x="-1" y="-1" width="514" height="514" id="canvas_background" fill="none"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect fill="#191919" stroke-width="0.001" stroke-opacity="null" x="140" y="242.45313" width="249" height="28" id="svg_5" stroke="#FF0000"/>
+  <rect fill="#999999" stroke-width="0.001" stroke-opacity="null" x="324" y="121.45313" width="66" height="277" id="svg_2" stroke="#FF0000"/>
+  <rect fill="#999999" stroke-width="0.001" x="275" y="170.45313" width="51" height="177" id="svg_3" stroke="#666666"/>
+  <rect fill="#999999" stroke-width="0.001" stroke-opacity="null" x="231" y="209.45313" width="44" height="100" id="svg_4" stroke="#FF0000"/>
+ </g>
+</svg>

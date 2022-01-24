@@ -1,21 +1,22 @@
 <svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
  <!-- Created with UXWing SVG Editor - https://uxwing.com/svg-icon-editor/ -->
+
  <g>
   <title>background</title>
-  <rect fill="none" id="canvas_background" height="514" width="514" y="-1" x="-1"/>
-  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
-   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  <rect x="-1" y="-1" width="514" height="514" id="canvas_background" fill="none"/>
+  <g id="canvasGrid" width="100%" height="100%" x="0" y="0" overflow="visible" display="none">
+   <rect id="svg_3" width="100%" height="100%" x="0" y="0" stroke-width="0" fill="url(#gridpattern)"/>
   </g>
  </g>
  <g>
   <title>Layer 1</title>
-  <g stroke="null" id="svg_9">
-   <rect stroke="#939393" id="svg_4" height="16.334026" width="380.000009" y="112.897899" x="-0.000011" stroke-width="0.001" fill="#666666"/>
-   <path stroke="#939393" id="svg_1" d="m137.354882,113.182579l100.475046,-112.008608l-28.505215,164.612171l-71.969831,-52.603563z" stroke-width="0.001" fill="#3d3d3d"/>
-   <path stroke="#939393" id="svg_2" d="m254.203682,140.743943l-102.178952,105.695421l32.404945,-160.656695l69.774006,54.961274z" stroke-width="0.001" fill="#3d3d3d"/>
-   <rect stroke="#939393" id="svg_6" height="194.086667" width="36.190478" y="23.541166" x="42.577034" stroke-opacity="null" stroke-width="0.001" fill="#666666"/>
-   <rect stroke="#939393" id="svg_7" height="194.086667" width="36.190478" y="23.541166" x="42.577034" stroke-opacity="null" stroke-width="0.001" fill="#333333"/>
-   <rect stroke="#939393" id="svg_8" height="194.086667" width="36.190478" y="22.580341" x="295.91038" stroke-opacity="null" stroke-width="0.001" fill="#333333"/>
+  <g id="svg_9" stroke="null">
+   <rect fill="#666666" stroke-width="0.001" x="-0.00001" y="112.8979" width="380.00001" height="16.33403" id="svg_4" stroke="#939393"/>
+   <path fill="#666666" stroke-width="0.001" d="m137.35488,113.18258l100.47505,-112.00861l-28.50522,164.61217l-71.96983,-52.60356z" id="svg_1" stroke="#939393"/>
+   <path fill="#666666" stroke-width="0.001" d="m254.20368,140.74394l-102.17895,105.69542l32.40494,-160.65669l69.77401,54.96127z" id="svg_2" stroke="#939393"/>
+   <rect fill="#666666" stroke-width="0.001" stroke-opacity="null" x="42.57703" y="23.54117" width="36.19048" height="194.08667" id="svg_6" stroke="#939393"/>
+   <rect fill="#666666" stroke-width="0.001" stroke-opacity="null" x="42.57703" y="23.54117" width="36.19048" height="194.08667" id="svg_7" stroke="#939393"/>
+   <rect fill="#666666" stroke-width="0.001" stroke-opacity="null" x="295.91038" y="22.58034" width="36.19048" height="194.08667" id="svg_8" stroke="#939393"/>
   </g>
  </g>
 </svg>
