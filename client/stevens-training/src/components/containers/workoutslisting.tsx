@@ -1,45 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { selectWorkouts } from "../../features/user/userSlice"
 import { useSelector } from 'react-redux';
-import { Row, Col, Container, ListGroup } from 'react-bootstrap';
+import { Row, Col, Container, ListGroup, Tooltip } from 'react-bootstrap';
 import global from '../../globals';
 import WorkoutTypeIcon from '../workouts/WorkoutTypeIcon';
 import * as Icon from 'react-bootstrap-icons';
+import ReactTooltip from 'react-tooltip';
 
 export function WorkoutListItem({ name = "default", tags = [], workoutType = global.workoutFocuses.other }){
+    const [showQuickInfo, setShowQuickInfo] = useState(false); 
     return (
         <>
             <style type="text/css">
                 {
-                `   
-                    .mix-icon {
-                        filter: brightness(1.50);
+                `  
+                    .workout-desc-row {
+                        padding-top: 10px;
+                        min-height: 70px;
+                        border-top: 1px solid #212121;
+                        text-align: center;
+                        cursor: auto;
                     }
 
-                    .dropset-icon {
-
+                    .hide-quick {
+                        display: none;
                     }
 
-                    .strength-icon {
-
+                    .workout-row {
+                        min-height: 125px;
                     }
                 
+                    .sort-by-type, .sort-by-tags {
+                        padding: 15px;
+                        font-weight: 600; 
+                        color: #404040;
+                        font-size: 15pt;
+                    }
+
+                    .sort-by-type:hover, .sort-by-tags:hover {
+                        color: #34dcbe;
+                        transform: scale(1.05);
+                        cursor: pointer;
+                    }
+
                     .workout-list-item {
                         background-color: rgba(20, 20, 20, 0.85);
                         color: #34dcbe;
                         height: min-content;
                         max-width: 700px;
                         min-width: 400px;
-                        max-height: 125px;
+                        max-height: 250px;
                         text-align: left;
                         margin-left: auto;
                         margin-right: auto;
-                        margin-bottom: 2px;
+                        margin-bottom: 5px;
                         overflow: hidden;
                         border-radius: 5px;
                         opacity: 0.95;
                         transition: ease all 0.25s;
-                        box-shadow: 0px 1px 2px 2px black;
                     }
                     .tag-bubble {
                         border-radius: 15px;
@@ -114,10 +132,10 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                     }
                     .search-bar {
                         background-color: rgba(50, 50, 50, 0.25);
-                        max-width: 690px;
+                        max-width: 700px;
                         min-width: 400px;
                         text-align: left;
-                        padding: 5px;
+                        padding: 10px;
                         border-radius: 5px;
                         margin-right: auto;   
                         margin-left: auto;
@@ -130,6 +148,9 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                     @media only screen and (max-width: 600px) {
                         .workout-tags {
                           display: none;
+                        }
+                        .workout-list-item {
+                            max-width: 400px;
                         }
                       }
                       .search-input {
@@ -149,22 +170,51 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                           filter: hue-rotate(45deg);
                           padding: 2px;
                       }
+                      .icon-quick-view {
+                          color: #505050;
+                          margin-left: 15px;
+                          transition: all ease 0.15s;
+                      }
+                      .icon-quick-view:hover,
+                      .icon-quick-view:active,
+                      .icon-quick-view:focus,
+                      .icon-quick-view:focus-visible {
+                          color: #34dcbe;
+                          transform: scale(1.20);
+                          cursor: pointer;
+                      } 
                 `
                 }
-            </style>
-            <ListGroup.Item className="workout-list-item">
-                <Container fluid>
-                    <Row className="h-100">
+            </style>    
+            <ReactTooltip effect="solid"/>
+            <ReactTooltip effect="solid"/>
+            <ReactTooltip effect="solid"/>
+            <ListGroup.Item className="workout-list-item" onClick={(e) => { setShowQuickInfo(!showQuickInfo); }}>
+                <Container fluid className="h-25">
+                    <Row className="workout-row">
                         <Col xs="2" className="workout-type-icon">
                             <div className="focus-badge"><WorkoutTypeIcon workoutType={workoutType} /></div>
                             <div className="badge-label">{workoutType}</div>
                         </Col>
-                        <Col xs="10" sm="6" className="workout-name">
+                        <Col xs="9" sm="6" className="workout-name">
                             <div className="name-text h-100">{name}</div>
                         </Col>
                         <Col className="workout-tags">
                             <div className="w-100 tag-label">Tags:</div>                          
                             {tags.map(tag => (<div className="tag-bubble">{`${tag}`}</div>))}
+                        </Col>
+                    </Row>
+                    <Row className={(showQuickInfo) ? "workout-desc-row show-quick" : "workout-desc-row hide-quick"}>
+                        <Col xs="1" className="mt-3">
+                            <Icon.PlayFill data-tip="Start Workout" className="icon-quick-view" width={40} height={40}></Icon.PlayFill>
+                        </Col>
+                        <Col xs="3"></Col>
+                        <Col xs="1" className="mt-3">
+                            <Icon.EyeFill data-tip="View Workout" className="icon-quick-view" width={35} height={35}></Icon.EyeFill>
+                        </Col>
+                        <Col xs="3"></Col>
+                        <Col xs="1" className="mt-3">
+                            <Icon.PencilFill data-tip="Edit Workout" className="icon-quick-view" width={28} height={28}></Icon.PencilFill>
                         </Col>
                     </Row>
                 </Container>
@@ -173,30 +223,108 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
     )
 }
 
+export const renderSimpleTooltip = (props: any) => (
+    <Tooltip id="button-tooltip" {...props}>
+        {props.tooltipText}
+    </Tooltip>
+);
+
+export function ExercisesQuickList(...props: any) {
+    const { exercises = [{name:"Squats"}, {name:"Bench"}, {name:"Aerobic Running"}, {name:"Testing 123 123"}] } = props; 
+    return (
+        <>
+            <style type="text/css">
+                {
+                    `
+                        .exercises-quick-item {
+                            background-color: #303030;
+                            border-radius: 5px;
+                            display: flex;
+                            width: 75px;
+                            margin-left: 8px;
+                            text-align: center;
+                            padding: 20px;
+                            padding-left: 10px;
+                            cursor: pointer;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;                   
+                        }
+
+                        .exercises-quick-item:hover,
+                        .exercises-quick-item:active,
+                        .exercises-quick-item:focus,
+                        .exercises-quick-item:focus-visible {
+                            background-color: #202020;
+                            transform: scale(1.05);
+                        }
+
+                        .exercises-list-cont {
+                            width: 100%; 
+                            height: 100%;
+                            display: flex;
+                            justify-content: start;
+                        }
+                    
+                    `
+                }
+
+            </style>
+            <div className="exercises-list-cont">
+                {
+                    exercises.map((exercise: any, index: any) => {
+                        if(index >= 5) {
+                            if(index === 4) {
+                                return (
+                                    <div className="exercises-quick-item">
+                                        View all
+                                    </div>
+                                )
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return (
+                                <div className="exercises-quick-item">
+                                    {exercise.name}
+                                </div>
+                                
+                            )
+                        }              
+                    })
+                }
+                  <div className="exercises-quick-item">
+                    View&nbsp;all
+                  </div>
+            </div>
+        </>
+    )
+}
+
 export function WorkoutsList(...props: any) {
     const { workouts } = props;
     return (
             <ListGroup>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.aerobic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.bodybuilding} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.anaerobic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.control} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.cardio} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.dropsets} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.dynamic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.endurance} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.explosive} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.flexibility} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.heavy} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.intervals} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.max} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.mix} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.other} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.power} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.pump} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.speed} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Heavy Squats" workoutType={global.workoutFocuses.stability} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Heavy Leg Day" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Fast Run and Circuit" workoutType={global.workoutFocuses.aerobic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Arm Day" workoutType={global.workoutFocuses.bodybuilding} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Sprint Day" workoutType={global.workoutFocuses.anaerobic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Planks and Core" workoutType={global.workoutFocuses.control} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Slow Run" workoutType={global.workoutFocuses.cardio} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Chest Day" workoutType={global.workoutFocuses.dropsets} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Agility and Plyo" workoutType={global.workoutFocuses.dynamic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Mixed Cardio" workoutType={global.workoutFocuses.endurance} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Paused Compound Lifts" workoutType={global.workoutFocuses.explosive} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Jefferson Deadlifts" workoutType={global.workoutFocuses.flexibility} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Deadlifts" workoutType={global.workoutFocuses.heavy} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Stationary Bike" workoutType={global.workoutFocuses.intervals} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Bench" workoutType={global.workoutFocuses.max} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Circuit" workoutType={global.workoutFocuses.mix} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Yoga" workoutType={global.workoutFocuses.other} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Squats" workoutType={global.workoutFocuses.power} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Tricep Extensions" workoutType={global.workoutFocuses.pump} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Push Press" workoutType={global.workoutFocuses.speed} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+                <WorkoutListItem name="Planks" workoutType={global.workoutFocuses.stability} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
             </ListGroup>
     )
 }
@@ -237,7 +365,7 @@ export function WorkoutsListView() {
             <Container fluid className="workouts-list-container">
                 <Row className="mb-4">
                     <Col>
-                        <span style={{ color: "#34dcbe" , fontSize: "40pt", fontWeight: 700}}>Workouts <Icon.Bullseye width={60} height={60} color={"#34dcbe"}></Icon.Bullseye></span>
+                        <span style={{ color: "#34dcbe" , fontSize: "50pt", fontWeight: 700}}>Workouts</span>
                     </Col>
                 </Row>
                 <Row>
@@ -247,6 +375,20 @@ export function WorkoutsListView() {
                             <input type="text" placeholder="Search..." className="search-input"></input>
                         </div>
                     </Col>
+                </Row>
+                <Row>
+                    <Col></Col>
+                    <Col xs="3">
+                        <div className="sort-by-type">
+                            Sort by Type               
+                        </div>
+                    </Col>
+                    <Col xs="3">
+                        <div className="sort-by-tags">
+                            Sort by Tags
+                        </div>
+                    </Col>
+                    <Col></Col>
                 </Row>
                 <Row className="h-100">
                     <Col className="workout-list-col">
