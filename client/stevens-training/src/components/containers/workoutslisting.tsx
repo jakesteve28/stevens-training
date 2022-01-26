@@ -172,7 +172,6 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                       }
                       .icon-quick-view {
                           color: #505050;
-                          margin-left: 15px;
                           transition: all ease 0.15s;
                       }
                       .icon-quick-view:hover,
@@ -205,16 +204,22 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                         </Col>
                     </Row>
                     <Row className={(showQuickInfo) ? "workout-desc-row show-quick" : "workout-desc-row hide-quick"}>
-                        <Col xs="1" className="mt-3">
-                            <Icon.PlayFill data-tip="Start Workout" className="icon-quick-view" width={40} height={40}></Icon.PlayFill>
+                        <Col xs="3" className="mt-3">
+                            <span className="icon-quick-view" style={{ fontSize: "10pt" }}>
+                                <Icon.PlayFill data-tip="Start Workout" width={40} height={40}></Icon.PlayFill>&nbsp;Start&nbsp;Workout                             
+                            </span>
                         </Col>
-                        <Col xs="3"></Col>
-                        <Col xs="1" className="mt-3">
-                            <Icon.EyeFill data-tip="View Workout" className="icon-quick-view" width={35} height={35}></Icon.EyeFill>
+                        <Col xs="1"></Col>
+                        <Col xs="3" className="mt-3">
+                            <span  className="icon-quick-view" style={{ fontSize: "10pt", fontWeight: 600 }}>
+                                <Icon.EyeFill data-tip="View Workout" width={35} height={35}></Icon.EyeFill>&nbsp;View&nbsp;Workout                         
+                            </span>
                         </Col>
-                        <Col xs="3"></Col>
-                        <Col xs="1" className="mt-3">
-                            <Icon.PencilFill data-tip="Edit Workout" className="icon-quick-view" width={28} height={28}></Icon.PencilFill>
+                        <Col xs="2"></Col>
+                        <Col xs="3" className="mt-3">
+                            <span  className="icon-quick-view" style={{ fontSize: "10pt" }}>
+                                <Icon.PencilFill data-tip="Edit Workout" width={28} height={28}></Icon.PencilFill>&nbsp;Edit&nbsp;Workout
+                            </span>
                         </Col>
                     </Row>
                 </Container>
