@@ -311,24 +311,12 @@ export function WorkoutsList(...props: any) {
     return (
             <ListGroup>
                 <WorkoutListItem name="Heavy Leg Day" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Fast Run and Circuit" workoutType={global.workoutFocuses.aerobic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
                 <WorkoutListItem name="Arm Day" workoutType={global.workoutFocuses.bodybuilding} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Sprint Day" workoutType={global.workoutFocuses.anaerobic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Planks and Core" workoutType={global.workoutFocuses.control} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
                 <WorkoutListItem name="Slow Run" workoutType={global.workoutFocuses.cardio} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Chest Day" workoutType={global.workoutFocuses.dropsets} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Agility and Plyo" workoutType={global.workoutFocuses.dynamic} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Mixed Cardio" workoutType={global.workoutFocuses.endurance} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Paused Compound Lifts" workoutType={global.workoutFocuses.explosive} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
                 <WorkoutListItem name="Jefferson Deadlifts" workoutType={global.workoutFocuses.flexibility} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Deadlifts" workoutType={global.workoutFocuses.heavy} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Stationary Bike" workoutType={global.workoutFocuses.intervals} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Bench" workoutType={global.workoutFocuses.max} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
                 <WorkoutListItem name="Circuit" workoutType={global.workoutFocuses.mix} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
                 <WorkoutListItem name="Yoga" workoutType={global.workoutFocuses.other} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
                 <WorkoutListItem name="Squats" workoutType={global.workoutFocuses.power} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Tricep Extensions" workoutType={global.workoutFocuses.pump} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-                <WorkoutListItem name="Push Press" workoutType={global.workoutFocuses.speed} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
                 <WorkoutListItem name="Planks" workoutType={global.workoutFocuses.stability} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
             </ListGroup>
     )

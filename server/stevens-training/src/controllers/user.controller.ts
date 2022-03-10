@@ -13,6 +13,8 @@ import { StoryService } from '../providers/story.service';
 import { Message } from '../entities/message.entity';
 import { Place } from '../entities/place.entity';
 import { PlaceService } from '../providers/place.service';
+import { CheckinService } from '../providers/checkin.service';
+import { Checkin } from '../entities/checkin.entity';
 
 class Location {
   latitude: string; 
@@ -23,7 +25,8 @@ class Location {
 export class UserController {
   constructor(private userService: UserService,
               private storyService: StoryService,
-              private placeService: PlaceService
+              private placeService: PlaceService,
+              private checkinService: CheckinService
              ) {}
 
   private readonly logger = new Logger(UserController.name);
@@ -134,6 +137,39 @@ export class UserController {
     this.logger.log(`Creating message from user ${req.user.userName} to ${body?.status}`);
     return this.userService.sendMessage(req.user.id, body?.message, to); 
   }
+
+  @Post('checkin/:id')
+  @UseGuards(JwtRefreshAuthGuard)
+  async checkin(@Req() req, @Param('id') id): Promise<[Place, Checkin]> {
+    const place = await this.placeService.findOne(id); 
+    this.logger.log(`Checkin for user ${req.user.userName} at ${place.name}`);
+    const checkin = await this.checkinService.create(req.user.id, place.id); 
+    return [place, checkin]; 
+  }
+
+  @Post('checkout')
+  @UseGuards(JwtRefreshAuthGuard)
+  async checkout(@Req() req): Promise<Checkin[]> {
+    const checkins = await this.checkinService.checkOut(req.user.id); 
+    this.logger.log(`Checking out all checkins for user: ${req.user.userName}`);
+    return checkins; 
+  }
+
+  @Get('checkins')
+  @UseGuards(JwtRefreshAuthGuard)
+  async getCheckins(@Req() req): Promise<Checkin[]> {
+    this.logger.log(`Fetching all checkins for user ${req.user.userName}`);
+    const checkins = await this.checkinService.getCheckins(req.user.id); 
+    return checkins; 
+  }
+
+  @Delete('/checkin/:id')
+  @UseGuards(JwtRefreshAuthGuard)
+  async removeCheckin(@Req() req, @Param('id') checkinId: string): Promise<void> {
+    this.logger.log(`Deleting checkin with id: ${checkinId} for user ${req.user.userName}`);
+    return this.checkinService.deleteCheckin(checkinId);
+  }
+
 
   @Delete(':id')
   @UseGuards(JwtRefreshAuthGuard)

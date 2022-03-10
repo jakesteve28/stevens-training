@@ -25,6 +25,7 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from '../controllers/health.controller';
 import { NotificationModule } from './notification.module';
 import { HttpsRedirectMiddleware } from 'src/util/http-redirect';
+import { Checkin } from 'src/entities/checkin.entity';
 /**
  * Config module can be accessed globally, 
  * process.env is all cached, 
@@ -57,7 +58,7 @@ const config = {
                   database: configService.get<string>('DATABASE'),
                   synchronize: true,
                   cache: true,
-                  entities: [User, Workout, Story, Place, Message, MediaUpload, Goal, Exercise]              
+                  entities: [User, Workout, Story, Place, Message, MediaUpload, Goal, Exercise, Checkin]              
               }),
               inject: [ConfigService]
             }),        

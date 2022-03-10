@@ -2,6 +2,32 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const host = "https://localhost:3000"; 
 
+const testWorkout = {
+  id: "test",
+  name: "test",
+  workoutFocus: "Strength", 
+  uploads: ["/uploads/uuid", "/uploads/uuid2"],  
+  primaryUpload: "/uploads/uuid", 
+  exerciseMapping: [{
+    mappingId: "uuid",
+    exercise: {
+      id: "uuid5", 
+      name: "bench",
+      desc: "flat bench heavy",
+      uploads: ["/uploads/uuid3", "/uploads/uuid4"],
+      exerciseType: "Heavy",
+      createdAt: "03-03-2022",
+      primaryUpload: "/uploads/uuid3"
+    },
+    sets: "3",
+    rest: "1:30",
+    quantity: "15",
+    duration: "45 seconds",
+    order: 0 
+  }],
+  userId: "uuiduser"
+}
+
 const getNearbyUsers = createAsyncThunk(
   'user/getNearbyUsers', 
   async (distance: number, { getState, requestId, rejectWithValue, signal}) => {
@@ -59,7 +85,7 @@ export const userSlice = createSlice({
     story: [], 
     profilePictures: [], 
     currentWorkout: {}, 
-    workouts: [], 
+    workouts: [testWorkout], 
     exercises: [], 
     uploads: [], 
     goals: [], 
@@ -304,15 +330,18 @@ export const {
 
 export const selectUser = (state: any) => state.user.user;
 export const selectLoggedIn = (state: any) => state.user.loggedIn;
-export const selectStory = (state: any) => state.story;
-export const selectInbox = (state: any) => state.receivedmessages; 
-export const selectSent = (state: any) => state.sentmessages; 
-export const selectGoals = (state: any) => state.goals; 
-export const selectUploads = (state: any) => state.uploads; 
-export const selectExercises = (state: any) => state.exercises; 
-export const selectWorkouts = (state: any) => state.workouts; 
-export const selectProfilePictures = (state: any) => state.profilePictures; 
-export const selectNearbyUsers = (state: any) => state.nearbyUsers; 
-export const selectNearbyPlaces = (state: any) => state.nearbyPlaces; 
+export const selectStory = (state: any) => state.user.story;
+export const selectInbox = (state: any) => state.user.receivedmessages; 
+export const selectSent = (state: any) => state.user.sentmessages; 
+export const selectGoals = (state: any) => state.user.goals; 
+export const selectUploads = (state: any) => state.user.uploads; 
+export const selectExercises = (state: any) => state.user.exercises; 
+export const selectWorkouts = (state: any) => state.user.workouts; 
+export const selectProfilePictures = (state: any) => state.user.profilePictures; 
+export const selectNearbyUsers = (state: any) => state.user.nearbyUsers; 
+export const selectNearbyPlaces = (state: any) => state.user.nearbyPlaces; 
+// export const selectWorkoutById = (workoutId: string) => (state: any) => { return state.workouts.filter((workout: any) => workout.id === workoutId)[0] || null }
+
+
 
 export default userSlice.reducer;

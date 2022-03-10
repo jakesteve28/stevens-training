@@ -80,4 +80,7 @@ Anaerobic
    @Column({ default: "" })
    primaryUpload: string;
 
+   @Column({ default: true })
+   viewable: boolean; 
+
  }

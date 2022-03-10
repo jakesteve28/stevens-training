@@ -12,11 +12,13 @@ import { MessageService } from '../providers/message.service';
 import { WorkoutModule } from './workout.module';
 import { Message } from '../entities/message.entity';
 import { PlaceModule } from './place.module';
+import { Checkin } from '../entities/checkin.entity';
+import { CheckinService } from '../providers/checkin.service';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User, MediaUpload, Story, Message]), forwardRef(() => SignOnModule), forwardRef(() => WorkoutModule), forwardRef(() => PlaceModule)
+    imports: [TypeOrmModule.forFeature([User, MediaUpload, Story, Message, Checkin]), forwardRef(() => SignOnModule), forwardRef(() => WorkoutModule), forwardRef(() => PlaceModule)
 ],
-    providers: [UserService, UserSubscriber, StoryService, MessageService],
+    providers: [UserService, UserSubscriber, StoryService, MessageService, CheckinService],
     controllers: [UserController],
     exports: [UserService]
 })

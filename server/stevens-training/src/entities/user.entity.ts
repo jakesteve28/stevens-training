@@ -99,4 +99,7 @@ import { Workout } from './workout.entity';
    @CreateDateColumn()
    createdAt: string;
 
+   @Column({ default: true })
+   viewable: boolean; 
+
  }

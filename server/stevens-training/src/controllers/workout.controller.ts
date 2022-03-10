@@ -18,9 +18,15 @@ export class WorkoutController {
   private readonly logger = new Logger(WorkoutController.name);
           
   @Get(':id')
-  async getWorkout(@Param('id') workoutId: string): Promise<Workout> {
+  async getWorkout(@Req() req, @Param('id') workoutId: string): Promise<Workout> {
     this.logger.log(`Getting workout ${workoutId}`);
-    return this.workoutService.findOne(workoutId);
+    const workout = await this.workoutService.findOne(workoutId);
+    if(req.user.id !== workout.user.id || req.user.id !== 'admin') {
+      if(!workout.viewable) {
+        this.logger.log(`Workout is not viewable by other users, requested by ${req.user.userName}`);
+        return null;
+      } else return workout; 
+    } else return workout;
   }
 
   @Post('create')
@@ -39,12 +45,22 @@ export class WorkoutController {
                       @Query('distance') distance: number
                     )
                     : Promise<Workout> {
+    const workout = await this.workoutService.findOne(workoutId);
+    if(workout.user.id !== req.user.id) {
+      this.logger.log(`Workout is not editable by other users, requested by ${req.user.userName}, workout is owned by user ID: ${workout.user.userName}`);
+      return null;
+    }
     this.logger.log(`Adding exercise ${exerciseId} to workout ${workoutId} for user ${req.user.userName}`);
     return this.workoutService.addExercise(workoutId, exerciseId, sets || 1, reps || 0, duration || 0, distance || 0); 
   } 
 
   @Put('rmexercise/:id/:mappingId')
   async removeExercise(@Req() req, @Param('id') workoutId: string, @Param('mappingId') mappingId: string): Promise<Workout> {
+    const workout = await this.workoutService.findOne(workoutId);
+    if(workout.user.id !== req.user.id) {
+      this.logger.log(`Workout is not editable by other users, requested by ${req.user.userName}, workout is owned by user ID: ${workout.user.userName}`);
+      return null;
+    }
     this.logger.log(`Removing exercise mapping ${mappingId} from workout ${workoutId} for user ${req.user.userName}`);
     return this.workoutService.removeExercise(workoutId, mappingId);
   }
@@ -52,12 +68,22 @@ export class WorkoutController {
   @Put('setprimary/:workoutId/:id')
   @UseGuards(JwtRefreshAuthGuard)
   async updatePrimary(@Req() req, @Param('workoutId') workoutId: string, @Param('id') id): Promise<Workout> {
+    const workout = await this.workoutService.findOne(workoutId);
+    if(workout.user.id !== req.user.id) {
+      this.logger.log(`Workout is not editable by other users, requested by ${req.user.userName}, workout is owned by user ID: ${workout.user.userName}`);
+      return null;
+    }
     this.logger.log(`Setting primary upload for workout ${workoutId} to ${id}`);
     return this.workoutService.setPrimaryUpload(workoutId, id); 
   }
 
   @Delete(':id')
-  async removeWorkout(@Param('id') workoutId: string): Promise<void> {
+  async removeWorkout(@Req() req, @Param('id') workoutId: string): Promise<void> {
+    const workout = await this.workoutService.findOne(workoutId);
+    if(workout.user.id !== req.user.id) {
+      this.logger.log(`Workout is not editable by other users, requested by ${req.user.userName}, workout is owned by user ID: ${workout.user.userName}`);
+      return null;
+    }
     this.logger.log(`Removing workout ${workoutId}`);
     return this.workoutService.remove(workoutId);
   }

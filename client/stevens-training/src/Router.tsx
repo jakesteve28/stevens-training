@@ -16,6 +16,7 @@ import './animated-switch.css';
 import StevensNavBar from "./components/NavBar";
 import ProfileScreen from "./components/containers/views/profile";
 import Workouts from "./components/containers/views/workouts";
+import { SingleWorkout, SingleWorkoutView } from "./components/containers/singleworkout";
 
 function mapStyles(styles: any) {
   return {
@@ -76,11 +77,9 @@ export default function AppRouter() {
                 <Route path="/home">
                   <Home />
                 </Route>
-                <Route path="/workouts">
-                  <Workouts />
-                </Route>
+                <Route path={'/workouts/:workoutId'} component={SingleWorkoutView} />
+                <Route path="/workouts" component={Workouts} exact/>
                 <Route path="/dashboard">
-
                 </Route>
                 <Route path="/profile">
                   <ProfileScreen></ProfileScreen>

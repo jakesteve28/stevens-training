@@ -40,4 +40,7 @@ export enum ExerciseType {
    @Column({ default: "" })
    primaryUpload: string;
 
+   @Column({ default: true })
+   viewable: boolean; 
+
  }
