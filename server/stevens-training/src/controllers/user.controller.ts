@@ -147,12 +147,12 @@ export class UserController {
     return [place, checkin]; 
   }
 
-  @Post('checkout')
+  @Post('checkout/:id')
   @UseGuards(JwtRefreshAuthGuard)
-  async checkout(@Req() req): Promise<Checkin[]> {
-    const checkins = await this.checkinService.checkOut(req.user.id); 
-    this.logger.log(`Checking out all checkins for user: ${req.user.userName}`);
-    return checkins; 
+  async checkout(@Req() req, @Param('id') id: string): Promise<Checkin> {
+    const checkin = await this.checkinService.checkOut(req.user.id, id); 
+    this.logger.log(`Checking out for user: ${req.user.userName}`);
+    return checkin; 
   }
 
   @Get('checkins')

@@ -13,15 +13,11 @@ export class CheckinService {
         checkin.timeEntered = Date.now(); 
         return checkin;
     }
-    async checkOut(userId: string): Promise<Checkin[]> {
-        const checkins = await this.checkinRepo.find({ where: { userId: userId }}); 
-        if(!checkins) return null; 
-        const now = Date.now();
-        for(let cin of checkins) {
-            cin.timeLeft = now; 
-        }
-        await this.checkinRepo.save(checkins);
-        return checkins; 
+    async checkOut(userId: string, checkinId: string): Promise<Checkin> {
+        const checkin = await this.checkinRepo.findOne(checkinId);
+        checkin.timeLeft = Date.now(); 
+        await this.checkinRepo.save(checkin); 
+        return checkin; 
     }
     async getCheckins(userId: string): Promise<Checkin[]> {
         return this.checkinRepo.find({ where: { userId: userId }}); 
