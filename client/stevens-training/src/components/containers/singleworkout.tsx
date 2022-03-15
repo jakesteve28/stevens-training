@@ -36,7 +36,9 @@ export const SingleWorkoutView: FunctionComponent = () => {
 }
 
 export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout }) => {
-    const { name, workoutFocus, uploads,  primaryUpload, exerciseMapping } = workout; 
+    const { name, workoutFocus, uploads,  primaryUpload, exerciseMapping, tags } = workout; 
+    const [tagEditing, setTagEditing] = useState(false);
+    const [tagAdd, setTagAdd] = useState(false);
     return (
         <>
             <style type="text/css">
@@ -44,8 +46,6 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                 `
                     .single-workout-cont {
                         margin-top: 125px;
-                        min-height: 550px;
-                        max-height: 550px;
                         border-radius: 15px;
                         color: #CCCCCC;
                         background-color: rgba(40, 40, 40, 0.6);
@@ -133,13 +133,93 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                         width: 100%; 
                         height: 150px;
                     }
+                    .workout-tags {
+                        text-align: center;
+                        margin-left: auto;
+                        margin-right: auto;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        max-height: 115px;
+                    }
+                    .tag-label {
+                        text-align: left;
+                        padding-left: 30px;
+                        font-size: 14pt;
+                        color: rgba(33, 87, 88, 1);
+                        font-weight: 800;
+                        whitespace: nowrap;
+                    }
+                    .tag-bubble {
+                        border-radius: 15px;
+                        background-color: rgba(50, 50, 50, 0.4);
+                        color: #aaaaaa;
+                        font-weight: 500;
+                        padding: 5px;
+                        width: min-content;
+                        display: inline-block;
+                        margin: 5px;
+                        height: min-content;
+                        transition: ease all 0.25s;
+                        white-space: nowrap;
+                    }
+                    .tag-bubble:hover {
+                        color: #ccccccc;
+                        transform: scale(1.05);
+                        cursor: pointer;
+                        filter: brightness(150%);
+                    }
+                    .icon-tag-add {
+                        ${(tagAdd) ? 'color: #34dcbe; transform: scale(1.15);' : ''}                      
+                    }
+                    .icon-tag-edit {
+                        ${(tagEditing) ? 'color: #34dcbe; transform: scale(1.15);' : ''}                      
+                    }
+                    .icon-tag-add,
+                    .icon-tag-edit {
+                        transition: all ease 0.25s;
+                    }
+                    .icon-tag-add:hover,
+                    .icon-tag-edit:hover {
+                        cursor: pointer;
+                        transform: scale(1.1);
+                        color: #34dcbe;
+                    }
+                    .workout-single-action {
+                        color: rgba(33, 87, 88, 1);
+                        transition: all ease 0.25s;
+                    }
+                    .workout-single-action:hover, 
+                    .workout-single-action:active, 
+                    .workout-single-action:focus  {
+                        cursor: pointer;
+                        transform: scale(1.1);
+                        color: #34dcbe;
+                    }
+                    .single-workout-add-tag {
+                        background-color: #101010;
+                        border: none; 
+                        outline: none;
+                        color: #34dcbe;
+                    }
+                    .icon-tag-confirm {
+                        color: #22dd44;
+                    }
+                    .icon-tag-confirm:hover,
+                    .icon-tag-confirm:active,
+                    .icon-tag-confirm:focus {
+                        color: #66FF99;
+                        cursor: pointer;
+                    }
+                    .icon-tag-delete {
+                        color: #990000;
+                    }
                 `
             }
             </style>
             <Container fluid className="single-workout-cont">
                 <Row className="single-workout-title-row">
                     <Col xs="1" style={{ cursor: "pointer" }}>
-                        <span className="single-title-icon"><Icon.ArrowLeftCircleFill color={"#34dcbe"} width={35} height={35} /></span>
+                        <span className="single-title-icon"><Icon.ArrowLeftCircleFill className="workout-single-action" width={35} height={35} /></span>
                     </Col>
                     <Col className="single-title-span">
                         Name:&nbsp;&nbsp;&nbsp;<span className="single-title-name">{name}</span>
@@ -154,14 +234,29 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                         </Row>
                         <Row className="field-single-workout mb-3">
                             <Col style={{ cursor: "pointer" }}>
-                                <Icon.PinAngleFill color="rgba(33, 87, 88, 1)" width="40" height="40" />
+                                <Icon.PinAngleFill className="workout-single-action" width="40" height="40" />
                             </Col>           
                             <Col style={{ cursor: "pointer" }}>
-                                <Icon.PlayFill  color="rgba(33, 87, 88, 1)" width="50" height="50" />
+                                <Icon.PlayFill className="workout-single-action" width="50" height="50" />
                             </Col>           
                             <Col style={{ cursor: "pointer" }}>
-                                <Icon.ShareFill color="rgba(33, 87, 88, 1)" width="40" height="40" />
+                                <Icon.ShareFill className="workout-single-action" width="40" height="40" />
                             </Col>           
+                        </Row>
+                        <Row className="mt-3 mb-3">
+                            <Col xs="10" className="workout-tags">
+                            <div className="w-100 tag-label">
+                                Tags&nbsp;&nbsp;&nbsp;
+                                <Icon.PlusCircle onClick={() => {setTagAdd(!tagAdd); setTagEditing(false);}} className="icon-tag-add" width={20} height={20} />&nbsp;&nbsp;&nbsp;
+                                <Icon.PencilFill onClick={() => {setTagEditing(!tagEditing); setTagAdd(false);}} className="icon-tag-edit" width={20} height={20} />
+                                {
+                                    (tagAdd) ? (<><input className="single-workout-add-tag" type="text" autoFocus={true}/><Icon.Check className="icon-tag-confirm" width={40} height={40} /></>) : (<></>)
+                                }
+                            </div>                          
+                                {tags.map(tag => 
+                                    (<div className="tag-bubble">{`${tag}`}{(tagEditing) ? (<Icon.X className="icon-tag-delete" width={20} height={20} />) : (<></>)}</div>))
+                                }
+                            </Col>
                         </Row>
                         <Row className="field-single-workout">
                         <Accordion>
@@ -172,20 +267,6 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                                     </CustomToggle>
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="0">
-                                    <Card.Body>
-                                        <Container fluid className="exercises-list">
-                                                
-                                        </Container>
-                                    </Card.Body>
-                                </Accordion.Collapse>
-                            </Card>
-                            <Card style={{ backgroundColor: "transparent"}}>
-                                <Card.Header style={{ paddingLeft: "35px", color: "#1259db", fontSize: "20pt", textAlign: "left", cursor: "pointer" }}>
-                                    <CustomToggle eventKey="1">
-                                    <span style={{color: "#34dcbe", textShadow: "2px 1px #aa0000"}}>Tags</span>
-                                    </CustomToggle>
-                                </Card.Header>
-                                <Accordion.Collapse eventKey="1">
                                     <Card.Body>
                                         <Container fluid className="exercises-list">
                                                 
@@ -209,6 +290,7 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                             </Card>
                         </Accordion>
                         </Row>
+                       
                     </Col>
                 </Row>
             </Container>

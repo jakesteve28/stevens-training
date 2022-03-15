@@ -25,7 +25,8 @@ const testWorkout = {
     duration: "45 seconds",
     order: 0 
   }],
-  userId: "uuiduser"
+  userId: "uuiduser",
+  tags: ['Tough', 'Tiring', 'Burn', 'Challenging', 'New', 'TagTest', 'idk','idk','idk','idk','idk','idk','idk','idk','idk', ]
 }
 
 const getNearbyUsers = createAsyncThunk(

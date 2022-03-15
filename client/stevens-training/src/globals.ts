@@ -38,6 +38,7 @@ export interface Workout {
    uploads: Array<string>;
    primaryUpload: string;
    userId: string;
+   tags: Array<string>;
 }
 
  export const DefaultWorkout: Workout =  {
@@ -50,7 +51,8 @@ export interface Workout {
     createdAt: "03-03-2022",
     uploads: ["default workout"],
     primaryUpload: "default workout",
-    userId: "default workout"
+    userId: "default workout",
+    tags: ['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring']
 }
 
 export interface Exercise {
