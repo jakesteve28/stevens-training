@@ -1,33 +1,35 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
+import { DefaultExercise, DefaultWorkout } from '../../globals';
 export const host = "https://localhost:3000"; 
 
-const testWorkout = {
-  id: "test",
-  name: "test",
-  workoutFocus: "Strength", 
-  uploads: ["/uploads/uuid", "/uploads/uuid2"],  
-  primaryUpload: "/uploads/uuid", 
-  exerciseMapping: [{
-    mappingId: "uuid",
-    exercise: {
-      id: "uuid5", 
-      name: "bench",
-      desc: "flat bench heavy",
-      uploads: ["/uploads/uuid3", "/uploads/uuid4"],
-      exerciseType: "Heavy",
-      createdAt: "03-03-2022",
-      primaryUpload: "/uploads/uuid3"
-    },
-    sets: "3",
-    rest: "1:30",
-    quantity: "15",
-    duration: "45 seconds",
-    order: 0 
-  }],
-  userId: "uuiduser",
-  tags: ['Tough', 'Tiring', 'Burn', 'Challenging', 'New', 'TagTest', 'idk','idk','idk','idk','idk','idk','idk','idk','idk', ]
-}
+const testWorkout = DefaultWorkout;
+
+// const testWorkout = {
+//   id: "test",
+//   name: "test",
+//   workoutFocus: "Strength", 
+//   uploads: ["/uploads/uuid", "/uploads/uuid2"],  
+//   primaryUpload: "/uploads/uuid", 
+//   exerciseMapping: [{
+//     mappingId: "uuid",
+//     exercise: {
+//       id: "uuid5", 
+//       name: "bench",
+//       desc: "flat bench heavy",
+//       uploads: ["/uploads/uuid3", "/uploads/uuid4"],
+//       exerciseType: "Heavy",
+//       createdAt: "03-03-2022",
+//       primaryUpload: "/uploads/uuid3"
+//     },
+//     sets: "3",
+//     rest: "1:30",
+//     quantity: "15",
+//     duration: "45 seconds",
+//     order: 0 
+//   }],
+//   userId: "uuiduser",
+//   tags: ['Tough', 'Tiring', 'Burn', 'Challenging', 'New', 'TagTest', 'idk','idk','idk','idk','idk','idk','idk','idk','idk', ]
+// }
 
 const getNearbyUsers = createAsyncThunk(
   'user/getNearbyUsers', 
@@ -86,8 +88,8 @@ export const userSlice = createSlice({
     story: [], 
     profilePictures: [], 
     currentWorkout: {}, 
-    workouts: [testWorkout], 
-    exercises: [], 
+    workouts: [testWorkout, DefaultWorkout], 
+    exercises: [DefaultExercise], 
     uploads: [], 
     goals: [], 
     sentmessages: [], 

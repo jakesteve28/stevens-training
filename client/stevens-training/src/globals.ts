@@ -41,13 +41,31 @@ export interface Workout {
    tags: Array<string>;
 }
 
+export const DefaultExercise: Exercise = {
+    id: "default exercise",
+    name: "default exercise",
+    desc: "exercise",
+    uploads: ["default exercise"], 
+    exerciseType: ExerciseType.failure,
+    createdAt: "03-03-2022",   
+    primaryUpload: "default exercise"
+}
+
+export const DefaultExerciseMapping: ExerciseMapping = {
+    mappingId: "defaultexercisemappingId",
+    exercise: DefaultExercise,
+    sets: "5",
+    quantity: "10",
+    duration: "", 
+}
+
  export const DefaultWorkout: Workout =  {
-    id: "default workout",
+    id: "default",
     name: "default workout",
     desc: "default workout",
     workoutFocus: WorkoutFocus.strength, 
-    exerciseMapping: [],
-    supersetMapping: { supersets: [] },
+    exerciseMapping: [DefaultExerciseMapping, DefaultExerciseMapping, DefaultExerciseMapping, DefaultExerciseMapping],
+    supersetMapping: { supersets: [[1,2], [3, 4]]},
     createdAt: "03-03-2022",
     uploads: ["default workout"],
     primaryUpload: "default workout",
@@ -71,7 +89,6 @@ export interface ExerciseMapping {
     sets: string;
     quantity: string; 
     duration: string; 
-    order: number; 
 }
 
 export interface ProfilePermission {

@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Container, Row, Col, Accordion, Card, useAccordionButton, AccordionContext } from "react-bootstrap";
-import { Workout, DefaultWorkout } from '../../globals'; 
+import { Workout, DefaultWorkout, ExerciseMapping } from '../../globals'; 
 import { Redirect, useParams } from 'react-router-dom';
 import { selectUser, selectWorkouts } from '../../features/user/userSlice';
 import { useSelector } from 'react-redux';
 import WorkoutTypeIcon from '../workouts/WorkoutTypeIcon';
 import * as Icon from 'react-bootstrap-icons';
-
+import benchlogo from '../../imgs/462bench.jpg';
 
 export const SingleWorkoutView: FunctionComponent = () => {
     const workoutId: any = useParams();
@@ -44,15 +44,35 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
             <style type="text/css">
             {
                 `
+                    .chevron-single-active {
+                        transform: rotate(180deg);
+                    }
+                    .chevron-single-span {
+                        display: inline-block;
+                        transition: ease-in all 0.3s;
+                    }              
                     .single-workout-cont {
-                        margin-top: 125px;
+                        margin-top: 100px;
                         border-radius: 15px;
                         color: #CCCCCC;
                         background-color: rgba(40, 40, 40, 0.6);
-                        width: 40%;
-                        min-width: 350px;
-                        overflow: hidden;
+                        min-width: 400px;
                     }
+                    .exercises-list-card-body::-webkit-scrollbar-track {
+                        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                        border-radius: 10px;
+                        background-color: #191919;
+                    }
+                    .exercises-list-card-body::-webkit-scrollbar {
+                        width: 12px;
+                        background-color: #191919;
+                    }
+                    .exercises-list-card-body::-webkit-scrollbar-thumb {
+                        border-radius: 10px;
+                        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+                        background-color: rgba(52, 220, 190, 0.5)
+                    }
+                    
                     .single-workout-fields {
                         padding-top: 25px;
                     }
@@ -72,16 +92,15 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
 
                     }
                     .field-single-workout {
+                        display: flex;
                         white-space: nowrap;
                     }
                     .single-workout-field-label-span {
                         color: #0090b0;
                     }
                     .single-workout-field-span {
-                        text-align: center;
                         font-size: 12pt;
                         color: #aaaaaa;
-                        text-shadow: 2px 2px #000000;
                     }
                     .single-name {
                         font-weight: 700;
@@ -97,10 +116,9 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                         font-size: 12pt;
                     }
                     .single-focus {
-                        font-size: 25pt;
+                        font-size: 30pt;
                         color: #34dcbe;
-                        font-weight: 600;
-                        text-shadow: 1px 1px #FF0000;
+                        font-weight: 500;
                     }
                     .single-workout-title-row {
                         background-color: rgba(23, 77, 88, 0.4);
@@ -109,16 +127,20 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                         height: 60px;
                         text-align: left;
                         padding-top: 10px;
+                        box-shadow: inset 0 0 10px #191919;
                     }
                     .single-title-span,
+                    .single-title-icon {             
+                        color: #757575;
+                        font-size: 10pt;
+                        display: flex;
+                        justify-content: center-left;
+                        align-items: center;
+                    }
                     .single-title-icon {
-                        color: #606060;
-                        font-weight: 700;
-                        font-size: 16pt;
-                        text-shadow: 1px 3px #030303;
+                         padding-top: 10px !important;
                     }
                     .single-title-span {
-                        font-size: 20pt;
                         margin-left: 10px;
                         text-overflow: ellipsis;
                         overflow: hidden;
@@ -126,13 +148,13 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                     }
                     .single-title-name {
                         color: #34dcbe;
-                       
+                        font-size: 20pt;
+                        font-weight: 500;
+                        padding-left: 20px;
                     }
                     .exercises-list {
-                        background-color: #121212;
-                        width: 100%; 
-                        height: 150px;
-                    }
+                        background-color: #191919;
+                    }            
                     .workout-tags {
                         text-align: center;
                         margin-left: auto;
@@ -145,8 +167,8 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                         text-align: left;
                         padding-left: 30px;
                         font-size: 14pt;
-                        color: rgba(33, 87, 88, 1);
-                        font-weight: 800;
+                        color: #505050;
+                        font-weight: 500;
                         whitespace: nowrap;
                     }
                     .tag-bubble {
@@ -184,16 +206,32 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                         transform: scale(1.1);
                         color: #34dcbe;
                     }
+                    .workout-single-action-col {
+                        transition: all ease 0.25s;  
+                    }
                     .workout-single-action {
                         color: rgba(33, 87, 88, 1);
                         transition: all ease 0.25s;
                     }
-                    .workout-single-action:hover, 
-                    .workout-single-action:active, 
-                    .workout-single-action:focus  {
+                    @keyframes animate-single-workout-action-buttons {
+                        0%   { transform: rotate(-5deg) scale(1.05);}
+                        25%  { transform: rotatee(15deg) scale(1.1);}
+                        50%  { transform: rotate(5deg) scale(1.15);}
+                        100% { transform: rotate(0deg) scale(1.2);}
+                      }
+                    .workout-single-action-col:hover, 
+                    .workout-single-action-col:active, 
+                    .workout-single-action-col:focus {
                         cursor: pointer;
-                        transform: scale(1.1);
+                        color: #34dcbe;    
+                    }
+                    .workout-single-action-col:hover .workout-single-action, 
+                    .workout-single-action-col:active .workout-single-action, 
+                    .workout-single-action-col:focus .workout-single-action  {
+                        cursor: pointer;
                         color: #34dcbe;
+                        animation-name: animate-single-workout-action-buttons;
+                        animation-duration: 3.0s;
                     }
                     .single-workout-add-tag {
                         background-color: #101010;
@@ -213,37 +251,70 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                     .icon-tag-delete {
                         color: #990000;
                     }
+                    .pin-workout-text {
+                        color: #606060;
+                        font-weight: 500;
+                        padding-right: 20px;
+                    }
+                    .label-focus { 
+                        vertical-align: 75%;
+                        padding-right: 20px;
+                        color: #757575;
+                    }
+                    .single-workout-tags-row {
+                        border-top: 1px solid #303030;
+                        border-bottom: 1px solid #303030;
+                        padding-bottom: 10px;
+                        padding-top: 15px;
+                        margin-left: 15px;
+                        margin-right: 15px;
+                    }
+                    .single-workout-exercises-list-header {
+                        background-color: rgba(23, 77, 88, 0.4);
+                        width: 100%;
+                    }
+                    .exercises-list-card-body {
+                        background-color: transparent;   
+                        overflow-y: scroll;
+                        height: 300px;
+                    }
+                    .single-workout-exercises-list-header-text {
+                        color: #34dcbe;
+                        font-weight: 300;
+                        font-size: 15pt;
+                    }
+                    
                 `
             }
             </style>
             <Container fluid className="single-workout-cont">
                 <Row className="single-workout-title-row">
-                    <Col xs="1" style={{ cursor: "pointer" }}>
-                        <span className="single-title-icon"><Icon.ArrowLeftCircleFill className="workout-single-action" width={35} height={35} /></span>
+                    <Col xs="2" style={{ cursor: "pointer" }}>
+                        <span className="single-title-icon"><Icon.ArrowLeftCircleFill className="workout-single-action" width={20} height={20} /></span>
                     </Col>
                     <Col className="single-title-span">
-                        Name:&nbsp;&nbsp;&nbsp;<span className="single-title-name">{name}</span>
+                        <span className="single-title-label">Name:</span><span className="single-title-name">{name}</span>
                     </Col>
                 </Row>
                 <Row className="single-workout-cont-row">
                     <Col className="single-workout-fields">
-                        <Row className="field-single-workout">
-                            <span className="single-workout-field-span single-focus">
-                                <WorkoutTypeIcon workoutType={workoutFocus} />&nbsp;&nbsp;&nbsp;{workoutFocus}
-                            </span>
+                        <Row className="field-single-workout single-workout-focus-span">
+                            <Col>
+                                <span className="label-focus">Focus:</span><span className="single-workout-field-span single-focus"><WorkoutTypeIcon workoutType={workoutFocus} />{workoutFocus}</span>
+                            </Col>
                         </Row>
                         <Row className="field-single-workout mb-3">
-                            <Col style={{ cursor: "pointer" }}>
-                                <Icon.PinAngleFill className="workout-single-action" width="40" height="40" />
+                            <Col style={{ cursor: "pointer" }}  className="workout-single-action-col">
+                                <span className="pin-workout-text">Pin</span><Icon.PinAngleFill className="workout-single-action" width="40" height="40" />
                             </Col>           
-                            <Col style={{ cursor: "pointer" }}>
-                                <Icon.PlayFill className="workout-single-action" width="50" height="50" />
+                            <Col style={{ cursor: "pointer" }}  className="workout-single-action-col">
+                                <span className="pin-workout-text">Start</span><Icon.PlayFill className="workout-single-action" width="50" height="50" />
                             </Col>           
-                            <Col style={{ cursor: "pointer" }}>
-                                <Icon.ShareFill className="workout-single-action" width="40" height="40" />
+                            <Col style={{ cursor: "pointer" }}  className="workout-single-action-col">
+                                 <span className="pin-workout-text">Share</span><Icon.ShareFill className="workout-single-action" width="40" height="40" />
                             </Col>           
                         </Row>
-                        <Row className="mt-3 mb-3">
+                        <Row className="mt-3 mb-3 single-workout-tags-row">
                             <Col xs="10" className="workout-tags">
                             <div className="w-100 tag-label">
                                 Tags&nbsp;&nbsp;&nbsp;
@@ -258,39 +329,31 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
                                 }
                             </Col>
                         </Row>
-                        <Row className="field-single-workout">
-                        <Accordion>
-                            <Card style={{ backgroundColor: "transparent"}}>
-                                <Card.Header style={{ paddingLeft: "35px", color: "#1259db", fontSize: "20pt", textAlign: "left", cursor: "pointer" }}>
-                                    <CustomToggle eventKey="0">
-                                        <span style={{color: "#34dcbe", textShadow: "2px 1px #aa0000"}}>Exercises</span>
-                                    </CustomToggle>
-                                </Card.Header>
-                                <Accordion.Collapse eventKey="0">
-                                    <Card.Body>
-                                        <Container fluid className="exercises-list">
-                                                
-                                        </Container>
-                                    </Card.Body>
-                                </Accordion.Collapse>
-                            </Card>
-                            <Card style={{ backgroundColor: "transparent"}}>
-                                <Card.Header style={{ paddingLeft: "35px", color: "#1259db", fontSize: "20pt", textAlign: "left", cursor: "pointer" }}>
-                                    <CustomToggle eventKey="1">
-                                    <span style={{color: "#34dcbe", textShadow: "2px 1px #aa0000"}}>User Actions</span>
-                                    </CustomToggle>
-                                </Card.Header>
-                                <Accordion.Collapse eventKey="1">
-                                    <Card.Body>
-                                        <Container fluid className="exercises-list">
-                                                
-                                        </Container>
-                                    </Card.Body>
-                                </Accordion.Collapse>
-                            </Card>
-                        </Accordion>
-                        </Row>
-                       
+                        <Row className="field-single-workout mt-4 mb-4">
+                            <Accordion>
+                                <Card style={{ backgroundColor: "transparent" }}>
+                                    <Card.Header style={{ paddingLeft: "35px", color: "#757575", fontSize: "20pt", textAlign: "left", cursor: "pointer" }}>
+                                        <ContextAwareToggle eventKey="0">
+                                            <span>Exercises</span>
+                                        </ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body className="exercises-list-card-body">
+                                            <Container className="exercises-list">
+                                                {
+                                                    exerciseMapping.map(mapping => {
+                                                        console.log(mapping)
+                                                        return (
+                                                            <SingleWorkoutExerciseBlock exerciseMapping={mapping} />
+                                                        )
+                                                    })
+                                                }                                 
+                                            </Container>
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>                      
+                        </Row>              
                     </Col>
                 </Row>
             </Container>
@@ -298,18 +361,143 @@ export const SingleWorkout: FunctionComponent<{ workout: Workout }> = ({ workout
     )   
 }   
 
-function CustomToggle(props: any): JSX.Element {
-    const decoratedOnClick = useAccordionButton(props.eventKey, () =>
-      console.log('totally custom!'),
+  interface CtxAwareToggleProps extends React.HTMLAttributes<Element> {
+      children: React.ReactNode;
+      eventKey: any; 
+      callback?: any;
+  }
+
+  function ContextAwareToggle({ children, eventKey, callback }: CtxAwareToggleProps): JSX.Element {
+    const { activeEventKey } = useContext(AccordionContext);
+  
+    const decoratedOnClick = useAccordionButton(
+      eventKey,
+      () => callback && callback(eventKey),
     );
   
+    const isCurrentEventKey = activeEventKey === eventKey;
+  
     return (
-      <div
-        style={{ backgroundColor: 'transparent', width: "100%", display: "flex", justifyContent: "space-between" }}
-        onClick={decoratedOnClick}
-      >
-        <div className="chevron-single-title">{props.children}</div><div className="chevron-single-span"><Icon.ChevronDown color="rgba(33, 87, 88, 1)"/></div>
-      </div>
+        <div
+            style={{ backgroundColor: 'transparent', width: "100%", display: "flex", justifyContent: "space-between" }}
+            onClick={decoratedOnClick}
+        >
+            <div className="chevron-single-title">{children}</div>
+            <div><Icon.ChevronDown className={`chevron-single-span ${(isCurrentEventKey) ? "chevron-single-active" : ""}`} color="rgba(33, 87, 88, 1)"/></div>
+        </div>
     );
   }
   
+
+export const SingleWorkoutExerciseBlock: React.FunctionComponent<{ exerciseMapping: ExerciseMapping }> = ({ exerciseMapping }) => {
+    const { quantity, duration, sets } = exerciseMapping; 
+    const { name, primaryUpload } = exerciseMapping.exercise; 
+    return (
+        <> 
+            <style type="text/css">
+                {`
+                    .single-workout-block-name-col {
+                    }
+
+                    .single-workout-block-info-col {
+
+                    }
+
+                    .single-workout-block-row {
+                        border-bottom: 1px solid #404040;
+                        padding-top: 10px; 
+                        padding-bottom: 10px;
+                        background-color: #191919;
+                    }
+
+                    @media only screen and (max-width: 600px) {
+                        .single-workout-block-info-col {
+                            display: none;
+                        }
+                    }
+                    .block-name {
+                        font-weight: 500; 
+                        font-size: 18pt;
+                        padding-bottom: 10px;
+                    }
+                    .block-img {
+                        text-align: left;
+                        border: 1px solid #191919;
+                        box-shadow: 3px 3px 2px 2px #151515;
+                        border-radius: 75px;
+                        width: 100px;
+                        height: 100px;
+                        object-fit: cover;
+                    }
+                    .block-actions, 
+                    .block-sets,
+                    .block-quant {
+                        display: flex;
+                        justify-content: space-between;
+                        border-bottom: 1px solid #404040;
+                        padding-top: 10px;
+                        padding-bottom: 10px;
+                    }
+                    .block-sets {
+                        text-align: left; 
+                        color: #34dcbe; 
+                        font-weight: 600; 
+                    }
+                    .block-quant {
+                        text-align: left; 
+                        color: #34dcbe; 
+                        font-weight: 600; 
+                    }
+                    .block-actions {
+                        text-align: left; 
+                        color: #34dcbe; 
+                        font-weight: 600; 
+                        border-bottom: none;
+                    }
+                    .block-actions-label {
+                        text-align: left; 
+                        color: #606060; 
+                        font-weight: 300; 
+                        font-size: 12pt;
+                    }
+                    .block-icon-actions {   
+                        color: #707070;
+                    }
+                    .block-share-fill {
+                        margin-left: 20px;
+                    }
+                    .block-icon-action {
+                        transition: ease all 0.5s;
+                    }
+                    .block-icon-action:hover,
+                    .block-icon-action:active,
+                    .block-icon-action:focus {
+                        transform: scale(1.10); 
+                        color: #34dcbe;
+                        cursor: pointer;
+                    }
+                `}
+            </style>
+            <Row className="single-workout-block-row">
+                <Col className="single-workout-block-name-col" xs="6">                 
+                    <div>
+                        <img src={benchlogo} alt="Bench Logo" className="block-img"></img>
+                    </div>  
+                    <div className="block-name">
+                        {name}
+                    </div>                            
+                </Col>
+                <Col className="single-workout-block-info-col" xs="6">
+                    <div className="block-sets"><span>Sets:</span><span>{sets}</span></div>
+                    <div className="block-quant"><span>Duration/Quantity:</span><span>{quantity}</span></div>
+                    <div className="block-actions">                 
+                        <span className="block-icon-actions">
+                            Share<Icon.ShareFill className="block-icon-action block-share-fill" height={25} width={25} />
+                        </span>
+                    </div>
+                </Col>
+            </Row>
+        </>
+       
+    )
+} 
