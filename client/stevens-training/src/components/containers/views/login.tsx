@@ -15,6 +15,24 @@ export default function LoginScreen(){
                     background-color: transparent;
                     height: 100vh;
                     overflow: hidden;
+                    overflow-y: auto;
+                }
+                .background-container-cstm ::-webkit-scrollbar-track
+                {
+                    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                    border-radius: 10px;
+                    background-color: #191919;
+                }
+                .background-container-cstm::-webkit-scrollbar
+                {
+                    width: 12px;
+                    background-color: #191919;
+                }
+                .background-container-cstm::-webkit-scrollbar-thumb
+                {
+                    border-radius: 10px;
+                    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+                    background-color: rgba(52, 220, 190, 0.5)
                 }
                 .login-cont {
                     position: absolute;
@@ -22,7 +40,6 @@ export default function LoginScreen(){
                     top: 10vh;
                     left: 25%;
                     width: 50%;
-                    background-color: #101010;
                     opacity: 0.7;
                     padding-top: 50px;
                     padding-bottom: 100px;
@@ -33,7 +50,6 @@ export default function LoginScreen(){
                 .login-text {
                     color: #34dcbe;
                     cursor: pointer;
-                    text-shadow: 2px 2px 0px #ff0000 ;
                     margin-top: 0px;
                     font-weight: bolder;
                     font-size: 44pt;
@@ -58,12 +74,12 @@ export default function LoginScreen(){
                     border: none; 
                     outline: none;
                     box-shadow: none;
-                    background-color: #191919;
+                    background-color: transparent;
                     width: 95%;
-                    max-width: 400px;
                     font-size: 30pt !important;
                     color: #40eb34 !important;
                     margin-top: 25px;
+                    border-radius: 15px;
                 }
                 .forgot-button {
                     margin-top:15px;
@@ -80,6 +96,8 @@ export default function LoginScreen(){
                     color: #34dbce;
                     font-size: 16pt;
                     font-weight: bolder;
+                    background-color: transparent;
+
                 }
                 .login-button:hover
                 .login-button:focus
@@ -156,22 +174,16 @@ export default function LoginScreen(){
                                         </Col>                                     
                                     </Row>
                                     <Row>
-                                        <Col></Col>
                                         <Col xs="6">
                                             <Button variant="dark" className="forgot-button" onClick={() => { history.push('/signup') }}>
                                                 Sign up
                                             </Button>
                                         </Col>      
-                                        <Col></Col>                            
-                                    </Row>
-                                    <Row>
-                                        <Col></Col>
                                         <Col xs="6">
                                             <Button variant="dark" className="forgot-button" onClick={() => { dispatch(showForgotInfo()); }}>
                                                 Forgot Info?
                                             </Button>
-                                        </Col>
-                                        <Col></Col>
+                                        </Col>                          
                                     </Row>
                                 </Container>       
                             </Col>

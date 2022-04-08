@@ -12,6 +12,25 @@ export default function SignUpScreen(){
                         height: 98vh;
                         top: 0;
                         position: absolute;
+                        overflow-x: hidden;
+                        overflow-y: auto;
+                    }
+                    .background-container-cstm ::-webkit-scrollbar-track
+                    {
+                        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                        border-radius: 10px;
+                        background-color: #191919;
+                    }
+                    .background-container-cstm::-webkit-scrollbar
+                    {
+                        width: 12px;
+                        background-color: #191919;
+                    }
+                    .background-container-cstm::-webkit-scrollbar-thumb
+                    {
+                        border-radius: 10px;
+                        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+                        background-color: rgba(52, 220, 190, 0.5)
                     }
                     .signup-cont {
                         position: absolute;
@@ -19,7 +38,6 @@ export default function SignUpScreen(){
                         top: 100px;
                         left: 25%;
                         width: 50%;
-                        background-color: #101010;
                         opacity: 0.7;
                         padding-top: 50px;
                         padding-bottom: 100px;
@@ -35,10 +53,9 @@ export default function SignUpScreen(){
                     .signup-text {
                         color: #34dcbe;
                         cursor: pointer;
-                        text-shadow: 2px 2px 0px #ff0000 ;
                         margin-top: 0px;
                         font-weight: bolder;
-                        font-size: 44pt;
+                        font-size: 30pt;
                         transition: 1.0s ease;
                     }
                     @media only screen and (max-width: 1200px) {
@@ -129,15 +146,13 @@ export default function SignUpScreen(){
                 <Container fluid className="background-container-cstm"> 
                         <Container fluid className="signup-cont">
                             <Row className="login">
-                                <Col xs="2"/>
+                                <Col xs="1"/>
                                 <Col >
-                                    <span className="login-span"><h1 className="signup-text">New Account</h1></span>
-                                    <br>
-                                    </br>
+                                    <span className="login-span"><h1 className="signup-text">Sign up</h1></span>
                                     <Form className="login-form">
                                         <Form.Group className="mb-5" controlId="formGroupname">
                                             <Row>
-                                                <Col xs="6" className="mt-3">
+                                                <Col xs="12" sm="6" className="mt-3">
                                                     <OverlayTrigger
                                                         show={showfNameError}
                                                         placement={'left'}
@@ -150,8 +165,8 @@ export default function SignUpScreen(){
                                                             <Form.Control onChange={(e) => { if(/^[a-z ,.'-]+$/i.test(e.target.value) == false && e.target.value.length > 2) setShowFNameError(true); else setShowFNameError(false); } } className="ctm-control" placeholder="First name" />
                                                     </OverlayTrigger>
                                                 </Col>
-                                                <Col xs="6" className="mt-3">
-                                                <Form.Control  className="ctm-control" placeholder="Last name" />
+                                                <Col xs="12" sm="6" className="mt-3">
+                                                    <Form.Control  className="ctm-control" placeholder="Last name" />
                                                 </Col>
                                             </Row>
                                         </Form.Group>
@@ -174,7 +189,7 @@ export default function SignUpScreen(){
                                           
                                     </span>
                                 </Col>
-                                <Col xs="2"/>
+                                <Col xs="1"/>
                             </Row>
                         </Container>
                 </Container>

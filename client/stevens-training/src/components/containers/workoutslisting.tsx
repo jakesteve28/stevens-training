@@ -28,10 +28,10 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
 
                     .workout-row {
                         min-height: 125px;
+                        border-bottom: 1px solid #404040;
                     }
                 
                     .sort-by-type, .sort-by-tags {
-                        padding: 15px;
                         font-weight: 600; 
                         color: #404040;
                         font-size: 15pt;
@@ -44,19 +44,18 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                     }
 
                     .workout-list-item {
-                        background-color: rgba(20, 20, 20, 0.85);
+                        background-color: transparent;
                         color: #34dcbe;
                         height: min-content;
                         max-width: 700px;
                         min-width: 400px;
                         max-height: 250px;
                         text-align: left;
-                        margin-left: auto;
+                        margin-left: -25px;
                         margin-right: auto;
                         margin-bottom: 5px;
                         overflow: hidden;
                         border-radius: 5px;
-                        opacity: 0.95;
                         transition: ease all 0.25s;
                     }
                     .tag-bubble {
@@ -130,21 +129,7 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                         overflow: hidden;
                         height: 110px;
                     }
-                    .search-bar {
-                        background-color: rgba(50, 50, 50, 0.25);
-                        max-width: 700px;
-                        min-width: 400px;
-                        text-align: left;
-                        padding: 10px;
-                        border-radius: 5px;
-                        margin-right: auto;   
-                        margin-left: auto;
-                        margin-bottom: 10px;
-                    }
-                    .search-bar:hover {
-                        filter: brightness(120%);
-                        cursor: pointer;
-                    }
+                    
                     @media only screen and (max-width: 600px) {
                         .workout-tags {
                           display: none;
@@ -182,14 +167,17 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                           transform: scale(1.20);
                           cursor: pointer;
                       } 
+                      .bg-selected-workout-list-item { 
+                          background-color: rgba(34, 150, 100, 0.1);
+                      }
                 `
                 }
             </style>    
             <ReactTooltip effect="solid"/>
             <ReactTooltip effect="solid"/>
             <ReactTooltip effect="solid"/>
-            <ListGroup.Item className="workout-list-item" onClick={(e) => { setShowQuickInfo(!showQuickInfo); }}>
-                <Container fluid className="h-25">
+            <ListGroup.Item className={`workout-list-item ${(showQuickInfo) ? `bg-selected-workout-list-item` : ``}`}  onClick={(e) => { setShowQuickInfo(!showQuickInfo); }}>
+                <Container fluid>
                     <Row className="workout-row">
                         <Col xs="2" className="workout-type-icon">
                             <div className="focus-badge"><WorkoutTypeIcon workoutType={workoutType} /></div>
@@ -326,17 +314,39 @@ export function WorkoutsListView() {
         <>
             <style type="text/css">{
                 `
+                    @media only screen and (max-width: 600px) {
+                            .workout-list-col {
+                                max-height: 45vh;
+                                overflow-y: auto;
+                            }
+                            .workouts-list-container {
+                                margin-left: 0px;
+                            }
+                            .search-bar-row {
+                                padding-left: 0px;
+                                text-align: left;
+                            }
+                            .search-bar-col {
+                                text-align: left;
+                            }
+                            .search-bar {
+                                margin-left: -50px;
+                                min-width: 150px;
+                                width: 150px;
+                               
+                            }
+                    }
+                    .search-bar-col {
+                        padding-left: 40px;
+                    }
                     .workouts-list-container {
-                        margin-top: 100px;
-                        height: 70vh;
+                        margin-top: 90px;
+                        height: 100%;
                     }
                     .workout-list-col {
-                        height: 100%;
+                        max-height: 70vh;
                         overflow-y: auto;
-                        background-color: rgba(12, 12, 12, 0.5);
-                        max-width: 800px;
-                        margin-left: auto;
-                        margin-right: auto;
+                        text-align: left;
                     }
                     .workout-list-col::-webkit-scrollbar-track {
                         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -352,38 +362,55 @@ export function WorkoutsListView() {
                         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
                         background-color: rgba(52, 220, 190, 0.5)
                     }
+                    .search-bar-row {
+                        padding: 20px;
+                        text-align: left;
+                        border-bottom: 1px solid #202020;
+                        background-color: #121212;
+                    }   
+                    .search-bar-type {
+                        color: #757575;
+                        font-size: 10pt;
+                        font-style: italic;
+                        padding-left: 10px;
+                    }
+                    .search-tags, .search-focus {
+                        color: #34dcbe; 
+                        font-weight: 600;
+                        font-style: normal;
+                    }
+                    .search-bar {
+                        display: inline-block;
+                        background-color: rgba(50, 50, 50, 0.25);
+                        min-width: 400px;
+                        width: 400px;
+                        text-align: center;
+                        padding: 10px;
+                        border-radius: 5px;
+                        margin-top: 30px;
+                        text-align: left;
+                        white-space:nowrap;
+                    }
+                    .search-bar:hover {
+                        filter: brightness(120%);
+                        cursor: pointer;
+                    }
                 `
             }
             </style>
             <Container fluid className="workouts-list-container">
-                <Row className="mb-4">
-                    <Col>
-                        <span style={{ color: "#34dcbe" , fontSize: "50pt", fontWeight: 700}}>Workouts</span>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <div className="search-bar">
+                <Row className="search-bar-row">
+                    <Col className="search-bar-col">
+                        <span className="search-bar">
                             <Icon.Search className="search-icon" width={35} height={35} color={"#34dcbe"}></Icon.Search>
                             <input type="text" placeholder="Search..." className="search-input"></input>
-                        </div>
+                        </span>
+                        <span className="search-bar-type">
+                            Search By: <span className="search-tags">Tag</span> | <span className="search-focus">Focus</span>
+                        </span>
                     </Col>
                 </Row>
                 <Row>
-                    <Col></Col>
-                    <Col xs="3">
-                        <div className="sort-by-type">
-                            Sort by Type               
-                        </div>
-                    </Col>
-                    <Col xs="3">
-                        <div className="sort-by-tags">
-                            Sort by Tags
-                        </div>
-                    </Col>
-                    <Col></Col>
-                </Row>
-                <Row className="h-100">
                     <Col className="workout-list-col">
                         <WorkoutsList></WorkoutsList>
                     </Col>

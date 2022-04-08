@@ -127,19 +127,20 @@ export default function Home() {
                       width: 100vw;
                     }
                     .btn-ctm {
-                        padding: 15px;
-                        font-weight: 500;
-                        background-color: rgba(200, 0, 0, 0.4);
+                        padding: 25px;
+                        font-weight: 700;
+                        color: #34dcbe;
+                        border-radius: 15px;
                         outline: none; 
                         border: none;
-                        font-size: 15pt;
+                        font-size: 26pt;
                         width: 100%;
-                        margin-top: 5px;
+                        margin-top: 15px;
                         min-width: 150px;
+                        background-color: transparent;
                     }
                     .btn-ctm:hover {
                         color: #34dcbe;
-                        background-color: rgba(200, 0, 0, 0.1);
                     }
                 `}
             </style>
@@ -147,7 +148,7 @@ export default function Home() {
                     <Container fluid className="title-cont">
                         <Row className="title">
                             <div>
-                                <span className="title-span"><h1 className="title-text">Welcome to Strength</h1></span>
+                                <span className="title-span"><h1 className="title-text">Stephanos</h1></span>
                                 <br>
                                 </br>
                             </div>

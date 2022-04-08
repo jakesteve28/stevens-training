@@ -9,12 +9,27 @@ import { Container } from 'react-bootstrap';
 import ParticleBackground from "./components/ParticleBackground";
 
 ReactDOM.render(
+  <>
+    <style type='text/css'>
+      {`
+        .app-cont {
+          height: 100vh;
+          padding:0;
+          background-color: #131313;
+          background-color: #131313;
+          background-image: linear-gradient(190deg, #000000 70%, #00735e 120%);
+          position: absolute;
+        }
+      `}  
+    </style>   
     <Provider store={store}>
-      <Container fluid style={{ height: "95%", padding: "0" }}> 
-        <ParticleBackground />
+         
+      <Container fluid className="app-cont"> 
+        {/* <ParticleBackground /> */}
         <App />
       </Container>
-    </Provider>,
+    </Provider>  
+  </>,
   document.getElementById('root')
 );
 
