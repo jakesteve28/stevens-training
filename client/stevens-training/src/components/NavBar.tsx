@@ -159,8 +159,8 @@ export default function StevensNavBar() {
                     }
 
                     .logo {
-                        font-weight: 500;
-                        color: #dddddd;
+                        font-weight: 600;
+                        color: #34dcbe;
                         display: inline;
                         transition: 1.0s all ease;
                         cursor: pointer;
@@ -236,7 +236,7 @@ export default function StevensNavBar() {
                 </style>
                 <Navbar collapseOnSelect fixed="top" expand="sm" bg="dark" variant="dark"  className="stevens-nav">
                     <Container fluid>
-                        <Navbar.Brand><span className="nav-link-ctm login-link"><h3 className="logo" onClick={() => { if(history) history.push('/home')}}>Stevens Strength</h3><Image src={pic} onClick={() => { if(history) history.push('/home')}}  roundedCircle className="image-custom" /></span></Navbar.Brand>
+                        <Navbar.Brand><span className="nav-link-ctm login-link"><h3 className="logo" onClick={() => { if(history) history.push('/home')}}>stephanos</h3><Image src={pic} onClick={() => { if(history) history.push('/home')}}  roundedCircle className="image-custom" /></span></Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">

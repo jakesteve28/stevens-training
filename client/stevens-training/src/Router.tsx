@@ -16,7 +16,7 @@ import './animated-switch.css';
 import StevensNavBar from "./components/NavBar";
 import ProfileScreen from "./components/containers/views/profile";
 import Workouts from "./components/containers/views/workouts";
-import { SingleWorkout, SingleWorkoutView } from "./components/containers/singleworkout";
+import { SingleWorkoutView } from "./components/containers/views/singleworkout";
 
 function mapStyles(styles: any) {
   return {

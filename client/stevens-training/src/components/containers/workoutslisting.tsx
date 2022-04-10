@@ -47,7 +47,7 @@ export function WorkoutListItem({ name = "default", tags = [], workoutType = glo
                         background-color: transparent;
                         color: #34dcbe;
                         height: min-content;
-                        max-width: 700px;
+                        width: 95%;
                         min-width: 400px;
                         max-height: 250px;
                         text-align: left;
