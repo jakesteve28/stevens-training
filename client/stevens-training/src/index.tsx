@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import { Container } from 'react-bootstrap';
 import ParticleBackground from "./components/ParticleBackground";
-
+import { ReactComponent as Logo } from './imgs/svgs/wreath.svg';
 ReactDOM.render(
   <>
     <style type='text/css'>
@@ -18,12 +18,22 @@ ReactDOM.render(
           background-color: #131313;
           background-color: #131313;
           background-image: linear-gradient(190deg, #000000 70%, #00735e 120%);
-          position: absolute;
+          z-index: 2;
+        }
+        .ctm-svg {
+          position: fixed;
+          top: 20%; 
+          left: 25%;
+          z-index: 1;
+          opacity: 0.2;
+          filter: invert(36%) sepia(98%) saturate(3260%) hue-rotate(155deg) brightness(50%) contrast(103%);     
+          width: 50vw; 
+          height: 50vh; 
         }
       `}  
     </style>   
     <Provider store={store}>
-         
+      <Logo className="ctm-svg"></Logo>
       <Container fluid className="app-cont"> 
         {/* <ParticleBackground /> */}
         <App />
