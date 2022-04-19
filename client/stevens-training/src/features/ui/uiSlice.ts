@@ -3,7 +3,9 @@ export const uiSlice = createSlice({
     name: 'ui',
     initialState: {
       showAbout: false,
-      showForgotInfo: false
+      showForgotInfo: false,
+      currentPage: 'Default Page',
+      showBottomNav: false
     },
     reducers: {
       showAbout: (state: any) => {
@@ -24,15 +26,29 @@ export const uiSlice = createSlice({
           state.showForgotInfo = true;
         }
       },
-      
+      setCurrentPage: (state: any, action: any) => {
+          console.log("Setting Current Page: " + action.payload); 
+          state.currentPage = action.payload;
+      },
+      showBottomNav: (state: any) => {
+        state.showBottomNav = true;
+      },
+      hideBottomNav: (state: any) => {
+        state.showBottomNav = false;
+      }
     }
   });
 export const { 
     showAbout,
-    showForgotInfo
+    showForgotInfo,
+    setCurrentPage,
+    showBottomNav,
+    hideBottomNav
 } = uiSlice.actions;
 
+export const selectCurrentPage = (state: any) => state.ui.currentPage;
 export const selectShowAbout = (state: any) => state.ui.showAbout; 
 export const selectShowForgotInfo = (state: any) => state.ui.showForgotInfo; 
+export const selectShowBottomNav = (state: any) => state.ui.showBottomNav;
 
 export default uiSlice.reducer;

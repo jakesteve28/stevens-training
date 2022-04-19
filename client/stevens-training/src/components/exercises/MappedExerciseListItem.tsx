@@ -6,9 +6,10 @@ import ExerciseDataActions from "./ExerciseDataActions";
 
 interface SingleWorkoutExerciseBlockProps extends React.HTMLAttributes<Element> {
     exerciseMapping: any;
+    index: any;
 }
 
-export default function SingleWorkoutMappedExerciseListItem({ exerciseMapping }: SingleWorkoutExerciseBlockProps) {
+export default function SingleWorkoutMappedExerciseListItem({ exerciseMapping, index }: SingleWorkoutExerciseBlockProps) {
     const { quantity, duration, sets } = exerciseMapping; 
     const { name, primaryUpload } = exerciseMapping.exercise; 
     return (
@@ -22,6 +23,7 @@ export default function SingleWorkoutMappedExerciseListItem({ exerciseMapping }:
                         background-color: transparent;
                         transition: ease all 0.5s;
                         cursor: pointer;
+                        color: #AAAAAA;
                     }
                      .single-workout-block-row:active, .single-workout-block-row:hover, .single-workout-block-row:focus {
                         background-color: #181818;
@@ -38,9 +40,10 @@ export default function SingleWorkoutMappedExerciseListItem({ exerciseMapping }:
                     }
                 `}
             </style>
-            <Row className="single-workout-block-row">
-                <ExerciseNamePic xs="8" sm="6" logo={benchlogo} name="Exercises" />
-                <ExerciseDataActions xs="4" sm="4" sets={sets} quantity={quantity} duration={duration} />
+            <Row className="single-workout-block-row"> 
+                {index}
+                <ExerciseNamePic xs="7" sm="6" logo={benchlogo} name="Exercises" />
+                <ExerciseDataActions xs="4" sm="6" sets={sets} quantity={quantity} duration={duration} />
             </Row>
         </>     
     )

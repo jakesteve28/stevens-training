@@ -1,16 +1,18 @@
 import * as Icon from 'react-bootstrap-icons';
 import { Col, Row } from 'react-bootstrap'; 
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import WorkoutTypeIcon from '../../workouts/WorkoutTypeIcon';
 import { Workout, WorkoutFocus } from '../../../globals';
+
 
 interface WorkoutActionsProps extends React.HTMLAttributes<Element> {
     hidden: boolean; 
     workoutFocus: WorkoutFocus; 
     workout: Workout; 
+    callbacks: Array<React.Dispatch<SetStateAction<boolean>>>;
 }
 
-export default function WorkoutInfoActions({ hidden, workoutFocus, workout }: WorkoutActionsProps) {
+export default function WorkoutInfoActions({ hidden, workoutFocus, workout, callbacks }: WorkoutActionsProps) {
     return (
         <>
             <style type="text/css">
@@ -43,6 +45,9 @@ export default function WorkoutInfoActions({ hidden, workoutFocus, workout }: Wo
                     .single-workout-field-span {
                         font-size: 12pt;
                         color: #aaaaaa;
+                    }
+                    .workout-single-action-col {
+                        margin: 10px;
                     }
                     .workout-single-action-col:hover, 
                     .workout-single-action-col:active, 
@@ -89,20 +94,20 @@ export default function WorkoutInfoActions({ hidden, workoutFocus, workout }: Wo
         <Row className="field-single-workout hidden-exercises-open">
             <Col xs="6">
                 <span className="label-focus"></span><span className="single-workout-field-span single-focus"><WorkoutTypeIcon workoutType={workoutFocus} /></span>
-            </Col>
+            </Col>            
             <Col xs="2"  className="workout-single-action-col pointer">
                 <span className="pin-workout-text">Pin</span>
                 <br></br>
                 <Icon.PinAngleFill className="workout-single-action" width="40" height="40" />
             </Col>           
             <Col xs="2" className="workout-single-action-col pointer">
-                <span className="pin-workout-text">Start</span>
+                <span className="pin-workout-text">Exercises</span>
                 <br></br>
-                <Icon.PlayFill className="workout-single-action" width="50" height="50" />
+                <Icon.CollectionFill onClick={() => callbacks[0](!hidden)} className="workout-single-action" width="50" height="50" />
             </Col> 
         </Row>
         <Row className="field-single-workout mb-3 hidden-exercises-open"> 
-            <Col xs="6"><span className="single-title-label">Focus:</span> <span className="single-title-name">{workoutFocus}</span></Col>                               
+            <Col xs="6"><span className="single-title-name">{workoutFocus}</span></Col>                               
             <Col xs="2" className="workout-single-action-col pointer">
                 <span className="pin-workout-text">Share</span>
                 <br></br>

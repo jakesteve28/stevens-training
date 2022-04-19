@@ -99,8 +99,78 @@ export interface ProfilePermission {
     viewCheckins: boolean; 
 }
 
+export interface Comment  {
+    commentText: string; 
+    created: string;
+    username: string; 
+}
+
+export const DefaultComment: Comment = {
+    commentText: "Great place to hit legs!",
+    created: "", 
+    username: "Jacob Stevens"
+}
+
+export interface Place {
+    id: string;
+    name: string; 
+    desc: string;
+    longitude: string; 
+    latitude: string; 
+    open: boolean; 
+    placeType: string; 
+    uploads: Array<string>;
+    primaryUpload: string;
+    comments: Array<Comment>; 
+}
+
+export const DefaultPlace = {
+    id: "defaultplace",   
+    name: "Gold's Gym", 
+    desc: "Full feature fitness facility located in Vancouver Mall",
+    longitude: "", 
+    latitude: "",
+    open: false,
+    placeType: "Gym", 
+    uploads: [""],
+    primaryUpload: "",
+    comments: [DefaultComment, DefaultComment, DefaultComment]
+}
+
+export interface Checkin { 
+    timeEntered: string;
+    place: Place; 
+    timeLeft?: string; 
+    workout: Workout; 
+    username?: string;
+}
+
+export const ExampleCheckins: Array<Checkin> = [
+    {
+        workout: DefaultWorkout, 
+        place: DefaultPlace, 
+        timeEntered: "1649984400000", 
+        timeLeft: "1649988000000"
+    },
+    {
+        workout: DefaultWorkout, 
+        place: DefaultPlace, 
+        timeEntered: "1649898000000", 
+        timeLeft: "1649901600000"
+    },
+    {
+        workout: DefaultWorkout, 
+        place: DefaultPlace, 
+        timeEntered: "1649808000000", 
+        timeLeft: "1649815200000"
+    },
+]
+
+
 const global = {
     loggedInColor: "#34ebde",
-    workoutFocuses: WorkoutFocus
+    workoutFocuses: WorkoutFocus,
+    datePrintLocaleOptions: { weekday: 'short', hour: 'numeric', hour12: true, minute: 'numeric', day: 'numeric', month: 'numeric', year: 'numeric' }
+
 }
 export default global;

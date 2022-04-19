@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Col, Row, Form, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { showForgotInfo } from '../../../features/ui/uiSlice';
+import { setCurrentPage, showForgotInfo } from '../../../features/ui/uiSlice';
 import { useHistory } from 'react-router-dom';
 
 export default function LoginScreen(){
     const dispatch = useDispatch();
     const history = useHistory();
+    useEffect(() => {
+        dispatch(setCurrentPage("Login"));
+    }, []);
     return (
         <>
             <style type="text/css">

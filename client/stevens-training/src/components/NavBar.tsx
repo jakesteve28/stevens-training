@@ -3,28 +3,30 @@ import { Container, Nav, Navbar, Image, OverlayTrigger, Tooltip } from 'react-bo
 import * as Icon from 'react-bootstrap-icons';
 import pic from '../imgs/weight-plate.png';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectLoggedIn } from '../features/user/userSlice';
-import { showAbout } from '../features/ui/uiSlice';
+import { selectCurrentWorkout, selectLoggedIn } from '../features/user/userSlice';
+import { selectCurrentPage, selectShowBottomNav, showAbout } from '../features/ui/uiSlice';
 import { useHistory } from 'react-router-dom';
+
 export function StevensBottomNavBar(){
+    const currentWorkout = useSelector(selectCurrentWorkout); 
+    const showBottomNav = useSelector(selectShowBottomNav);
     return (
         <>
         <style type="text/css">
            {
                `
                 .bot-nav {
-                    max-height: 50px;
-                    height: 50px;
-                    opacity: 0.5 !important;
-                    background-color: #101010 !important;
+                    max-height: 120px;
+                    height: 120px;
+                    background-color: rgba(0, 61, 50) !important;
+                    border-top: 3px solid #303030;
                 }
 
                 .footer-text {
-                    color: #999999;
-                    text-align: right;
-                    margin-left: auto;
-                    font-size: 6pt;
-                    font-weight: bold;
+                    color: #DDDDDD;
+                    text-align: left;
+                    font-size: 15pt;
+                    font-weight: 200;
                 }
 
                 .footer-text:hover {
@@ -34,17 +36,20 @@ export function StevensBottomNavBar(){
                `
            } 
         </style>
-        <Navbar fixed="bottom" expand="sm" bg="dark" variant="dark" className="bot-nav">
-             <Container fluid>
-                <span className="footer-text">Created by Jacob Stevens, 2021</span>
-            </Container>
-        </Navbar>
+        {(showBottomNav && currentWorkout.id) ?
+            <Navbar fixed="bottom" bg="dark" variant="dark" className="bot-nav">
+                <Container fluid>
+                    <span className="footer-text">Name:  {currentWorkout.name}</span>
+                </Container>
+            </Navbar> : <></>
+        } 
         </>
     )
 }
 
 export default function StevensNavBar() {
     const loggedIn = useSelector(selectLoggedIn);
+    const currentPage = useSelector(selectCurrentPage); 
     const dispatch = useDispatch();
     const history = useHistory();
     const AccountIcon = (props: any) => {
@@ -101,25 +106,21 @@ export default function StevensNavBar() {
                         color: #34e5eb;
                         cursor: pointer;
                     }
-
                     .prsn-icon {
-                        color: ${(loggedIn) ? "#34ebde" : "#404040" };
+                        color: ${(loggedIn) ? "#0098be" : "#404040" };
                         margin-left: 20px;
                         margin-top: 8px;
                         margin-right: 15px;
                     }
-
                     .brand-title {
-                        color: #AAAAAA !important;
+                        color: #DDDDDD !important;
                         font-size: 27pt;
                         font-weight: 600;
                         -webkit-text-stroke: 1px #17396e;
                     }
-
                     .login-text {
                         margin-left: auto;
                     }
-
                     .image-custom {
                         background-color: transparent;
                         width: 60px; 
@@ -133,7 +134,6 @@ export default function StevensNavBar() {
                         transition: all 1.25s ease;
                         margin-left: 40px;
                     }
-
                     @media screen and (max-width: 500px) {
                         .image-custom {
                             margin-left: 10px;
@@ -145,45 +145,46 @@ export default function StevensNavBar() {
                             transform: scale(1.25);
                         }
                     }
-
+                    @media screen and (max-width: 800px) {
+                        .current-page-label {
+                            display: none;
+                        }
+                        .about-nav {
+                            margin-right: auto;
+                        }
+                    }
+                    .image-custom {     
+                        filter: brightness(1.5); 
+                    }
                     .image-custom:hover {
-                        transform: rotate(720deg) scale(1.10);
-                        filter: brightness(2.0);
+                        transform: scale(1.10);         
                         cursor: pointer;
-                        filter: drop-shadow(0px 0px 10px #ff0000);
-
                     }
-
                     .image-custom:active {
-                        transform: rotate(1080deg) scale(1.50);
+                        transform: scale(1.50);
                     }
-
                     .logo {
                         font-weight: 600;
-                        color: #34dcbe;
+                        color: #DDDDDD;
                         display: inline;
                         transition: 1.0s all ease;
                         cursor: pointer;
                         margin-top: auto; 
                         margin-bottom: auto;
                     }
-
                     .span-inline {
                         display: inline;
                         transition: all .75s ease;
                         white-space: nowrap;
                     }
-
                     .logo:hover {
                         transform: scale(1.05);
                         color: #34ebde;
-                        text-shadow: 2px 2px 2px #ff0000;
+                        text-shadow: 2px 2px 2px #DDDDDD;
                     }
-
                     .custom-toggle::after {
                         display:none;
                     }
-
                     .custom-toggle {
                         width: 70; 
                         height: 70;
@@ -192,56 +193,65 @@ export default function StevensNavBar() {
                         outline: none; 
                         border: none;
                     }
-
                     .login-btn {
-                        color: #34e5eb;
+                        color: #DDDDDD;
                         margin-right: 30px;
                         margin-bottom: 10px;
                         font-weight: bolder;
                     }
-
                     .login-btn:hover { 
                         filter: brightness(1.2);
                         cursor: pointer;
                     }
-
                     .nav-link-ctm {
-                        color: #34e5eb;
+                        color: #DDDDDD;
                         font-weight: bolder;
                         margin-left: 20px;
                         margin-right: 20px;
                     }
-
                     .nav-link-ctm:hover {
                         filter: brightness(0.8);
                         cursor: pointer;
                     }
-
                     .login-link:hover {
                         filter: brightness(0.8);
                         cursor: pointer;
                     }
-
                     .stevens-nav {
-                        background-color: #101010 !important;
-                        opacity: 0.87;
+                        background-color: #222222 !important;
+                        border-bottom: 3px solid #303030;
                     }
                     .login-link {
                         margin-top: auto;
                         margin-bottom: auto;
                         font-size: 18pt;
-                        color: #14dcbe
+                        color: #DDDDDD;
+                    }
+                    .currpage {
+                        color: #34dcbe;
+                        text-align: left;
+                        font-size: 32pt;
+                        font-weight: 500;
+                    }
+                    .current-page-label {
+                        margin-left: 50px;
+                    }
+                    .about-nav {
+
                     }
                     `}
                 </style>
-                <Navbar collapseOnSelect fixed="top" expand="sm" bg="dark" variant="dark"  className="stevens-nav">
+                <Navbar collapseOnSelect fixed="top" expand="md" bg="dark" variant="dark"  className="stevens-nav">
                     <Container fluid>
                         <Navbar.Brand><span className="nav-link-ctm login-link"><h3 className="logo" onClick={() => { if(history) history.push('/home')}}>stephanos</h3><Image src={pic} onClick={() => { if(history) history.push('/home')}}  roundedCircle className="image-custom" /></span></Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="me-auto">
+                        <Nav className="about-nav">
                             {(loggedIn) ? (<Nav.Link href="/app"><span className="nav-link-ctm">App</span></Nav.Link>) : ""} 
                             <Nav.Link onClick={(e) => { e.preventDefault(); dispatch(showAbout()); }}><span className="nav-link-ctm login-link">About</span></Nav.Link>
+                        </Nav>
+                        <Nav className="me-auto current-page-label">
+                            <span className="currpage">{currentPage}</span>
                         </Nav>
                         <Nav>
                             {(loggedIn) ? <NotificationsIcon /> : <span id="link-login" onClick={() =>{ return (!loggedIn && history) ? history.push('/login') : null }} className="nav-link-ctm login-link">Login</span>}

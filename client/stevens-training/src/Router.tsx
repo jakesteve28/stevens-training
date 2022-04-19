@@ -1,8 +1,6 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
   Redirect
 } from "react-router-dom";
@@ -11,12 +9,15 @@ import LoginScreen from "./components/containers/views/login";
 import SignUpScreen from "./components/containers/views/signup";
 import { selectLoggedIn } from "./features/user/userSlice";
 import { AnimatedSwitch, spring } from 'react-router-transition';
-
-import './animated-switch.css';
-import StevensNavBar from "./components/NavBar";
+import StevensNavBar, { StevensBottomNavBar } from "./components/NavBar";
 import ProfileScreen from "./components/containers/views/profile";
 import Workouts from "./components/containers/views/workouts";
 import { SingleWorkoutView } from "./components/containers/views/singleworkout";
+import CheckinsView from "./components/containers/views/checkins";
+import './animated-switch.css';
+import { Container, Navbar } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
+import SinglePlaceView from "./components/containers/views/place";
 
 function mapStyles(styles: any) {
   return {
@@ -77,8 +78,10 @@ export default function AppRouter() {
                 <Route path="/home">
                   <Home />
                 </Route>
+                <Route path={'/checkins'} component={CheckinsView} />
                 <Route path={'/workouts/:workoutId'} component={SingleWorkoutView} />
                 <Route path="/workouts" component={Workouts} exact/>
+                <Route path="/places/:placeId" component={SinglePlaceView} />
                 <Route path="/dashboard">
                 </Route>
                 <Route path="/profile">
@@ -88,6 +91,7 @@ export default function AppRouter() {
                   { loggedIn ? <Redirect to="/app" /> : <LoginScreen />}
                 </Route>
             </AnimatedSwitch>
+          <StevensBottomNavBar />
     </Router>
   );
 }

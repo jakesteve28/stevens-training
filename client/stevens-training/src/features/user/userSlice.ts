@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { DefaultExercise, DefaultWorkout } from '../../globals';
+import { DefaultExercise, DefaultPlace, DefaultWorkout, ExampleCheckins } from '../../globals';
 export const host = "https://localhost:3000"; 
 
 const testWorkout = DefaultWorkout;
@@ -87,7 +87,7 @@ export const userSlice = createSlice({
     },
     story: [], 
     profilePictures: [], 
-    currentWorkout: {}, 
+    currentWorkout: DefaultWorkout, 
     workouts: [testWorkout, DefaultWorkout], 
     exercises: [DefaultExercise], 
     uploads: [], 
@@ -95,11 +95,12 @@ export const userSlice = createSlice({
     sentmessages: [], 
     receivedmessages: [],
     nearbyUsers: [], 
-    nearbyPlaces: [],
+    nearbyPlaces: [DefaultPlace, DefaultPlace, DefaultPlace],
     loadingPlaces: false, 
     loadingNearbyUsers: false,
     currentPlaceRequestId: "",
-    currentNearbyRequestId: ""
+    currentNearbyRequestId: "",
+    checkins: ExampleCheckins
   },
   reducers: {
     login: (state: any, action: any) => {
@@ -232,6 +233,9 @@ export const userSlice = createSlice({
         return upload.id !== action.payload; 
       });
     },
+    setCurrentWorkout: (state: any, action: any) => {
+      state.currentWorkout = action.payload;
+    },    
     clear: (state: any) => {
       state.loggedIn = false;
       state.user = {
@@ -246,7 +250,7 @@ export const userSlice = createSlice({
         status: "(empty)", 
         latitude: "", 
         longitude: "", 
-        primaryUpload: "", 
+        primaryUpload: ""
       };
       state.story = [];
       state.profilePictures = []; 
@@ -267,6 +271,7 @@ export const userSlice = createSlice({
       state.currentNearbyRequestId = "";
     }
   },
+
   extraReducers: builder => {
     builder.addCase(getNearbyUsers.fulfilled, (state, action) => {
       if(state.loadingNearbyUsers === true && 
@@ -328,7 +333,8 @@ export const {
   rmFromStory,
   rmWorkout,
   rmProfilePic,
-  rmUpload
+  rmUpload,
+  setCurrentWorkout
   } = userSlice.actions;
 
 export const selectUser = (state: any) => state.user.user;
@@ -343,6 +349,8 @@ export const selectWorkouts = (state: any) => state.user.workouts;
 export const selectProfilePictures = (state: any) => state.user.profilePictures; 
 export const selectNearbyUsers = (state: any) => state.user.nearbyUsers; 
 export const selectNearbyPlaces = (state: any) => state.user.nearbyPlaces; 
+export const selectCheckins = (state: any) => state.user.checkins;
+export const selectCurrentWorkout = (state: any) => state.user.currentWorkout;
 // export const selectWorkoutById = (workoutId: string) => (state: any) => { return state.workouts.filter((workout: any) => workout.id === workoutId)[0] || null }
 
 

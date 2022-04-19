@@ -5,3 +5,4 @@ declare module "*.gif";
 declare module "react-particles-js";
 declare module "react-tsparticles";
 declare module "react-router-transition";
+declare module "react-responsive-carousel";

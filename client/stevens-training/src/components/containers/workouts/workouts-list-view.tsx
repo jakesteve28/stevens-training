@@ -1,19 +1,12 @@
 import { Col, Container, ListGroup, Row } from "react-bootstrap";
 import WorkoutListItem from "./workouts-list-item";
-import global from '../../../globals';
+import global, { DefaultWorkout } from '../../../globals';
 import * as Icon from 'react-bootstrap-icons'; 
 
 function ExampleWorkoutsList() { 
     return (
     <>
-            <WorkoutListItem name="Heavy Leg Day" workoutType={global.workoutFocuses.strength} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-            <WorkoutListItem name="Arm Day" workoutType={global.workoutFocuses.bodybuilding} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-            <WorkoutListItem name="Slow Run" workoutType={global.workoutFocuses.cardio} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-            <WorkoutListItem name="Jefferson Deadlifts" workoutType={global.workoutFocuses.flexibility} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-            <WorkoutListItem name="Circuit" workoutType={global.workoutFocuses.mix} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-            <WorkoutListItem name="Yoga" workoutType={global.workoutFocuses.other} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-            <WorkoutListItem name="Squats" workoutType={global.workoutFocuses.power} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
-            <WorkoutListItem name="Planks" workoutType={global.workoutFocuses.stability} tags={['Tough', 'Tiring', 'Burn', 'Tiring', 'Tiring', 'Tiring', 'Tiring', 'Tiring'] as any}/>
+           <WorkoutListItem workout={DefaultWorkout} />
     </>
 ) }
 

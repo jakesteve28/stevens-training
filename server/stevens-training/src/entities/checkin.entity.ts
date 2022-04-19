@@ -23,4 +23,8 @@
   
     @CreateDateColumn()
     createdAt: string;
+
+    @Column({ default: '' })
+    workoutId: string;
+    
   }

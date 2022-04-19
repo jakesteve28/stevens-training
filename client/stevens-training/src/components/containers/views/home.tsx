@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import global from '../../../globals';
 import * as Icon from 'react-bootstrap-icons';
 import { useDispatch } from 'react-redux';
-import { showAbout } from '../../../features/ui/uiSlice';
+import { setCurrentPage, showAbout } from '../../../features/ui/uiSlice';
 import { Button } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 
 export default function Home() {
-    const dispatch = useDispatch();
     const history = useHistory();
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setCurrentPage(""));
+    }, []);
     return (
         <>
             <style type="text/css">

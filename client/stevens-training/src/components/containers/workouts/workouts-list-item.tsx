@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { Row, Col, Container, ListGroup } from 'react-bootstrap'; 
 import ReactTooltip from 'react-tooltip';
-import global from '../../../globals';
+import global, { Workout } from '../../../globals';
 import WorkoutTypeIcon from '../../workouts/WorkoutTypeIcon';
 import * as Icon from 'react-bootstrap-icons';
 
-export default function WorkoutListItem({ name = "default", tags = [], workoutType = global.workoutFocuses.other }){
+interface WorkoutListItem extends React.HTMLAttributes<Element> {
+    workout: Workout; 
+}
+
+export default function WorkoutListItem({ workout }: WorkoutListItem){
     const [showQuickInfo, setShowQuickInfo] = useState(false); 
+    const { name = "default", tags = [], workoutFocus = "strength", desc = "default desc", userId } = workout;
     return (
         <>
             <style type="text/css">
@@ -47,7 +52,7 @@ export default function WorkoutListItem({ name = "default", tags = [], workoutTy
                         height: min-content;
                         width: 95%;
                         min-width: 400px;
-                        max-height: 250px;
+                        max-height: 400px;
                         text-align: left;
                         margin-left: -25px;
                         margin-right: auto;
@@ -84,7 +89,7 @@ export default function WorkoutListItem({ name = "default", tags = [], workoutTy
                     .focus-badge {
                         display: flex;
                         justify-content: center;
-                        align-items: center; .
+                        align-items: center; 
                         flex-direction: column;
                         min-width: 65px;
                         filter: brightness(150%) contrast(50%);
@@ -107,7 +112,7 @@ export default function WorkoutListItem({ name = "default", tags = [], workoutTy
                         cursor: pointer;
                     }
                     .name-text {
-                        font-size: 27pt;
+                        font-size: 24pt;
                         padding-left: 15px;
                         font-weight: 600;
                         text-overflow: ellipsis;
@@ -125,6 +130,7 @@ export default function WorkoutListItem({ name = "default", tags = [], workoutTy
                         text-overflow: ellipsis;
                         overflow: hidden;
                         height: 110px;
+                        padding-top: 5px;
                     }
                     
                     @media only screen and (max-width: 600px) {
@@ -134,6 +140,8 @@ export default function WorkoutListItem({ name = "default", tags = [], workoutTy
                         .workout-list-item {
                             max-width: 400px;
                         }
+                        .workout-list-item-desc { display: none; }
+                        .tags-span { max-width: 80%; }
                       }
                       .search-input {
                           background-color: transparent;
@@ -167,6 +175,21 @@ export default function WorkoutListItem({ name = "default", tags = [], workoutTy
                       .bg-selected-workout-list-item { 
                           background-color: rgba(34, 150, 100, 0.1);
                       }
+                      .tags-span {
+                        max-width: 70%;
+                        display: inline-block;
+                        padding-top: 5px;
+                        padding-bottom: 15px;
+                      }
+                      .workout-name {
+                          padding-bottom: 15px;
+                      }
+                      .workout-list-item-desc {
+                          padding: 15px;
+                          margin-top: auto; 
+                          margin-bottom: auto;
+                          text-align: left;
+                      }
                 `
                 }
             </style>    
@@ -176,16 +199,13 @@ export default function WorkoutListItem({ name = "default", tags = [], workoutTy
             <ListGroup.Item className={`workout-list-item ${(showQuickInfo) ? `bg-selected-workout-list-item` : ``}`}  onClick={(e) => { setShowQuickInfo(!showQuickInfo); }}>
                 <Container fluid>
                     <Row className="workout-row">
-                        <Col xs="2" className="workout-type-icon">
-                            <div className="focus-badge"><WorkoutTypeIcon workoutType={workoutType} /></div>
-                            <div className="badge-label">{workoutType}</div>
+                        <Col xs="2" sm="1" className="workout-type-icon pt-3">
+                            <div className="focus-badge"><WorkoutTypeIcon workoutType={workoutFocus} /></div>
+                            <div className="badge-label">{workoutFocus}</div>
                         </Col>
-                        <Col xs="9" sm="6" className="workout-name">
-                            <div className="name-text h-100">{name}</div>
-                        </Col>
-                        <Col className="workout-tags">
-                            <div className="w-100 tag-label">Tags:</div>                          
-                            {tags.map(tag => (<div className="tag-bubble">{`${tag}`}</div>))}
+                        <Col xs="10" sm="6" className="workout-name">
+                            <div className="name-text">{name}</div>
+                            <span className="tags-span">{tags.map(tag => (<div className="tag-bubble">{`${tag}`}</div>))}</span>          
                         </Col>
                     </Row>
                     <Row className={(showQuickInfo) ? "workout-desc-row show-quick" : "workout-desc-row hide-quick"}>
