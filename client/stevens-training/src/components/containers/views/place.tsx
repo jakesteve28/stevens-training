@@ -68,7 +68,7 @@ export default function SinglePlaceView() {
             <style type="text/css">
             {`      
                 .background-container-cstm {
-                    background-color: #191919;
+                  
                     height: 100vh;
                     overflow-y: auto;
                 }      

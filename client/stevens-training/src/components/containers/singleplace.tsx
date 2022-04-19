@@ -39,7 +39,7 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                             margin-top: 85px;
                             border-radius: 15px;
                             color: #CCCCCC;
-                            background-color: rgba(12, 12, 12, 0.2);                       
+                            background-color: transparent;                       
                             min-width: 100%;
                             height: 150%;
                         }
@@ -56,6 +56,7 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                             margin-bottom: 15px;
                             border-top: 5px solid #404040;
                             min-height: 200px;
+                            background-color: #191919;
                         }
                         .single-place-data-row {
                             font-size: 16pt;
