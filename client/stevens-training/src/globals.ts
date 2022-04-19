@@ -107,7 +107,7 @@ export interface Comment  {
 
 export const DefaultComment: Comment = {
     commentText: "Great place to hit legs!",
-    created: "", 
+    created: "1649808000000", 
     username: "Jacob Stevens"
 }
 

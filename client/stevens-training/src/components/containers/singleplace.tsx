@@ -145,15 +145,15 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                     <Col></Col>
                 </Row>
                 <Row className="single-place-data-row">
-                    <Col xs="12" sm="6">
+                    <Col xs="12" sm="6" md="4">
                         <PlaceStats place={place}/>
                     </Col>
-                    <Col xs="12" sm="6">
+                    <Col xs="12" sm="6" md="4">
                         <PlaceCheckins place={place}/>
                     </Col>
-                </Row>
-                <Row className="single-place-comments-row">
-                    <PlaceComments place={place} />
+                    <Col xs="12" sm="6" md="4">
+                        <PlaceComments place={place}/>
+                    </Col>
                 </Row>
             </Container>
         </>
