@@ -20,6 +20,8 @@ export default function MediaGallery({ images, hidden }: MediaGalleryProps) {
         width: 50,
         height: 50,
         cursor: 'pointer',
+        fontWeight: 800,
+        textShadow: '5px 5px #191919'
     };
 
     const indicatorStyles: CSSProperties = {

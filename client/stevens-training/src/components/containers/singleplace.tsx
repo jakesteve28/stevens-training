@@ -30,6 +30,11 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
             <style>
                 {
                     `
+                        @media only screen and (max-width: 768px) {
+                            .media-col {
+                                margin-left: 20px;
+                            }
+                        }
                         .info-col-left {
                             text-align: left;
                         }
@@ -44,18 +49,11 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                             min-width: 100%;
                             height: 170%;
                         }
-                        .single-place-title-row {
-
-                        }
                         .single-place-media-row {
-                            max-height: 800px !important;
+                            margin-bottom: 15px;
                         }
                         .single-place-info-row {
                             font-size: 16pt;
-                            padding-top: 10px;
-                            min-height: 125px;
-                            background-color: transparent;
-                            padding-bottom: 10px;
                             border-radius: 10px;
                             padding-right: 50px;
                             padding-left: 50px;
@@ -77,6 +75,8 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                             font-size: 38pt; 
                             font-weight: 700; 
                             color: #249A85;
+                            padding: 10px;
+                            white-space: nowrap;
                         }
                         .info-addr-label {
                             color: #757575;
@@ -106,62 +106,71 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                         .actions-col {
                             text-align: left;
                             padding-top: 15px;
+                            white-space: nowrap;
                         }
-                       
+                        .single-place-title-row {
+                            background-color: rgba(8, 8, 8, 0.8);
+                            text-align: left;
+                            padding-top: 10px;
+                        }
                     `
                 }
                 
             </style>
             <Container fluid className="single-place-cont">
-                <Row className="single-place-title-row">
-
-                </Row>  
-                <Row className="single-place-media-row">
-                    <MediaGallery images={[goldsgym2, goldsgym1]} hidden={false} />
+                <Row className="mb-3 single-place-title-row sticky-top" >
+                    <Col xs="12" sm="12" md="6" className="info-col-left info-title">
+                        <span>Gold's Gym<Icon.ThreeDotsVertical className="extra-info-button" onClick={() => setShowExtraInfo(!showExtraInfo)} color={"#34dcbe"} width={25} height={25} /></span>
+                    </Col> 
+                    <Col className="actions-col">
+                        <span>
+                            <Button className="place-action-button" variant="dark" size="lg">
+                                <Icon.GeoFill /> &nbsp;
+                                Check In  
+                            </Button>
+                            <Button className="place-action-button" variant="dark" size="lg">
+                                <Icon.PencilFill /> &nbsp;
+                                Edit 
+                            </Button>
+                        </span>
+                    </Col>     
+                    <Row className="single-place-info-row">
+                        <Col></Col>
+                        <Col xs="10" sm="8" md="6">
+                            <Row className={`${(!showExtraInfo) ? "extra-info-place" : ""}`}>
+                                <Col className="info-col-right" xs="6">
+                                    <span className="info-addr-label">Address:<br></br></span> 660 Vancouver Mall Dr.<br></br> Vancouver WA
+                                </Col>     
+                                <Col className="info-col-left place-desc" xs="6">
+                                    Full feature fitness facility located in Vancouver Mall
+                                </Col>
+                                <Col className="info-col-right" xs="6">
+                                    (123) 456-7890
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col></Col>
+                    </Row>                                
                 </Row>
-                <Row className="single-place-info-row">
-                    <Col></Col>
-                    <Col xs="10" sm="8" md="6">
-                        <Row className="mb-3">
-                            <Col xs="12" sm="5" className="info-col-left info-title">
-                                <span>Gold's Gym<Icon.ThreeDotsVertical className="extra-info-button" onClick={() => setShowExtraInfo(!showExtraInfo)} color={"#34dcbe"} width={25} height={25} /></span>
-                            </Col> 
-                            <Col className="actions-col">
-                                <span>
-                                    <Button className="place-action-button" variant="dark" size="lg">
-                                        <Icon.GeoFill /> &nbsp;
-                                        Check In  
-                                    </Button>
-                                    <Button className="place-action-button" variant="dark" size="lg">
-                                        <Icon.PencilFill /> &nbsp;
-                                        Edit 
-                                    </Button>
-                                </span>
-                            </Col>                                       
-                        </Row>
-                        <Row className={`${(!showExtraInfo) ? "extra-info-place" : ""}`}>
-                            <Col className="info-col-right" xs="6">
-                                <span className="info-addr-label">Address:<br></br></span> 660 Vancouver Mall Dr.<br></br> Vancouver WA
-                            </Col>     
-                            <Col className="info-col-left place-desc" xs="6">
-                                Full feature fitness facility located in Vancouver Mall
-                            </Col>
-                            <Col className="info-col-right" xs="6">
-                                (123) 456-7890
-                            </Col>
-                        </Row>
+             
+                <Row className="single-place-media-row">
+                    <Col className="media-col" xs="12" md="7">
+                        <MediaGallery images={[goldsgym2, goldsgym1]} hidden={false} />
                     </Col>
-                    <Col></Col>
+                    <Col xs="12" md="5">
+                        <Chatbox messages={[DefaultChatMsg, DefaultChatMsg, DefaultChatMsg, {
+                                                commentText: "VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY VERY LONG MESSAGE!",
+                                                created: "1649808000000", 
+                                                username: "Jacob Stevens"
+                                            }]}/>
+                    </Col>
                 </Row>
                 <Row className="single-place-data-row">
-                    <Col xs="12" sm="6" md="4">
+                    <Col xs="12" md="6">
                         <PlaceStats place={place}/>
                     </Col>
-                    <Col xs="12" sm="6" md="4">
+                    <Col xs="12" md="6">
                         <PlaceCheckins place={place}/>
-                    </Col>
-                    <Col xs="12" sm="6" md="4">
-                        <Chatbox messages={[DefaultChatMsg, DefaultChatMsg, DefaultChatMsg]}/>
                     </Col>
                 </Row>
             </Container>

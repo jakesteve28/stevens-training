@@ -232,6 +232,7 @@ export default function StevensNavBar() {
                         text-align: left;
                         font-size: 32pt;
                         font-weight: 500;
+                        white-space: nowrap;
                     }
                     .current-page-label {
                         margin-left: 50px;

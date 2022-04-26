@@ -17,9 +17,8 @@ export default function Chatbox({ messages }: ChatBoxMsgProps) {
                         width: 100%;
                         max-width: 800px;
                         max-height: 500px;
-                        height: 400px;
                         background-color: #202020;
-                        margin-top: 20px;
+                        margin-top: 15px;
                         border-radius: 10px;
                         overflow: hidden;
                         min-width: 300px;
@@ -39,22 +38,23 @@ export default function Chatbox({ messages }: ChatBoxMsgProps) {
                         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
                         background-color:#404040;
                     }    
-                    .chatbox-title-row {
-
-                    }
                     .chatbox-messages-row {
-                        height: 70%;
                         background-color: #181818;
                         width: 120%;
+                        min-height: 350px;
+                        max-height: 100%;
                         margin-left: -25px;
                         overflow-y: auto;
+                        overflow-wrap: anywhere;
+                        word-wrap: break-word;
+                        text-align: left;
+                        padding-left: 25px;
+                        padding-right: 20px;
                     }   
                     .chatbox-sendmsg-row {
-                        padding-top: 10px;
+                        padding: 10px;
+                        padding-top: 20px;
                     }   
-                    .send-msg-input {
-
-                    }
                     .chatbox-title-row {
                         text-align: left; 
                         font-size: 22pt;
@@ -62,28 +62,31 @@ export default function Chatbox({ messages }: ChatBoxMsgProps) {
                         padding-left: 15px;
                         padding-bottom: 5px;
                         padding-top: 5px;
-                        border-bottom: 1px solid #404040;
                     }
                     .chatbox-sendmsg-input {
                         white-space: nowrap;
                         width: 100%;
                         text-align: left;
+                        margin-top: auto;
+                        margin-bottom: auto; 
+                        display: inline-block;
                     }
                     .send-msg-input {
                         color: #34dcbe; 
                         background-color: #181818;
                          border: none; 
                          outline: none;
-                         width: 50%;
+                         width: 60%;
                          min-width: 160px;
                          height: 40px;
                          margin-right: 15px;
                          border-radius: 5px;
                          padding-left: 10px;
                          font-size: 12pt;
+                         display: inline-block;
                     }
                     .more-chat-icon { cursor: pointer; color: #34dcbe; }
-                    .send-btn-chat { background-color: #34abbe; }
+                    .send-btn-chat { background-color: #14584C; font-weight: 500; height: 40px; display: inline-block; }
                     `
             }
             </style>
@@ -91,7 +94,7 @@ export default function Chatbox({ messages }: ChatBoxMsgProps) {
                 <Row className="chatbox-title-row">
                     <Col>
                         <span>
-                            Chat
+                            Chat&nbsp;&nbsp;<Icon.ChatSquare color={"#34dcbe"} />
                         </span>
                     </Col>
                     <Col><Icon.ThreeDotsVertical className="more-chat-icon" /></Col>

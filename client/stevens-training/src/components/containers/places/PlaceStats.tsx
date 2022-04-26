@@ -12,7 +12,6 @@ export default function PlaceStats({ place }: PlaceStatsProps) {
                 `
                     .place-stats-cont {
                         width: 100%;
-                        max-width: 800px;
                         min-height: 350px;
                         background-color: #202020;
                         margin-top: 20px;

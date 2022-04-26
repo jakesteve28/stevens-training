@@ -126,11 +126,11 @@ export default function SingleWorkoutContainer({ workout }: SingleWorkoutContain
                         font-weight: 500;
                     }
                     .single-workout-title-row {
-                        background-color: #080808;
-                        border-top-left-radius: 15px;
-                        border-top-right-radius: 15px;
+                        background-color: rgba(8, 8, 8, 0.8);
                         text-align: left;
                         padding-top: 10px;
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid #404040;
                     }
                     .single-title-span,
                     .single-title-icon {             
@@ -231,9 +231,6 @@ export default function SingleWorkoutContainer({ workout }: SingleWorkoutContain
                         color: #404040;
                         font-weight: 600;
                     } 
-                    .workout-gallery {
-                        border-top: 1px solid #404040;
-                    }
                     .single-title-name-label {
                         font-weight: 300; 
                         font-size: 12pt;
@@ -260,10 +257,10 @@ export default function SingleWorkoutContainer({ workout }: SingleWorkoutContain
                      <Row className="single-workout-cont-row">
                         <Col className="single-workout-fields">
                             <Row className="field-single-workout workout-gallery">
-                                <Col xs="12" md="6" className="workout-gall-col">
+                                <Col xs="12" md="7" className="workout-gall-col">
                                     <MediaGallery images={[benchlogo]} hidden={exercisesOpen} />
                                 </Col>
-                                <Col xs="12" md="6" className="col-actions">
+                                <Col xs="12" md="5" className="col-actions">
                                     <WorkoutInfoActions hidden={exercisesOpen} workoutFocus={workoutFocus} workout={workout} callbacks={[setExercisesOpen]} />
                                     <WorkoutTags hidden={exercisesOpen} workout={workout} />
                                 </Col>
