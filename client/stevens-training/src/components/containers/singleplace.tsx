@@ -32,7 +32,7 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                     `
                         @media only screen and (max-width: 768px) {
                             .media-col {
-                                margin-left: 20px;
+                                padding-left: 40px;
                             }
                         }
                         .info-col-left {
