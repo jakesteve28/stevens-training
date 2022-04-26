@@ -23,12 +23,13 @@ ReactDOM.render(
         .ctm-svg {
           position: fixed;
           top: 20%; 
-          left: 25%;
+          left: 15%;
           z-index: 1;
           opacity: 0.2;
           filter: invert(36%) sepia(98%) saturate(3260%) hue-rotate(155deg) brightness(50%) contrast(103%);     
-          width: 50vw; 
-          height: 50vh; 
+          transform: rotate(180deg);
+          width: 70vw; 
+          height: 70vh; 
         }
       `}  
     </style>   

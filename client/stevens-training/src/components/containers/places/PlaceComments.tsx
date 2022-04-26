@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Col, Container, Row } from "react-bootstrap";
 import * as Icon from 'react-bootstrap-icons';
-import { Comment } from "../../../globals";
+import { ChatMsg } from "../../../globals";
 import global from '../../../globals';
 interface PlaceCommentsProps extends React.HTMLAttributes<Element> {
     place: any;
@@ -107,6 +107,7 @@ export default function PlaceComments({ place }: PlaceCommentsProps) {
                         .add-comment-row {
                             transition: height 0.5s ease;
                         }
+                        .more-stats-icon { cursor: pointer; }
                     `
                 }
             </style>
@@ -128,7 +129,7 @@ export default function PlaceComments({ place }: PlaceCommentsProps) {
                         <input type="text" className="add-comment-input" />
                     </Row>
                 </Row>
-                {
+                {/* {
                     (place.comments) ? place.comments.map((comment: Comment, idx: number) => (
                         <>
                             <Row className="comment-row">
@@ -142,7 +143,7 @@ export default function PlaceComments({ place }: PlaceCommentsProps) {
                             </Row>
                         </>
                     )) : <Row className="no-data-checkins"><Col>No comments found</Col></Row>
-                }
+                } */}
             </Container>
         </>
     );

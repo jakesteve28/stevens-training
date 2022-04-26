@@ -76,6 +76,7 @@ export default function MediaGallery({ images, hidden }: MediaGalleryProps) {
                     margin-left: -20px;
                     opacity: 0.9;
                     height: auto;
+                    max-height: 800px;
                 }
                 .carousel-cont:hover {
                     filter: brightness(1.05);
@@ -89,6 +90,7 @@ export default function MediaGallery({ images, hidden }: MediaGalleryProps) {
                     height: 100%;
                     margin-top: auto;
                     min-height: 500px;
+                    max-height: 600px;
                 }
                 .carousel-ctm-slide-img {
                     margin-top: auto;
@@ -96,6 +98,7 @@ export default function MediaGallery({ images, hidden }: MediaGalleryProps) {
                     min-height: 400px;
                     width: auto;
                     box-shadow: 0px 0px 5px 5px #000000;
+                    max-height: 800px;
                 }
             `
         }

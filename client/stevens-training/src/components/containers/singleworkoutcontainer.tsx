@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { Accordion, Card, Col, Container, Row, CloseButton } from "react-bootstrap";
 import * as Icon from 'react-bootstrap-icons';
 import SingleWorkoutMappedExerciseListItem from '../exercises/MappedExerciseListItem';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Workout } from "../../globals";
 import QuickListToggle from "./quicklisttoggle";
 import WorkoutInfoActions from "./workouts/workout-actions";
@@ -21,10 +22,16 @@ export default function SingleWorkoutContainer({ workout }: SingleWorkoutContain
     const { name, workoutFocus, uploads,  primaryUpload, exerciseMapping, tags } = workout; 
     const [exercisesOpen, setExercisesOpen] = useState(false);
     const dispatch = useDispatch(); 
+    const workoutCont = useRef(null);
     useEffect(() => {
         dispatch(setCurrentWorkout(workout));
-        dispatch(showBottomNav());
+        // dispatch(showBottomNav());
     }, []);
+    useEffect(() => {
+        if(workoutCont && workoutCont !== null && workoutCont.current !== null && exercisesOpen) {
+            workoutCont.current.scrollTop = 0;
+        }
+    }, [exercisesOpen]);
     return (
         <>
             <style type="text/css">
@@ -53,18 +60,21 @@ export default function SingleWorkoutContainer({ workout }: SingleWorkoutContain
                         overflow-y: auto;
                         height: 100vh;
                     }
-                    .exercises-list-card-body::-webkit-scrollbar-track
+                    .exercises-list-card-body::-webkit-scrollbar-track,
+                    .single-workout-cont::-webkit-scrollbar-track
                     {
                         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
                         border-radius: 10px;
                         background-color: #191919;
                     }
-                    .exercises-list-card-body::-webkit-scrollbar
+                    .exercises-list-card-body::-webkit-scrollbar,
+                    .single-workout-cont::-webkit-scrollbar
                     {
                         width: 12px;
                         background-color: #191919;
                     }
-                    .exercises-list-card-body::-webkit-scrollbar-thumb
+                    .exercises-list-card-body::-webkit-scrollbar-thumb,
+                    .single-workout-cont::-webkit-scrollbar-thumb
                     {
                         border-radius: 10px;
                         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
@@ -116,10 +126,9 @@ export default function SingleWorkoutContainer({ workout }: SingleWorkoutContain
                         font-weight: 500;
                     }
                     .single-workout-title-row {
-                        background-color: transparent;
+                        background-color: #080808;
                         border-top-left-radius: 15px;
                         border-top-right-radius: 15px;
-                        height: 60px;
                         text-align: left;
                         padding-top: 10px;
                     }
@@ -223,18 +232,24 @@ export default function SingleWorkoutContainer({ workout }: SingleWorkoutContain
                         font-weight: 600;
                     } 
                     .workout-gallery {
-                        border-bottom: 1px solid #404040;
                         border-top: 1px solid #404040;
                     }
                     .single-title-name-label {
                         font-weight: 300; 
                         font-size: 12pt;
                     }
+                    .col-actions {
+                        overflow-x: hidden;
+
+                    }
+                    .workout-gall-col {
+                        border-bottom: 1px solid #191919;
+                    }
                 `
             }
             </style>
-            <Container fluid className="single-workout-cont mobile-top-margin-cont">
-                    <Row className="single-workout-title-row">
+            <Container fluid ref={workoutCont} className="single-workout-cont mobile-top-margin-cont">
+                    <Row className="single-workout-title-row sticky-top">
                         <Col xs="1" className="pointer">
                             <span className="single-title-icon"><CloseButton variant="white"  aria-label="Hide" /></span>
                         </Col>
@@ -245,12 +260,14 @@ export default function SingleWorkoutContainer({ workout }: SingleWorkoutContain
                      <Row className="single-workout-cont-row">
                         <Col className="single-workout-fields">
                             <Row className="field-single-workout workout-gallery">
-                                <Col>
+                                <Col xs="12" md="6" className="workout-gall-col">
                                     <MediaGallery images={[benchlogo]} hidden={exercisesOpen} />
                                 </Col>
+                                <Col xs="12" md="6" className="col-actions">
+                                    <WorkoutInfoActions hidden={exercisesOpen} workoutFocus={workoutFocus} workout={workout} callbacks={[setExercisesOpen]} />
+                                    <WorkoutTags hidden={exercisesOpen} workout={workout} />
+                                </Col>
                             </Row>
-                            <WorkoutInfoActions hidden={exercisesOpen} workoutFocus={workoutFocus} workout={workout} callbacks={[setExercisesOpen]} />
-                            <WorkoutTags hidden={exercisesOpen} workout={workout} />
                             <Row className="field-single-workout mt-4 mb-4">
                                 <Accordion activeKey={(exercisesOpen) ? `0` : null }>
                                     <Card style={{ backgroundColor: "transparent" }}>

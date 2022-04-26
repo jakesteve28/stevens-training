@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Row, CloseButton } from "react-bootstrap";
 import { setCurrentPage } from "../../features/ui/uiSlice";
-import { Place } from "../../globals";
+import { DefaultChatMsg, Place } from "../../globals";
 import { useDispatch } from 'react-redux';
 import goldsgym1 from '../../imgs/goldsgym1.jpg';
 import goldsgym2 from '../../imgs/goldsgym2.jpg';
@@ -11,6 +11,7 @@ import PlaceStats from "./places/PlaceStats";
 import PlaceCheckins from "./places/PlaceCheckins";
 import PlaceComments from "./places/PlaceComments";
 import * as Icon from 'react-bootstrap-icons'; 
+import Chatbox from "./chatbox/chatbox";
 
 interface SinglePlaceViewProps extends React.HTMLAttributes<Element> {
     place: Place;
@@ -41,22 +42,23 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                             color: #CCCCCC;
                             background-color: transparent;                       
                             min-width: 100%;
-                            height: 150%;
+                            height: 170%;
                         }
                         .single-place-title-row {
 
                         }
                         .single-place-media-row {
-         
+                            max-height: 800px !important;
                         }
                         .single-place-info-row {
                             font-size: 16pt;
-                            padding-top: 30px;
-                            border-bottom: 1px solid #404040;
-                            margin-bottom: 15px;
-                            border-top: 5px solid #404040;
-                            min-height: 200px;
-                            background-color: #191919;
+                            padding-top: 10px;
+                            min-height: 125px;
+                            background-color: transparent;
+                            padding-bottom: 10px;
+                            border-radius: 10px;
+                            padding-right: 50px;
+                            padding-left: 50px;
                         }
                         .single-place-data-row {
                             font-size: 16pt;
@@ -86,6 +88,9 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                         .extra-info-button:hover {
                             cursor: pointer;
                         }
+                        .extra-info-button {
+                            margin-left: 10px;
+                        }
                         .place-action-button {
                             font-size: 20pt;
                             padding: 15px;
@@ -94,7 +99,9 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                             margin-right: 10px;
                             margin-left: 10px;
                             color: #249A85;
-                            background-color: #191919;
+                            background-color: #181818;
+                            width: 190px;
+                            margin: 5px;
                         }
                         .actions-col {
                             text-align: left;
@@ -116,19 +123,20 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                     <Col></Col>
                     <Col xs="10" sm="8" md="6">
                         <Row className="mb-3">
-                            <Col xs="5" className="info-col-left info-title">
-                                Gold's Gym &nbsp;&nbsp;&nbsp;&nbsp;<Icon.ThreeDotsVertical className="extra-info-button" onClick={() => setShowExtraInfo(!showExtraInfo)} color={"#34dcbe"} width={25} height={25} />
+                            <Col xs="12" sm="5" className="info-col-left info-title">
+                                <span>Gold's Gym<Icon.ThreeDotsVertical className="extra-info-button" onClick={() => setShowExtraInfo(!showExtraInfo)} color={"#34dcbe"} width={25} height={25} /></span>
                             </Col> 
                             <Col className="actions-col">
-                                <Button className="place-action-button" variant="dark" size="lg">
-                                    <Icon.GeoFill /> &nbsp;
-                                    Check In  
-                                </Button>
-                                <Button className="place-action-button" variant="dark" size="lg">
-                                    <Icon.PencilFill /> &nbsp;
-                                    Edit 
-                                </Button>
-
+                                <span>
+                                    <Button className="place-action-button" variant="dark" size="lg">
+                                        <Icon.GeoFill /> &nbsp;
+                                        Check In  
+                                    </Button>
+                                    <Button className="place-action-button" variant="dark" size="lg">
+                                        <Icon.PencilFill /> &nbsp;
+                                        Edit 
+                                    </Button>
+                                </span>
                             </Col>                                       
                         </Row>
                         <Row className={`${(!showExtraInfo) ? "extra-info-place" : ""}`}>
@@ -153,7 +161,7 @@ export default function SinglePlaceContainer({ place }: SinglePlaceViewProps) {
                         <PlaceCheckins place={place}/>
                     </Col>
                     <Col xs="12" sm="6" md="4">
-                        <PlaceComments place={place}/>
+                        <Chatbox messages={[DefaultChatMsg, DefaultChatMsg, DefaultChatMsg]}/>
                     </Col>
                 </Row>
             </Container>

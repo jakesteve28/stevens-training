@@ -36,6 +36,7 @@ export default function WorkoutInfoActions({ hidden, workoutFocus, workout, call
                         display: flex;
                         white-space: nowrap;
                         transition: ease all 0.5s;
+                        padding-top: 20px;
                     }
                     .label-focus { 
                         vertical-align: 75%;

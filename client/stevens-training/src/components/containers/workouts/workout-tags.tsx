@@ -36,10 +36,9 @@ export default function WorkoutTags({ workout, hidden }: WorkoutTagsProps){
                 margin-right: 15px;
             }
             .workout-tags {
-                text-align: center;
-                margin-left: auto;
-                margin-right: auto;
-                text-overflow: ellipsis;
+                white-space: pre;
+                word-wrap: break-word;
+                height: fit-content;
             }          
            
             .icon-tag-add {
@@ -81,28 +80,41 @@ export default function WorkoutTags({ workout, hidden }: WorkoutTagsProps){
             .tag-label {
                 text-align: center;
                 margin-bottom: 20px;
-                font-size: 16pt;
+                font-size: 14pt;
                 color: #34dcbe;
                 font-weight: 600;
                 whitespace: nowrap;
                 margin-right: 15px;
+                overflow-wrap: anywhere;
+                word-break: break-all;
+            }
+            .tag-bubble-div {
+                display: flex;
+                overflow-wrap: anywhere;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 15px;
             }
             `
         }
         </style>
             <Row className="mt-3 mb-3 single-workout-tags-row hidden-exercises-open">
-                <Col xs="10" className="workout-tags">
+                <Col className="workout-tags">
+                    <div className="tag-bubble-div"> 
                     <span className="tag-label">
                         Tags&nbsp;&nbsp;&nbsp;
-                        <Icon.PlusCircle onClick={() => {setTagAdd(!tagAdd); setTagEditing(false);}} className="icon-tag-add" width={30} height={30} />&nbsp;&nbsp;&nbsp;
-                        <Icon.PencilFill onClick={() => {setTagEditing(!tagEditing); setTagAdd(false);}} className="icon-tag-edit" width={30} height={30} />
+                        <Icon.PlusCircle onClick={() => {setTagAdd(!tagAdd); setTagEditing(false);}} className="icon-tag-add" width={25} height={25} />&nbsp;&nbsp;&nbsp;
+                        <Icon.PencilFill onClick={() => {setTagEditing(!tagEditing); setTagAdd(false);}} className="icon-tag-edit" width={25} height={25} />
                         {
-                            (tagAdd) ? (<><input className="single-workout-add-tag" type="text" autoFocus={true}/><Icon.Check className="icon-tag-confirm" width={40} height={40} /></>) : (<></>)
+                            (tagAdd) ? (<><input className="single-workout-add-tag" type="text" autoFocus={true}/><Icon.Check className="icon-tag-confirm" width={25} height={25} /></>) : (<></>)
                         }
-                    </span>            
+                    </span>          
                         {workout.tags.map(tag => 
                             (<div className="tag-bubble">{`${tag}`}{(tagEditing) ? (<Icon.X className="icon-tag-delete" width={20} height={20} />) : (<></>)}</div>))
                         }
+                    </div> 
                 </Col>
             </Row>
         </>

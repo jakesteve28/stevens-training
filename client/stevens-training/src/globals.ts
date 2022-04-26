@@ -99,13 +99,13 @@ export interface ProfilePermission {
     viewCheckins: boolean; 
 }
 
-export interface Comment  {
+export interface ChatMsg  {
     commentText: string; 
     created: string;
     username: string; 
 }
 
-export const DefaultComment: Comment = {
+export const DefaultChatMsg: ChatMsg = {
     commentText: "Great place to hit legs!",
     created: "1649808000000", 
     username: "Jacob Stevens"
@@ -121,7 +121,7 @@ export interface Place {
     placeType: string; 
     uploads: Array<string>;
     primaryUpload: string;
-    comments: Array<Comment>; 
+    comments: Array<ChatMsg>; 
 }
 
 export const DefaultPlace = {
@@ -134,7 +134,7 @@ export const DefaultPlace = {
     placeType: "Gym", 
     uploads: [""],
     primaryUpload: "",
-    comments: [DefaultComment, DefaultComment, DefaultComment]
+    comments: [DefaultChatMsg, DefaultChatMsg, DefaultChatMsg]
 }
 
 export interface Checkin { 
